@@ -1,5 +1,13 @@
 return {
   {
+    'echasnovski/mini.misc',
+    version = '*',
+    config = function()
+      require('mini.misc').setup()
+    end,
+  },
+  { 'echasnovski/mini.surround', version = '*', opts = {} },
+  {
     'echasnovski/mini.move',
     version = '*',
     config = function()

@@ -7,20 +7,22 @@ return {
         notify_on_error = false,
         formatters_by_ft = {
           lua = { 'stylua' },
-          javascript = { { 'prettierd', 'prettier' } },
-          typescript = { { 'prettierd', 'prettier' } },
-          javascriptreact = { { 'prettierd', 'prettier' } },
-          typescriptreact = { { 'prettierd', 'prettier' } },
-          html = { { 'prettierd', 'prettier' } },
-          json = { { 'prettierd', 'prettier' } },
+          javascript = { { 'prettierd' } },
+          typescript = { { 'prettierd' } },
+          javascriptreact = { { 'prettierd' } },
+          typescriptreact = { { 'prettierd' } },
+          html = { { 'prettierd' } },
+          json = { { 'prettierd' } },
           markdown = { 'markdownlint' },
           go = { 'gofumpt' },
+          python = { 'black' },
+          -- cpp = { 'clang-format' },
         },
       }
       vim.keymap.set('n', '<leader>mm', function()
         require('conform').format {
           lsp_fall = true,
-          async = false,
+          async = true,
           timeout_ms = 2000,
         }
       end)

@@ -12,6 +12,7 @@ local colors = {
   gruv1 = '#a79984', -- voilet
   gruv2 = '#a9b665', -- blue
   gruv3 = '#ea6962', -- cyan
+  orange = '#ff9e64',
 }
 local bubbles_theme = {
   normal = {
@@ -95,9 +96,13 @@ return {
         'branch',
         -- {
         --   'filetype',
-        --   colored = true,
         --   icon_only = true,
-        --   icon = { align = 'right' },
+        --   icon = { 'X', align = 'right' },
+        -- },
+        -- {
+        --   'filename',
+        --   file_status = false,
+        --   newfile_status = false,
         -- },
         {
           'diagnostics',
@@ -126,16 +131,28 @@ return {
             end
           end,
         },
+        -- {
+        --   'progress',
+        --   color = {
+        --     fg = colors.orange,
+        --     -- bg = colors.grey
+        --   },
+        -- },
       },
-      lualine_c = {
-        {
-          'searchcount',
-          maxcount = 999,
-          timeout = 500,
-        },
-      },
+      lualine_c = {},
       lualine_x = {},
-      lualine_y = { 'progress' },
+      lualine_y = {
+        -- {
+        --   function()
+        --     return require('noice').api.status.command.get()
+        --   end,
+        --   cond = function()
+        --     return package.loaded['noice'] and require('noice').api.status.command.has()
+        --   end,
+        --   color = { fg = colors.orange, bg = colors.grey },
+        -- },
+        -- { 'progress', color = { fg = colors.orange, bg = colors.grey } },
+      },
       lualine_z = {
         {
           'buffers',
@@ -146,6 +163,19 @@ return {
           },
         },
       },
+      -- lualine_z = {
+      --   {
+      --     function()
+      --       for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      --         if vim.api.nvim_buf_get_option(buf, 'modified') then
+      --           return 'Unsaved'
+      --         end
+      --       end
+      --       return ''
+      --     end,
+      --     color = { bg = colors.gruv3 },
+      --   },
+      -- },
     },
     extensions = { 'neo-tree', 'lazy', 'trouble', 'mason', 'fzf', 'fugitive' },
   },
