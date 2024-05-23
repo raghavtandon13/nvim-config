@@ -30,12 +30,12 @@ vim.keymap.set('n', '<leader>dd', ':DBUIToggle<CR>', { silent = true, desc = 'Op
 vim.api.nvim_set_keymap('t', '<C-t>', '<C-\\><C-n>', { noremap = true, silent = true })
 -- vim.api.nvim_set_hl(0, 'CursorLineNr', { bg = '#d183e8', fg = 'black' })
 if vim.g.neovide then
-  vim.keymap.set('v', '<D-c>', '"+y')
-  vim.keymap.set('n', '<D-v>', '"+P')
-  vim.keymap.set('v', '<D-v>', '"+P')
-  vim.keymap.set('n', '<D-s>', ':w<CR>')
-  vim.keymap.set('c', '<D-v>', '<C-R>+')
-  vim.keymap.set('i', '<D-v>', '<ESC>l"+Pli')
+    vim.keymap.set('v', '<D-c>', '"+y')
+    vim.keymap.set('n', '<D-v>', '"+P')
+    vim.keymap.set('v', '<D-v>', '"+P')
+    vim.keymap.set('n', '<D-s>', ':w<CR>')
+    vim.keymap.set('c', '<D-v>', '<C-R>+')
+    vim.keymap.set('i', '<D-v>', '<ESC>l"+Pli')
 end
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
