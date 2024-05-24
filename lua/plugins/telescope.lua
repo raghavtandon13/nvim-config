@@ -46,7 +46,7 @@ return {
 
             local git_root = vim.fn.systemlist('git -C ' .. vim.fn.escape(current_dir, ' ') .. ' rev-parse --show-toplevel')[1]
             if vim.v.shell_error ~= 0 then
-                print 'Not a git repository. Searching on current working directory'
+                print 'Not git repo. Error from telescope.lua'
                 return cwd
             end
             return git_root

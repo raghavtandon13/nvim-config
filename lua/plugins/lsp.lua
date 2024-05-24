@@ -89,7 +89,7 @@ return {
         'williamboman/mason-lspconfig.nvim',
         config = function()
             local servers = {
-                -- clangd = {},
+                clangd = {},
                 -- gopls = {},
                 -- rust_analyzer = {},
                 pyright = {},
@@ -164,7 +164,12 @@ return {
                     }
                 end,
             }
-            require('lspconfig').clangd.setup {}
+            -- require('lspconfig').clangd.setup {
+            --     capabilities = capabilities,
+            --     on_attach = on_attach,
+            --     settings = 'clangd',
+            --     filetypes = { 'c', 'cpp' },
+            -- }
         end,
     },
 }

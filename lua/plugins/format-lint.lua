@@ -16,7 +16,8 @@ return {
                     markdown = { 'prettierd' },
                     go = { 'gofumpt' },
                     python = { 'black' },
-                    -- cpp = { 'clang-format' },
+                    cpp = { 'clang-format' },
+                    c = { 'clang-format' },
                 },
             }
             vim.keymap.set('n', '<leader>mm', function()

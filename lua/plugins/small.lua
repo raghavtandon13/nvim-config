@@ -16,6 +16,7 @@ return {
     { 'MeanderingProgrammer/markdown.nvim', opts = {} },
     {
         'folke/which-key.nvim',
+        event = 'VimEnter',
         opts = {},
         config = function()
             require('which-key').register {

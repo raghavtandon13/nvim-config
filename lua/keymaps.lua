@@ -27,6 +27,7 @@ vim.keymap.set('n', '<leader>bb', ':bd<CR>', { silent = true })
 vim.keymap.set('n', '<leader>cc', ':vsplit | term g++ % && a.exe<CR>i', { silent = true, desc = 'g++ compile and run' })
 vim.keymap.set('n', '<leader>ll', ':vsplit | Telescope lsp_definitions<CR>', { silent = true, desc = 'Open definition in vsplit' })
 vim.keymap.set('n', '<leader>dd', ':DBUIToggle<CR>', { silent = true, desc = 'Open definition in vsplit' })
+vim.keymap.set('n', '<leader>n', ':Noice<CR>', { silent = true, desc = 'Noice: for msgs' })
 vim.api.nvim_set_keymap('t', '<C-t>', '<C-\\><C-n>', { noremap = true, silent = true })
 -- vim.api.nvim_set_hl(0, 'CursorLineNr', { bg = '#d183e8', fg = 'black' })
 if vim.g.neovide then
