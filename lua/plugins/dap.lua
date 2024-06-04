@@ -1,6 +1,7 @@
 return {
     {
         'mfussenegger/nvim-dap', -- Main dap plugin
+        enabled = false,
         dependencies = {
             'rcarriga/nvim-dap-ui', -- Dap UI Plugin
             'nvim-neotest/nvim-nio', -- Dap UI requiremnet

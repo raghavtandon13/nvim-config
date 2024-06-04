@@ -23,7 +23,7 @@ return {
             vim.keymap.set('n', '<leader>mm', function()
                 require('conform').format {
                     lsp_fall = true,
-                    async = true,
+                    async = false,
                     timeout_ms = 2000,
                 }
             end)
@@ -31,6 +31,7 @@ return {
     },
     {
         'mfussenegger/nvim-lint',
+        event = { 'BufReadPre', 'BufNewFile' },
         config = function()
             require('lint').linters_by_ft = {
                 markdown = { 'vale' },

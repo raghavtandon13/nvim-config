@@ -1,0 +1,9 @@
+vim.api.nvim_set_hl(0, '@ibl.scope.char.1', { fg = '' })
+vim.api.nvim_set_hl(0, 'ColorColumn', { bg = '' }) --[[ #1d1d1d ]]
+vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = '#ffffff' })
+vim.api.nvim_set_hl(0, 'FloatBorder', { bg = '' })
+vim.api.nvim_set_hl(0, 'MiniIndentscopeSymbol', { fg = '#a79984' })
+vim.api.nvim_set_hl(0, 'NeoTreeFloatTitle', { bg = '' })
+vim.api.nvim_set_hl(0, 'NormalFloat', { bg = '' })
+vim.api.nvim_set_hl(0, 'NotificationInfo', { bg = '' })
+vim.api.nvim_set_hl(0, 'Pmenu', { bg = '' })

@@ -1,45 +1,19 @@
 return {
-    {
-        'echasnovski/mini.misc',
-        version = '*',
-        config = function()
-            require('mini.misc').setup()
-        end,
-    },
-    { 'echasnovski/mini.surround', version = '*', opts = {} },
+    { 'echasnovski/mini.misc', version = '*', opts = {}, event = { 'BufReadPost', 'BufNewFile' } },
+    { 'echasnovski/mini.surround', version = '*', opts = {}, event = { 'BufReadPost', 'BufNewFile' } },
+    { 'echasnovski/mini.indentscope', event = { 'BufReadPost', 'BufNewFile' }, version = '*', opts = {
+        draw = {
+            animation = function()
+                return 0
+            end,
+        },
+    } },
     {
         'echasnovski/mini.move',
+        event = { 'BufReadPost', 'BufNewFile' },
         version = '*',
         config = function()
-            require('mini.move').setup {
-                mappings = {
-                    -- Move visual selection in Visual mode.
-                    left = '<M-left>',
-                    right = '<M-right>',
-                    down = '<M-down>',
-                    up = '<M-up>',
-
-                    -- Move current line in Normal mode.
-                    line_left = '<M-left>',
-                    line_right = '<M-right>',
-                    line_down = '<M-down>',
-                    line_up = '<M-up>',
-                },
-            }
+            require('mini.move').setup { mappings = { left = '<M-left>', right = '<M-right>', down = '<M-down>', up = '<M-up>', line_left = '<M-left>', line_right = '<M-right>', line_down = '<M-down>', line_up = '<M-up>' } }
         end,
-    },
-    {
-        'echasnovski/mini.indentscope',
-        version = '*',
-        opts = {
-            draw = { draw = {
-                animation = function()
-                    return 0
-                end,
-            } },
-            options = {
-                try_as_border = true,
-            },
-        },
     },
 }

@@ -18,26 +18,27 @@ vim.opt.fillchars = { eob = ' ' }
 vim.opt.hls = false
 
 vim.wo.number = true
+vim.wo.signcolumn = 'yes'
 vim.o.mouse = 'a'
 vim.o.clipboard = 'unnamedplus'
 vim.o.breakindent = true
 vim.o.undofile = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
-vim.wo.signcolumn = 'yes'
 vim.o.updatetime = 250
 vim.o.timeoutlen = 300
 vim.o.completeopt = 'menuone,noselect'
 vim.o.termguicolors = true
-
+vim.o.shell = 'pwsh.exe -nologo'
 vim.o.stc = ' %s %l  '
 vim.o.laststatus = 3
+vim.o.autochdir = true
 
-vim.on_key(function(char)
-    if vim.fn.mode() == 'n' then
-        local new_hlsearch = vim.tbl_contains({ '<CR>', 'n', 'N', '*', '#', '?', '/' }, vim.fn.keytrans(char))
-        if vim.opt.hlsearch:get() ~= new_hlsearch then
-            vim.opt.hlsearch = new_hlsearch
-        end
-    end
-end, vim.api.nvim_create_namespace 'auto_hlsearch')
+-- vim.on_key(function(char)
+--     if vim.fn.mode() == 'n' then
+--         local new_hlsearch = vim.tbl_contains({ '<CR>', 'n', 'N', '*', '#', '?', '/' }, vim.fn.keytrans(char))
+--         if vim.opt.hlsearch:get() ~= new_hlsearch then
+--             vim.opt.hlsearch = new_hlsearch
+--         end
+--     end
+-- end, vim.api.nvim_create_namespace 'auto_hlsearch')
