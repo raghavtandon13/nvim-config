@@ -5,7 +5,7 @@ return {
         dependencies = {
             { 'williamboman/mason.nvim', opts = { ui = { border = 'single' } }, config = true },
             { 'williamboman/mason-lspconfig.nvim', opts = {} },
-            { 'folke/neodev.nvim', opts = {} },
+            -- { 'folke/neodev.nvim', opts = {} },
         },
     },
     {
@@ -60,7 +60,15 @@ return {
                 tsserver = {},
                 tailwindcss = { filetypes = { 'html', 'jsx', 'tsx' } },
                 html = { filetypes = { 'html', 'jsx', 'tsx' } },
-                lua_ls = { Lua = { runtime = { version = 'LuaJIT' }, workspace = { checkThirdParty = false, library = { vim.env.VIMRUNTIME, '${3rd}/luv/library', '${3rd}/busted/library' } }, completion = { callSnippet = 'Replace' }, telemetry = { enable = false }, diagnostics = { disable = { 'missing-fields', 'undefined-fields' } } } },
+                lua_ls = {
+                    Lua = {
+                        runtime = { version = 'LuaJIT' },
+                        workspace = { checkThirdParty = false, library = { vim.env.VIMRUNTIME, '${3rd}/luv/library', '${3rd}/busted/library' } },
+                        completion = { callSnippet = 'Replace' },
+                        telemetry = { enable = false },
+                        diagnostics = { disable = { 'missing-fields','undefined-field' } },
+                    },
+                },
             }
 
             local capabilities = vim.lsp.protocol.make_client_capabilities()

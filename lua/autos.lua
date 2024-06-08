@@ -59,3 +59,14 @@ function Delete_view()
 end
 vim.cmd ':command! Delview lua Delete_view()'
 vim.cmd ":cabbrev delview <c-r>=(getcmdtype()==':' and getcmdpos()==1 and 'Delview' or 'delview')<CR>"
+
+-- [[ Auto Highlight on Search ]]
+
+vim.on_key(function(char)
+    if vim.fn.mode() == 'n' then
+        local new_hlsearch = vim.tbl_contains({ '<CR>', 'n', 'N', '*', '#', '?', '/' }, vim.fn.keytrans(char))
+        if vim.opt.hlsearch:get() ~= new_hlsearch then
+            vim.opt.hlsearch = new_hlsearch
+        end
+    end
+end, vim.api.nvim_create_namespace 'auto_hlsearch')

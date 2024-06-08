@@ -4,9 +4,8 @@ vim.g.maplocalleader = ' '
 vim.opt.wrap = false
 vim.opt.conceallevel = 1
 vim.opt.cursorline = true
-vim.opt.relativenumber = false
+-- vim.opt.relativenumber = false
 vim.opt.splitright = true
-vim.opt.guifont = 'Hurmit Nerd Font:h12'
 vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.undofile = true
@@ -17,7 +16,7 @@ vim.opt.shiftwidth = 4
 vim.opt.fillchars = { eob = ' ' }
 vim.opt.hls = false
 
-vim.wo.number = true
+vim.o.number = true
 vim.wo.signcolumn = 'yes'
 vim.o.mouse = 'a'
 vim.o.clipboard = 'unnamedplus'
@@ -29,16 +28,12 @@ vim.o.updatetime = 250
 vim.o.timeoutlen = 300
 vim.o.completeopt = 'menuone,noselect'
 vim.o.termguicolors = true
-vim.o.shell = 'pwsh.exe -nologo'
 vim.o.stc = ' %s %l  '
 vim.o.laststatus = 3
-vim.o.autochdir = true
 
--- vim.on_key(function(char)
---     if vim.fn.mode() == 'n' then
---         local new_hlsearch = vim.tbl_contains({ '<CR>', 'n', 'N', '*', '#', '?', '/' }, vim.fn.keytrans(char))
---         if vim.opt.hlsearch:get() ~= new_hlsearch then
---             vim.opt.hlsearch = new_hlsearch
---         end
---     end
--- end, vim.api.nvim_create_namespace 'auto_hlsearch')
+vim.opt.shell = 'pwsh.exe'
+vim.opt.shellxquote = ''
+vim.opt.shellcmdflag = '-Command '
+vim.opt.shellquote = ''
+vim.opt.shellpipe = '| Out-File -Encoding UTF8 %s'
+vim.opt.shellredir = '| Out-File -Encoding UTF8 %s'

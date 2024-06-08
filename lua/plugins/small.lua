@@ -1,17 +1,17 @@
 return {
-    { 'Exafunction/codeium.nvim', enabled = false, opts = {} },
+
+    --[[ ENABLED ]]
+
     { 'MeanderingProgrammer/markdown.nvim', opts = {}, event = 'BufReadPost' },
-    { 'NeogitOrg/neogit', dependencies = { 'sindrets/diffview.nvim' }, event = 'BufReadPre', config = true },
+    { 'ThePrimeagen/git-worktree.nvim', enabled = false, opts = {} },
     { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'BufReadPost', opts = { max_join_length = 1120 } },
-    { 'arsham/listish.nvim', dependencies = { 'arsham/arshlib.nvim', 'nvim-treesitter/nvim-treesitter-textobjects' }, config = true, keys = { '<leader>qq' }, ft = { 'qf' } },
+    { 'arsham/listish.nvim', dependencies = { 'arsham/arshlib.nvim', 'nvim-treesitter/nvim-treesitter-textobjects' }, config = { signs = { qflist = '' }, extmarks = { qflist_text = 'Quickfix' } }, keys = { '<leader>qq' }, ft = { 'qf' } },
     { 'folke/noice.nvim', event = 'VeryLazy', dependencies = { 'MunifTanjim/nui.nvim' }, opts = { routes = { { filter = { event = 'notify', find = 'No information available' }, opts = { skip = true } } }, cmdline = { enabled = true, view = 'cmdline' }, views = { mini = { win_options = { winblend = 0 } } }, lsp = { hover = { enabled = false }, signature = { enabled = false } } } },
     { 'folke/todo-comments.nvim', event = 'BufReadPost', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = true, keywords = { NOTE = { icon = ' ', color = 'hint', alt = { 'todo' } } } } },
-    { 'folke/trouble.nvim', dependencies = { 'nvim-tree/nvim-web-devicons' }, opts = {}, event = 'BufReadPre' },
     { 'lukas-reineke/indent-blankline.nvim', main = 'ibl', opts = { scope = { enabled = false } }, event = 'BufReadPre' },
-    { 'mbbill/undotree', enabled = false },
     { 'mg979/vim-visual-multi', branch = 'master', event = 'BufReadPre' },
     { 'numToStr/Comment.nvim', opts = {}, event = 'BufReadPre' },
-    { 'rcarriga/nvim-notify', enabled = false, opts = { background_colour = '#000000', timeout = 1000, top_down = false, stages = 'static', render = 'minimal' } },
+    { 'nvim-tree/nvim-web-devicons' },
     { 'tpope/vim-fugitive' },
     { 'tpope/vim-rhubarb' },
     { 'tpope/vim-sleuth' },
@@ -26,6 +26,14 @@ return {
             require('which-key').register({ ['<leader>'] = { name = 'VISUAL <leader>' }, ['<leader>h'] = { 'Git [H]unk' } }, { mode = 'v' })
         end,
     },
+
+    --[[ DISABLED ]]
+
+    { 'Exafunction/codeium.nvim', enabled = false, opts = {} },
+    { 'NeogitOrg/neogit', enabled = false, dependencies = { 'sindrets/diffview.nvim' }, event = 'BufReadPre', config = true },
+    { 'folke/trouble.nvim', enabled = true, opts = {} },
+    { 'mbbill/undotree', enabled = false },
+    { 'rcarriga/nvim-notify', enabled = false, opts = { background_colour = '#000000', timeout = 1000, top_down = false, stages = 'static', render = 'minimal' } },
     {
         'kdheepak/lazygit.nvim',
         enabled = false,

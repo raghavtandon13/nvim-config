@@ -18,33 +18,22 @@ return {
                 controls = {
                     element = 'scopes',
                     enabled = true,
-                    icons = {
-                        disconnect = '',
-                        pause = '',
-                        play = '',
-                        run_last = '',
-                        step_back = '',
-                        step_into = '',
-                        step_out = '',
-                        step_over = '',
-                        terminate = '',
-                    },
+                    icons = { disconnect = '', pause = '', play = '', run_last = '', step_back = '', step_into = '', step_out = '', step_over = '', terminate = '' },
+                    element_mappings = {},
                 },
-                element_mappings = {},
                 expand_lines = true,
-                floating = {
-                    border = 'single',
-                    mappings = { close = { 'q', '<Esc>' } },
-                },
+                floating = { border = 'single', mappings = { close = { 'q', '<Esc>' } } },
                 force_buffers = true,
                 icons = {
                     collapsed = '',
                     current_frame = '',
                     expanded = '',
                 },
-                layouts = {
-                    { elements = { { id = 'scopes', size = 0.25 } }, position = 'left', size = 40 },
-                },
+                layouts = { {
+                    elements = { { id = 'scopes', size = 0.25 } },
+                    position = 'left',
+                    size = 40,
+                } },
                 mappings = {
                     edit = 'e',
                     expand = { '<CR>', '<2-LeftMouse>' },
@@ -60,14 +49,7 @@ return {
             local path = '~/AppData/Local/nvim-data/mason/packages/debugpy/venv/Scripts/python.exe'
             require('dap-python').setup(path)
 
-            dap.configurations.python = {
-                {
-                    type = 'python',
-                    request = 'launch',
-                    name = 'Launch file',
-                    program = '${file}',
-                },
-            }
+            dap.configurations.python = { { type = 'python', request = 'launch', name = 'Launch file', program = '${file}' } }
 
             -- JavaScript Adapter and Configuration
             require('dap').adapters['pwa-node'] = {

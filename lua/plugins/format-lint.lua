@@ -26,6 +26,7 @@ return {
                     async = false,
                     timeout_ms = 2000,
                 }
+                -- vim.cmd 'Format'
             end)
         end,
     },

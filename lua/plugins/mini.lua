@@ -1,13 +1,11 @@
 return {
-    { 'echasnovski/mini.misc', version = '*', opts = {}, event = { 'BufReadPost', 'BufNewFile' } },
+    { 'echasnovski/mini.misc', version = '*', event = { 'BufReadPost', 'BufNewFile' }, opts = {} },
     { 'echasnovski/mini.surround', version = '*', opts = {}, event = { 'BufReadPost', 'BufNewFile' } },
-    { 'echasnovski/mini.indentscope', event = { 'BufReadPost', 'BufNewFile' }, version = '*', opts = {
-        draw = {
-            animation = function()
-                return 0
-            end,
-        },
-    } },
+    { 'echasnovski/mini.indentscope', event = { 'BufReadPost', 'BufNewFile' }, version = '*', opts = { draw = {
+        animation = function()
+            return 0
+        end,
+    } } },
     {
         'echasnovski/mini.move',
         event = { 'BufReadPost', 'BufNewFile' },
