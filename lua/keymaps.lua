@@ -16,6 +16,7 @@ vim.keymap.set('n', '<leader>cc', ':vsplit | term gcc % && a.exe<CR>i', { desc =
 vim.keymap.set('n', '<leader>dd', ':DBUIToggle<CR>', { desc = 'Open definition in vsplit', silent = true })
 vim.keymap.set('n', '<leader>ll', ':vsplit | Telescope lsp_definitions<CR>', { desc = 'Open definition in vsplit', silent = true })
 vim.keymap.set('n', '<leader>n', ':NoiceAll<CR>', { desc = 'Noice: for msgs', silent = true })
+vim.keymap.set('n', '<leader>e', ':Neotree float<CR>', { desc = 'File Explorer', silent = true })
 vim.keymap.set('n', '<leader>tt', ':Trouble diagnostics toggle<CR>', { desc = 'Toggle Diagnostics', silent = true })
 vim.keymap.set('n', '<leader>tc', ':lua vim.opt.conceallevel = vim.opt.conceallevel:get() == 0 and 2 or 0<CR>', { desc = 'Toggle Code Conceal', silent = true })
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message', silent = true })

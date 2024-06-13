@@ -3,7 +3,6 @@ return {
     branch = '0.1.x',
     dependencies = {
         'nvim-lua/plenary.nvim',
-        'nvim-telescope/telescope-file-browser.nvim',
         'nvim-telescope/telescope-ui-select.nvim',
         {
             'nvim-telescope/telescope-fzf-native.nvim',
@@ -27,16 +26,12 @@ return {
                     ['<M-q>'] = require('telescope.actions').add_selected_to_qflist,
                 } },
             },
-            extensions = {
-                file_browser = { hijack_netrw = true },
-                ['ui-select'] = { require('telescope.themes').get_dropdown {} },
-            },
+            extensions = { ['ui-select'] = { require('telescope.themes').get_dropdown {} } },
         }
 
         --[[ EXTENSIONS ]]
 
         pcall(require('telescope').load_extension, 'fzf')
-        pcall(require('telescope').load_extension, 'file_browser')
         pcall(require('telescope').load_extension, 'ui-select')
         pcall(require('telescope').load_extension, 'git_worktree')
 
@@ -75,7 +70,6 @@ return {
 
         vim.keymap.set('n', '<leader>,', require('telescope.builtin').buffers, { desc = 'Search Open Buffers' })
         vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = 'Search Recent Files' })
-        vim.keymap.set('n', '<leader>e', ':Telescope file_browser<CR>', { desc = 'Toggle Neotree', silent = true })
         vim.keymap.set('n', '<leader>gs', require('telescope.builtin').git_status, { desc = 'Search Git Status' })
         vim.keymap.set('n', '<leader>s/', telescope_live_grep_open_files, { desc = 'Grep in Open Files' })
         vim.keymap.set('n', '<leader>sa', ':FZF<cr>', { desc = 'Search All Files (D)' })
