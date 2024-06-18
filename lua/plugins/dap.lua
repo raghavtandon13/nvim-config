@@ -15,33 +15,13 @@ return {
             local ui = require 'dapui'
             require('nvim-dap-virtual-text').setup {}
             require('dapui').setup {
-                controls = {
-                    element = 'scopes',
-                    enabled = true,
-                    icons = { disconnect = '', pause = '', play = '', run_last = '', step_back = '', step_into = '', step_out = '', step_over = '', terminate = '' },
-                    element_mappings = {},
-                },
+                controls = { element = 'scopes', enabled = true, icons = { disconnect = '', pause = '', play = '', run_last = '', step_back = '', step_into = '', step_out = '', step_over = '', terminate = '' }, element_mappings = {} },
                 expand_lines = true,
                 floating = { border = 'single', mappings = { close = { 'q', '<Esc>' } } },
                 force_buffers = true,
-                icons = {
-                    collapsed = '',
-                    current_frame = '',
-                    expanded = '',
-                },
-                layouts = { {
-                    elements = { { id = 'scopes', size = 0.25 } },
-                    position = 'left',
-                    size = 40,
-                } },
-                mappings = {
-                    edit = 'e',
-                    expand = { '<CR>', '<2-LeftMouse>' },
-                    open = 'o',
-                    remove = 'd',
-                    repl = 'r',
-                    toggle = 't',
-                },
+                icons = { collapsed = '', current_frame = '', expanded = '' },
+                layouts = { { elements = { { id = 'scopes', size = 0.25 } }, position = 'left', size = 40 } },
+                mappings = { edit = 'e', expand = { '<CR>', '<2-LeftMouse>' }, open = 'o', remove = 'd', repl = 'r', toggle = 't' },
                 render = { indent = 1, max_value_lines = 100 },
             }
             -- Setting up Adapters and Configurations
@@ -56,11 +36,8 @@ return {
                 type = 'server',
                 host = 'localhost',
                 port = '${port}',
-                executable = {
-                    command = 'node',
-                    -- Adapter at Downloads/webdev
-                    args = { 'C:/Users/ragha/Downloads/webdev/js-debug/src/dapDebugServer.js', '${port}' },
-                },
+                -- Adapter at Downloads/webdev
+                executable = { command = 'node', args = { 'C:/Users/ragha/Downloads/webdev/js-debug/src/dapDebugServer.js', '${port}' } },
             }
             require('dap').configurations.javascript = {
                 {

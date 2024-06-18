@@ -2,19 +2,19 @@ return {
 
     --[[ ENABLED ]]
 
-    { 'amitds1997/remote-nvim.nvim', version = '*', config = true },
-    { 'MeanderingProgrammer/markdown.nvim', opts = {}, event = 'BufReadPost' },
-    { 'ThePrimeagen/git-worktree.nvim', enabled = false, opts = {} },
-    { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'BufReadPost', opts = { max_join_length = 1120 } },
     { 'arsham/listish.nvim', dependencies = { 'arsham/arshlib.nvim', 'nvim-treesitter/nvim-treesitter-textobjects' }, config = { signs = { qflist = '' }, extmarks = { qflist_text = 'Quickfix' } }, keys = { '<leader>qq' }, ft = { 'qf' } },
     { 'folke/noice.nvim', event = 'VeryLazy', dependencies = { 'MunifTanjim/nui.nvim' }, opts = { routes = { { filter = { event = 'notify', find = 'No information available' }, opts = { skip = true } } }, cmdline = { enabled = true, view = 'cmdline' }, views = { mini = { win_options = { winblend = 0 } } }, lsp = { hover = { enabled = false }, signature = { enabled = false } } } },
     { 'folke/todo-comments.nvim', event = 'BufReadPost', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = true, keywords = { NOTE = { icon = ' ', color = 'hint', alt = { 'todo' } } } } },
+    { 'folke/trouble.nvim', opts = {} },
     { 'kdheepak/lazygit.nvim', cmd = { 'LazyGit', 'LazyGitConfig', 'LazyGitCurrentFile', 'LazyGitFilter', 'LazyGitFilterCurrentFile' }, keys = { { '<leader>lg', '<cmd>LazyGit<cr>', desc = 'LazyGit' } } },
+    { 'laytan/tailwind-sorter.nvim', dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-lua/plenary.nvim' }, build = 'cd formatter && npm ci && npm run build', config = true, opts = { on_save_enabled = true } },
     { 'lukas-reineke/indent-blankline.nvim', main = 'ibl', opts = { scope = { enabled = false } }, event = 'BufReadPre' },
+    { 'MeanderingProgrammer/markdown.nvim', opts = {}, event = 'BufReadPost' },
     { 'mg979/vim-visual-multi', branch = 'master', event = 'BufReadPre' },
     { 'numToStr/Comment.nvim', opts = {}, event = 'BufReadPre' },
-    { 'nvim-tree/nvim-web-devicons' },
-    { 'folke/trouble.nvim', opts = {} },
+    { 'nvim-tree/nvim-web-devicons', opts = {} },
+    { 'tzachar/highlight-undo.nvim', opts = { undo = { hlgroup = 'HighlightUndo', mode = 'n', lhs = 'u', map = 'undo' }, redo = { hlgroup = 'HighlightRedo', mode = 'n', lhs = '<C-r>', map = 'redo' } } },
+    { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'BufReadPost', opts = { max_join_length = 1120 } },
     {
         'folke/which-key.nvim',
         event = 'VimEnter',
@@ -29,6 +29,8 @@ return {
     --[[ DISABLED ]]
 
     { 'Exafunction/codeium.nvim', enabled = false, opts = {} },
+    { 'MagicDuck/grug-far.nvim', enabled = false, opts = {} },
     { 'mbbill/undotree', enabled = false },
     { 'rcarriga/nvim-notify', enabled = false, opts = { background_colour = '#000000', timeout = 1000, top_down = false, stages = 'static', render = 'minimal' } },
+    { 'ThePrimeagen/git-worktree.nvim', enabled = false, opts = {} },
 }

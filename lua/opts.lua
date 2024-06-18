@@ -4,7 +4,6 @@ vim.g.maplocalleader = ' '
 vim.opt.wrap = false
 vim.opt.conceallevel = 1
 vim.opt.cursorline = true
--- vim.opt.relativenumber = false
 vim.opt.splitright = true
 vim.opt.swapfile = false
 vim.opt.backup = false

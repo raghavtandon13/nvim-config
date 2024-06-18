@@ -58,7 +58,7 @@ return {
                 clangd = {},
                 pyright = {},
                 tsserver = {},
-                tailwindcss = { filetypes = { 'html', 'jsx', 'tsx' } },
+                tailwindcss = { filetypes = { 'html', 'javascriptreact', 'typescriptreact' } },
                 html = { filetypes = { 'html', 'jsx', 'tsx' } },
                 lua_ls = {
                     Lua = {
