@@ -70,3 +70,26 @@ vim.on_key(function(char)
         end
     end
 end, vim.api.nvim_create_namespace 'auto_hlsearch')
+
+--[[ LSP Progress in LuaLine ]]
+
+vim.api.nvim_create_augroup('lualine_augroup', { clear = true })
+vim.api.nvim_create_autocmd('User', {
+    group = 'lualine_augroup',
+    pattern = 'LspProgressStatusUpdated',
+    callback = require('lualine').refresh,
+})
+
+--[[ Vertical Split default in :new  ]]
+
+vim.api.nvim_create_user_command('New', 'vnew', {})
+vim.cmd [[cnoreabbrev new New]]
+vim.api.nvim_create_user_command('Hnew', 'new', {})
+vim.cmd [[cnoreabbrev hnew Hnew]]
+
+--[[ Opens Split Term and Runs Commands ]]
+
+vim.api.nvim_create_user_command('Run', function(opts)
+    local args = table.concat(opts.fargs, ' ')
+    vim.cmd('vsplit | term ' .. args)
+end, { nargs = '+' })

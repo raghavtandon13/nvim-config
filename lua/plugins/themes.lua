@@ -33,6 +33,7 @@ return {
     },
     {
         'sainnhe/gruvbox-material',
+        enabled = true,
         config = function()
             vim.g.gruvbox_material_background = 'hard'
             vim.g.gruvbox_material_foreground = 'material'
@@ -54,8 +55,6 @@ return {
     {
         'sho-87/kanagawa-paper.nvim',
         enabled = false,
-        lazy = false,
-        priority = 1000,
         config = function()
             require('kanagawa-paper').setup { transparent = true, colors = { theme = { ui = { float = { bg = '' } } } } }
             vim.cmd.colorscheme 'kanagawa-paper'

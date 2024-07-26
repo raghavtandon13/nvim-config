@@ -18,6 +18,7 @@ return {
                     python = { 'black' },
                     cpp = { 'clang-format' },
                     c = { 'clang-format' },
+                    rust = { 'rustfmt' },
                 },
             }
             vim.keymap.set('n', '<leader>mm', function()

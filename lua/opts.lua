@@ -29,6 +29,7 @@ vim.o.completeopt = 'menuone,noselect'
 vim.o.termguicolors = true
 vim.o.stc = ' %s %l  '
 vim.o.laststatus = 3
+vim.o.acd = true
 
 -- vim.opt.shell = 'bash.exe'
 -- vim.opt.shellxquote = ''
