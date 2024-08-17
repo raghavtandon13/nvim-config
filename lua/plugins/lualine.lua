@@ -12,7 +12,8 @@ local colors = {
     ok = '#00FFFFFF',
     ok2 = '#332f4a',
     grey = '#303030',
-    gruv1 = '#a79984',
+    gruv1 = '#7fa678',
+    -- gruv1 = '#a79984', --main
     gruv2 = '#a9b665',
     gruv3 = '#ea6962',
     orange = '#ff9e64',
@@ -35,7 +36,7 @@ local bubbles_theme = {
 }
 local icons = {
     diagnostics = { Error = ' ', Warn = ' ', Hint = ' ', Info = ' ' },
-git = { added = ' ', modified = ' ', removed = ' ' },
+    git = { added = ' ', modified = ' ', removed = ' ' },
 }
 
 -- SETUP
@@ -44,6 +45,7 @@ return {
     opts = {
         options = {
             icons_enabled = true,
+            -- theme = 'tokyonight',
             theme = bubbles_theme,
             component_separators = '|',
             section_separators = { left = '', right = '' },
@@ -71,6 +73,25 @@ return {
                             return { added = gitsigns.added, modified = gitsigns.changed, removed = gitsigns.removed }
                         end
                     end,
+                },
+                {
+                    function()
+                        local status = require('nvim-lightbulb').get_status_text()
+                        return status
+                    end,
+                    color = { fg = '#ff9e64' },
+                },
+                {
+                    function()
+                        local str = require('noice').api.status.mode.get()
+                        local match = str.match(str, 'recording @[A-Za-z]')
+                        if match then
+                            return match
+                        end
+                        return ''
+                    end,
+                    cond = require('noice').api.status.mode.has,
+                    color = { fg = '#ff9e64' },
                 },
             },
             lualine_c = {},

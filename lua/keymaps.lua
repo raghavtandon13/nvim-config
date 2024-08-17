@@ -12,7 +12,8 @@ vim.keymap.set('n', '<leader>cr', ':vsplit | term cargo run<CR>i', { desc = 'car
 vim.keymap.set('n', '<leader>dd', ':DBUIToggle<CR>', { desc = 'Open definition in vsplit', silent = true })
 vim.keymap.set('n', '<leader>e', ':Neotree float<CR>', { desc = 'File Explorer', silent = true })
 vim.keymap.set('n', '<leader>ll', ':LspRestart<CR>', { desc = 'LSP Restart', silent = true })
-vim.keymap.set('n', '<leader>th', ':InlayHintsToggle<CR>', { desc = 'LSP Restart', silent = true })
+vim.keymap.set('n', '<leader>th', ':InlayHintsToggle<CR>', { desc = 'Toggle Inline Hints', silent = true })
+vim.keymap.set('n', '<leader>mt', ':TailwindSort<CR>', { desc = 'Sort Tailwind Classes', silent = true })
 vim.keymap.set(
     'n',
     '<leader>lv',
@@ -32,7 +33,7 @@ vim.keymap.set(
     ':lua vim.wo.number = not vim.wo.number<CR>',
     { noremap = true, silent = true, desc = 'Toggle Number Line' }
 )
-vim.keymap.set('n', '<leader>tt', ':Trouble diagnostics toggle<CR>', { desc = 'Toggle Diagnostics', silent = true })
+vim.keymap.set('n', '<leader>tt', ':Trouble diagnostics toggle<CR>', { desc = 'Toggle Trouble', silent = true })
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message', silent = true })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message', silent = true })
 vim.keymap.set('n', 'c', '"_c', { noremap = true, silent = true })
@@ -41,7 +42,6 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('t', '<C-t>', '<C-\\><C-n>', { noremap = true, silent = true })
 
---[[ Smart-Splits ]]
 -- resizing splits
 vim.keymap.set('n', '<M-;>', require('smart-splits').resize_up)
 vim.keymap.set('n', '<M-/>', require('smart-splits').resize_down)

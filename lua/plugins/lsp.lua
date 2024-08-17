@@ -3,7 +3,7 @@ return {
         'neovim/nvim-lspconfig',
         event = { 'BufReadPre', 'BufNewFile' },
         dependencies = {
-            { 'williamboman/mason.nvim', opts = { ui = { border = 'single',height = 0.8, } }, config = true },
+            { 'williamboman/mason.nvim', opts = { ui = { border = 'single', height = 0.8 } }, config = true },
             { 'williamboman/mason-lspconfig.nvim', opts = {} },
         },
     },
@@ -16,7 +16,8 @@ return {
             'hrsh7th/cmp-path',
             'rafamadriz/friendly-snippets',
             'saadparwaiz1/cmp_luasnip',
-            { 'roobert/tailwindcss-colorizer-cmp.nvim', opts = { color_square_width = 2 } },
+            { 'luckasRanarison/tailwind-tools.nvim', opts = {} },
+            { 'onsails/lspkind-nvim', opts = { symbol_map = { Color = '󰝤' } } },
         },
         config = function()
             local cmp = require 'cmp'
@@ -40,7 +41,11 @@ return {
                     },
                 },
                 completion = { completeopt = 'menu,menuone,noinsert' },
-                formatting = { format = require('tailwindcss-colorizer-cmp').formatter },
+                formatting = {
+                    format = require('lspkind').cmp_format {
+                        before = require('tailwind-tools.cmp').lspkind_format,
+                    },
+                },
                 mapping = cmp.mapping.preset.insert {
                     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
                     ['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -175,6 +180,7 @@ return {
                 -- 80001 or 80007 --> "File is a CommonJS module; it may be converted to an ES module."
 
                 local function filter_tsserver_diagnostics(_, result, ctx, config)
+                    require('ts-error-translator').translate_diagnostics(_, result, ctx, config)
                     if result.diagnostics == nil then
                         return
                     end
@@ -196,7 +202,7 @@ return {
                 vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
                     vim.lsp.buf.format()
                 end, { desc = 'Format current buffer with LSP' })
-		vim.diagnostic.config { float = { border = 'rounded' } }
+                vim.diagnostic.config { float = { border = 'rounded' } }
             end
 
             local mason_lspconfig = require 'mason-lspconfig'

@@ -31,9 +31,11 @@ vim.o.stc = ' %s %l  '
 vim.o.laststatus = 3
 vim.o.acd = true
 
--- vim.opt.shell = 'bash.exe'
+-- vim.opt.shell = 'pwsh'
 -- vim.opt.shellxquote = ''
 -- vim.opt.shellcmdflag = '-Command '
 -- vim.opt.shellquote = ''
 -- vim.opt.shellpipe = '| Out-File -Encoding UTF8 %s'
 -- vim.opt.shellredir = '| Out-File -Encoding UTF8 %s'
+
+vim.g.db_ui_use_nvim_notify = 1

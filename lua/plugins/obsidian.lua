@@ -6,12 +6,14 @@ return {
             dir = 'D:/Notes',
             new_notes_location = 'notes_subdir',
             completion = { nvim_cmp = true, min_chars = 2 },
-            mappings = { ['gf'] = {
-                action = function()
-                    return require('obsidian').util.gf_passthrough()
-                end,
-                opts = { noremap = false, expr = true, buffer = true },
-            } },
+            mappings = {
+                ['gf'] = {
+                    action = function()
+                        return require('obsidian').util.gf_passthrough()
+                    end,
+                    opts = { noremap = false, expr = true, buffer = true },
+                },
+            },
             note_id_func = function(title)
                 local suffix = ''
                 if title ~= nil then

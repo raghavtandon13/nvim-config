@@ -29,7 +29,7 @@ vim.api.nvim_create_autocmd({ 'BufWinEnter' }, {
 
 vim.api.nvim_create_autocmd('FileType', {
     desc = 'Disable indentscope for certain filetypes',
-    pattern = { 'python' },
+    pattern = { 'python', 'text', 'markdown' },
     callback = function()
         vim.b.miniindentscope_disable = true
     end,
@@ -93,3 +93,21 @@ vim.api.nvim_create_user_command('Run', function(opts)
     local args = table.concat(opts.fargs, ' ')
     vim.cmd('vsplit | term ' .. args)
 end, { nargs = '+' })
+
+--[[ Toggle Inline Diagnostics ]]
+
+local diagnostics_active = true
+function _G.toggle_diagnostics()
+    diagnostics_active = not diagnostics_active
+    vim.diagnostic.config {
+        virtual_text = diagnostics_active,
+    }
+    print('Diagnostics ' .. (diagnostics_active and 'enabled' or 'disabled'))
+end
+
+vim.keymap.set(
+    'n',
+    '<leader>te',
+    '<cmd>lua toggle_diagnostics()<CR>',
+    { desc = 'Toggle Diagnostics ', noremap = true, silent = true }
+)

@@ -12,6 +12,7 @@ return {
                     javascriptreact = { 'prettier' },
                     typescriptreact = { 'prettier' },
                     html = { 'prettier' },
+                    css = { 'prettier' },
                     json = { 'prettier' },
                     markdown = { 'prettier' },
                     go = { 'gofumpt' },
@@ -19,6 +20,7 @@ return {
                     cpp = { 'clang-format' },
                     c = { 'clang-format' },
                     rust = { 'rustfmt' },
+                    prisma = { 'prettier' },
                 },
             }
             vim.keymap.set('n', '<leader>mm', function()
@@ -27,7 +29,6 @@ return {
                     async = false,
                     timeout_ms = 2000,
                 }
-                -- vim.cmd 'Format'
             end)
         end,
     },
