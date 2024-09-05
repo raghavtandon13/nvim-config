@@ -23,13 +23,9 @@ return {
                     prisma = { 'prettier' },
                 },
             }
-            vim.keymap.set('n', '<leader>mm', function()
-                require('conform').format {
-                    lsp_fall = true,
-                    async = false,
-                    timeout_ms = 2000,
-                }
-            end)
+            vim.keymap.set('n', '<leader>cf', function()
+                require('conform').format { lsp_fall = true, async = false, timeout_ms = 2000 }
+            end, { desc = 'Code Format', silent = true })
         end,
     },
     {

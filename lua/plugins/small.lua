@@ -16,17 +16,17 @@ return {
         cmd = { 'RainbowDelim', 'RainbowDelimSimple', 'RainbowDelimQuoted', 'RainbowMultiDelim' },
     },
     { 'dmmulroy/ts-error-translator.nvim', opts = {} },
+    { 'dstein64/vim-startuptime' },
     {
         'echasnovski/mini.indentscope',
+        enabled = true,
         version = '*',
-        opts = {
-            symbol = '╎',
-            draw = {
-                animation = function()
-                    return 0
-                end,
-            },
-        },
+        config = function()
+            require('mini.indentscope').setup {
+                symbol = '|',
+                draw = { animation = require('mini.indentscope').gen_animation.none() },
+            }
+        end,
     },
     { 'echasnovski/mini.misc', version = '*', opts = {} },
     {
@@ -49,6 +49,28 @@ return {
     { 'echasnovski/mini.surround', version = '*', opts = {} },
     { 'Exafunction/codeium.nvim', enabled = true, opts = {} },
     {
+        'folke/flash.nvim',
+        event = 'VeryLazy',
+        opts = {},
+        keys = { {
+            'x',
+            mode = { 'n', 'x', 'o' },
+            function()
+                require('flash').jump()
+            end,
+            desc = 'flash',
+        } },
+    },
+    { 'folke/trouble.nvim', opts = {} },
+    { 'iamyoki/buffer-reopen.nvim', opts = {} },
+    { 'mg979/vim-visual-multi', branch = 'master', event = 'BufReadPre' },
+    { 'mrjones2014/smart-splits.nvim', opts = {} },
+    { 'MysticalDevil/inlay-hints.nvim', event = 'LspAttach', opts = { autocmd = { enable = false } } },
+    { 'numToStr/Comment.nvim', opts = {}, event = 'BufReadPre' },
+    { 'nvim-tree/nvim-web-devicons', opts = {} },
+    { 'saecki/crates.nvim', event = { 'BufRead Cargo.toml' }, opts = {} },
+    { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'BufReadPost', opts = { max_join_length = 20201120 } },
+    {
         'folke/noice.nvim',
         event = 'VeryLazy',
         dependencies = { 'MunifTanjim/nui.nvim' },
@@ -60,10 +82,7 @@ return {
                 { filter = { event = 'notify', find = 'Config Change Detected' }, opts = { skip = true } },
                 { filter = { event = 'notify', find = 'There were issues reported' }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = 'fewer lines' } } }, opts = { skip = true } },
-                {
-                    filter = { event = 'msg_show', any = { { find = '^[^-]+-query-20[^-]+$' } } },
-                    opts = { skip = true },
-                },
+                { filter = { event = 'msg_show', any = { { find = '^[^-]+-query-20[^-]+$' } } }, opts = { skip = true } },
             },
             views = {
                 mini = {
@@ -80,8 +99,6 @@ return {
         dependencies = { 'nvim-lua/plenary.nvim' },
         opts = { signs = true, keywords = { NOTE = { icon = ' ', color = 'hint', alt = { 'todo' } } } },
     },
-    { 'folke/trouble.nvim', opts = {} },
-    { 'iamyoki/buffer-reopen.nvim', opts = {} },
     {
         'kosayoda/nvim-lightbulb',
         config = function()
@@ -93,9 +110,36 @@ return {
         end,
     },
     {
+        'linrongbin16/lsp-progress.nvim',
+        opts = {
+            spinner = {
+                '●∙∙',
+                '∙●∙',
+                '∙∙●',
+                '∙●∙',
+                '●∙∙',
+                '∙●∙',
+                '∙∙●',
+                '∙●∙',
+            },
+            client_format = function(client_name, spinner, series_messages)
+                return #series_messages > 0 and ('[' .. client_name .. '] ' .. spinner) or nil
+            end,
+            format = function(messages)
+                if #messages > 0 then
+                    return table.concat(messages)
+                else
+                    return ''
+                end
+            end,
+        },
+    },
+    {
         'lukas-reineke/indent-blankline.nvim',
         main = 'ibl',
-        opts = { exclude = { filetypes = { 'text', 'markdown' } }, scope = { enabled = false } },
+        opts = { scope = { enabled = false }, exclude = { filetypes = { 'text', 'markdown' } }, indent = {
+            char = '│',
+        } },
         event = 'BufReadPre',
     },
     {
@@ -123,80 +167,11 @@ return {
             code_blocks = { style = 'minimal', pad_amount = 3, pad_char = ' ', hl = 'CursorLine' },
         },
     },
-    { 'mg979/vim-visual-multi', branch = 'master', event = 'BufReadPre' },
-    { 'mrjones2014/smart-splits.nvim', opts = {} },
-    { 'MysticalDevil/inlay-hints.nvim', event = 'LspAttach', opts = { autocmd = { enable = false } } },
-    { 'numToStr/Comment.nvim', opts = {}, event = 'BufReadPre' },
-    { 'nvim-tree/nvim-web-devicons', opts = {} },
-    { 'saecki/crates.nvim', event = { 'BufRead Cargo.toml' }, opts = {} },
     {
         'tzachar/highlight-undo.nvim',
         opts = {
             undo = { hlgroup = 'HighlightUndo', mode = 'n', lhs = 'u', map = 'undo' },
             redo = { hlgroup = 'HighlightRedo', mode = 'n', lhs = '<C-r>', map = 'redo' },
-        },
-    },
-    { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'BufReadPost', opts = { max_join_length = 20201120 } },
-    {
-        'folke/flash.nvim',
-        event = 'VeryLazy',
-        opts = {},
-        keys = {
-            {
-                'x',
-                mode = { 'n', 'x', 'o' },
-                function()
-                    require('flash').jump()
-                end,
-                desc = 'flash',
-            },
-        },
-    },
-    {
-        'folke/which-key.nvim',
-        event = 'VimEnter',
-        opts = {},
-        config = function()
-            require('which-key').setup { win = { border = 'single' } }
-            require('which-key').register {
-                ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-                ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-                ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
-                ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
-                ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-                ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-                ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
-                ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-            }
-            require('which-key').register(
-                { ['<leader>'] = { name = 'VISUAL <leader>' }, ['<leader>h'] = { 'Git [H]unk' } },
-                { mode = 'v' }
-            )
-        end,
-    },
-    {
-        'linrongbin16/lsp-progress.nvim',
-        opts = {
-            spinner = {
-                '●∙∙',
-                '∙●∙',
-                '∙∙●',
-                '∙●∙',
-                '●∙∙',
-                '∙●∙',
-                '∙∙●',
-                '∙●∙',
-            },
-            client_format = function(client_name, spinner, series_messages)
-                return #series_messages > 0 and ('[' .. client_name .. '] ' .. spinner) or nil
-            end,
-            format = function(messages)
-                if #messages > 0 then
-                    return table.concat(messages)
-                else
-                    return ''
-                end
-            end,
         },
     },
 

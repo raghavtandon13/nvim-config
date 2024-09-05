@@ -1,6 +1,19 @@
 return {
+    -- THIS IS THE BEST THEME EVER 
+    {
+        'sainnhe/gruvbox-material',
+        enabled = true,
+        config = function()
+            vim.g.gruvbox_material_background = 'hard'
+            vim.g.gruvbox_material_foreground = 'material'
+            vim.g.gruvbox_material_transparent_background = 2
+            vim.g.gruvbox_material_better_performance = 1
+            vim.cmd.colorscheme 'gruvbox-material'
+        end,
+    },
     {
         'folke/tokyonight.nvim',
+        enabled = false,
         lazy = false,
         priority = 1000,
         opts = { style = 'night', transparent = true, lualine_bold = true },
@@ -18,24 +31,10 @@ return {
         end,
     },
     {
-        'sainnhe/gruvbox-material',
-        enabled = true,
-        config = function()
-            vim.g.gruvbox_material_background = 'hard'
-            vim.g.gruvbox_material_foreground = 'material'
-            vim.g.gruvbox_material_transparent_background = 2
-            vim.g.gruvbox_material_better_performance = 1
-            vim.cmd.colorscheme 'gruvbox-material'
-        end,
-    },
-    {
         'sho-87/kanagawa-paper.nvim',
         enabled = false,
         config = function()
-            require('kanagawa-paper').setup {
-                transparent = true,
-                colors = { theme = { ui = { float = { bg = '' } } } },
-            }
+            require('kanagawa-paper').setup { transparent = true, colors = { theme = { ui = { float = { bg = '' } } } } }
             vim.cmd.colorscheme 'kanagawa-paper'
         end,
     },

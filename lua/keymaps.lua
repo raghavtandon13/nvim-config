@@ -7,19 +7,10 @@ vim.keymap.set('n', '<C-w>left', '<C-w>h', { desc = 'Focus Window Left', silent 
 vim.keymap.set('n', '<C-w>right', '<C-w>l', { desc = 'Focus Window Right', silent = true })
 vim.keymap.set('n', '<C-w>up', '<C-w>k', { desc = 'Focus Window Up', silent = true })
 vim.keymap.set('n', '<leader>bb', ':bd<CR>', { desc = 'Close Buffer', silent = true })
-vim.keymap.set('n', '<leader>cc', ':vsplit | term gcc % && a.exe<CR>i', { desc = 'gcc compile and run', silent = true })
-vim.keymap.set('n', '<leader>cr', ':vsplit | term cargo run<CR>i', { desc = 'cargo run', silent = true })
-vim.keymap.set('n', '<leader>dd', ':DBUIToggle<CR>', { desc = 'Open definition in vsplit', silent = true })
+vim.keymap.set('n', '<leader>dd', ':DBUIToggle<CR>', { desc = 'Debug UI', silent = true })
 vim.keymap.set('n', '<leader>e', ':Neotree float<CR>', { desc = 'File Explorer', silent = true })
-vim.keymap.set('n', '<leader>ll', ':LspRestart<CR>', { desc = 'LSP Restart', silent = true })
 vim.keymap.set('n', '<leader>th', ':InlayHintsToggle<CR>', { desc = 'Toggle Inline Hints', silent = true })
 vim.keymap.set('n', '<leader>mt', ':TailwindSort<CR>', { desc = 'Sort Tailwind Classes', silent = true })
-vim.keymap.set(
-    'n',
-    '<leader>lv',
-    ':vsplit | Telescope lsp_definitions<CR>',
-    { desc = 'Open definition in vsplit', silent = true }
-)
 vim.keymap.set('n', '<leader>n', ':NoiceAll<CR>', { desc = 'Noice: for msgs', silent = true })
 vim.keymap.set(
     'n',
@@ -43,19 +34,21 @@ vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = tr
 vim.keymap.set('t', '<C-t>', '<C-\\><C-n>', { noremap = true, silent = true })
 
 -- resizing splits
-vim.keymap.set('n', '<M-;>', require('smart-splits').resize_up)
-vim.keymap.set('n', '<M-/>', require('smart-splits').resize_down)
-vim.keymap.set('n', '<M-,>', require('smart-splits').resize_left)
-vim.keymap.set('n', '<M-.>', require('smart-splits').resize_right)
+vim.keymap.set('n', '<M-;>', require('smart-splits').resize_up, { desc = 'Resize Split Up', silent = true })
+vim.keymap.set('n', '<M-/>', require('smart-splits').resize_down, { desc = 'Resize Split Down', silent = true })
+vim.keymap.set('n', '<M-,>', require('smart-splits').resize_left, { desc = 'Resize Split Left', silent = true })
+vim.keymap.set('n', '<M-.>', require('smart-splits').resize_right, { desc = 'Resize Split Right', silent = true })
+
 -- moving between splits
-vim.keymap.set('n', '<C-h>', require('smart-splits').move_cursor_left)
-vim.keymap.set('n', '<C-j>', require('smart-splits').move_cursor_down)
-vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up)
-vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right)
-vim.keymap.set('n', '<C-\\>', require('smart-splits').move_cursor_previous)
+vim.keymap.set('n', '<C-h>', require('smart-splits').move_cursor_left, { desc = 'Move Cursor Left', silent = true })
+vim.keymap.set('n', '<C-j>', require('smart-splits').move_cursor_down, { desc = 'Move Cursor Down', silent = true })
+vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up, { desc = 'Move Cursor Up', silent = true })
+vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right, { desc = 'Move Cursor Right', silent = true })
+vim.keymap.set('n', '<C-\\>', require('smart-splits').move_cursor_previous, { desc = 'Move to Previous Window', silent = true })
+
 -- swapping buffers between windows
-vim.keymap.set('n', '<leader>\\', require('smart-splits').swap_buf_left)
-vim.keymap.set('n', '<leader><leader>h', require('smart-splits').swap_buf_left)
-vim.keymap.set('n', '<leader><leader>j', require('smart-splits').swap_buf_down)
-vim.keymap.set('n', '<leader><leader>k', require('smart-splits').swap_buf_up)
-vim.keymap.set('n', '<leader><leader>l', require('smart-splits').swap_buf_right)
+vim.keymap.set('n', '<leader>\\', require('smart-splits').swap_buf_left, { desc = 'Swap Buffer Left', silent = true })
+vim.keymap.set('n', '<leader>bh', require('smart-splits').swap_buf_left, { desc = 'Swap Buffer Left', silent = true })
+vim.keymap.set('n', '<leader>bj', require('smart-splits').swap_buf_down, { desc = 'Swap Buffer Down', silent = true })
+vim.keymap.set('n', '<leader>bk', require('smart-splits').swap_buf_up, { desc = 'Swap Buffer Up', silent = true })
+vim.keymap.set('n', '<leader>bl', require('smart-splits').swap_buf_right, { desc = 'Swap Buffer Right', silent = true })
