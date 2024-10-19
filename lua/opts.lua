@@ -38,4 +38,6 @@ vim.o.acd = true
 -- vim.opt.shellpipe = '| Out-File -Encoding UTF8 %s'
 -- vim.opt.shellredir = '| Out-File -Encoding UTF8 %s'
 
+vim.opt.shell = 'C:/Program Files/PowerShell/7/pwsh.exe'
 vim.g.db_ui_use_nvim_notify = 1
+vim.filetype.add { extension = { ['http'] = 'http' } }

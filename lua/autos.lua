@@ -29,7 +29,7 @@ vim.api.nvim_create_autocmd({ 'BufWinEnter' }, {
 
 vim.api.nvim_create_autocmd('FileType', {
     desc = 'Disable indentscope for certain filetypes',
-    pattern = { 'python', 'text', 'markdown' },
+    pattern = { 'python', 'text', 'markdown','yaml' },
     callback = function()
         vim.b.miniindentscope_disable = true
     end,

@@ -17,7 +17,7 @@ return {
             'rafamadriz/friendly-snippets',
             'saadparwaiz1/cmp_luasnip',
             { 'luckasRanarison/tailwind-tools.nvim', opts = {} },
-            { 'onsails/lspkind-nvim', opts = { symbol_map = { Color = '󰝤' } } },
+            { 'onsails/lspkind-nvim', opts = { symbol_map = { Color = '󰝤', Supermaven = '' } } },
         },
         config = function()
             local cmp = require 'cmp'
@@ -58,6 +58,8 @@ return {
                     { name = 'buffer' },
                     { name = 'path' },
                     { name = 'codeium' },
+                    { name = 'supermaven' },
+                    { name = 'crates' },
                 },
             }
         end,
@@ -107,7 +109,7 @@ return {
                     },
                 },
                 tailwindcss = {},
-                tsserver = {
+                ts_ls = {
                     settings = {
                         typescript = {
                             inlayHints = {

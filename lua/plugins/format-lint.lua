@@ -21,6 +21,7 @@ return {
                     c = { 'clang-format' },
                     rust = { 'rustfmt' },
                     prisma = { 'prettier' },
+                    yaml = { 'prettier' },
                 },
             }
             vim.keymap.set('n', '<leader>cf', function()

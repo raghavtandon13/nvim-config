@@ -2,6 +2,39 @@ return {
 
     --[[ ENABLED PLUGINS ]]
 
+    { 'dmmulroy/ts-error-translator.nvim', opts = {} },
+    { 'dstein64/vim-startuptime' },
+    { 'echasnovski/mini.misc', version = '*', opts = {} },
+    { 'echasnovski/mini.pairs', version = '*', opts = {} },
+    { 'echasnovski/mini.surround', version = '*', opts = {} },
+    { 'Exafunction/codeium.nvim', enabled = true, opts = {} },
+    { 'folke/trouble.nvim', opts = {} },
+    { 'iamyoki/buffer-reopen.nvim', opts = {} },
+    { 'mg979/vim-visual-multi', branch = 'master', event = 'BufReadPre' },
+    {
+        'michaelrommel/nvim-silicon',
+        lazy = true,
+        cmd = 'Silicon',
+        main = 'nvim-silicon',
+        opts = {
+            line_offset = function(args)
+                return args.line1
+            end,
+            font = 'Berkeley Mono',
+        },
+    },
+    { 'mrjones2014/smart-splits.nvim', opts = {} },
+    { 'MysticalDevil/inlay-hints.nvim', event = 'LspAttach', opts = { autocmd = { enable = false } } },
+    { 'numToStr/Comment.nvim', opts = {}, event = 'BufReadPre' },
+    { 'nvim-tree/nvim-web-devicons', opts = {} },
+    { 'saecki/crates.nvim', event = { 'BufRead Cargo.toml' }, opts = { completion = { cmp = { enabled = true } } } },
+    {
+        'supermaven-inc/supermaven-nvim',
+        config = function()
+            require('supermaven-nvim').setup {}
+        end,
+    },
+    { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'BufReadPost', opts = { max_join_length = 20201120 } },
     {
         'arsham/listish.nvim',
         dependencies = { 'arsham/arshlib.nvim', 'nvim-treesitter/nvim-treesitter-textobjects' },
@@ -15,8 +48,6 @@ return {
         ft = { 'csv', 'tsv', 'csv_semicolon', 'csv_whitespace', 'csv_pipe', 'rfc_csv', 'rfc_semicolon' },
         cmd = { 'RainbowDelim', 'RainbowDelimSimple', 'RainbowDelimQuoted', 'RainbowMultiDelim' },
     },
-    { 'dmmulroy/ts-error-translator.nvim', opts = {} },
-    { 'dstein64/vim-startuptime' },
     {
         'echasnovski/mini.indentscope',
         enabled = true,
@@ -28,48 +59,37 @@ return {
             }
         end,
     },
-    { 'echasnovski/mini.misc', version = '*', opts = {} },
     {
         'echasnovski/mini.move',
         version = '*',
         opts = {
             mappings = {
-                left = '<M-left>',
-                right = '<M-right>',
-                down = '<M-down>',
-                up = '<M-up>',
-                line_left = '<M-left>',
-                line_right = '<M-right>',
-                line_down = '<M-down>',
-                line_up = '<M-up>',
+                left = '<C-M-left>',
+                right = '<C-M-right>',
+                down = '<C-M-down>',
+                up = '<C-M-up>',
+                line_left = '<C-M-left>',
+                line_right = '<C-M-right>',
+                line_down = '<C-M-down>',
+                line_up = '<C-M-up>',
             },
         },
     },
-    { 'echasnovski/mini.pairs', version = '*', opts = {} },
-    { 'echasnovski/mini.surround', version = '*', opts = {} },
-    { 'Exafunction/codeium.nvim', enabled = true, opts = {} },
     {
         'folke/flash.nvim',
         event = 'VeryLazy',
         opts = {},
-        keys = { {
-            'x',
-            mode = { 'n', 'x', 'o' },
-            function()
-                require('flash').jump()
-            end,
-            desc = 'flash',
-        } },
+        keys = {
+            {
+                'x',
+                mode = { 'n', 'x', 'o' },
+                function()
+                    require('flash').jump()
+                end,
+                desc = 'flash',
+            },
+        },
     },
-    { 'folke/trouble.nvim', opts = {} },
-    { 'iamyoki/buffer-reopen.nvim', opts = {} },
-    { 'mg979/vim-visual-multi', branch = 'master', event = 'BufReadPre' },
-    { 'mrjones2014/smart-splits.nvim', opts = {} },
-    { 'MysticalDevil/inlay-hints.nvim', event = 'LspAttach', opts = { autocmd = { enable = false } } },
-    { 'numToStr/Comment.nvim', opts = {}, event = 'BufReadPre' },
-    { 'nvim-tree/nvim-web-devicons', opts = {} },
-    { 'saecki/crates.nvim', event = { 'BufRead Cargo.toml' }, opts = {} },
-    { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'BufReadPost', opts = { max_join_length = 20201120 } },
     {
         'folke/noice.nvim',
         event = 'VeryLazy',
@@ -82,7 +102,11 @@ return {
                 { filter = { event = 'notify', find = 'Config Change Detected' }, opts = { skip = true } },
                 { filter = { event = 'notify', find = 'There were issues reported' }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = 'fewer lines' } } }, opts = { skip = true } },
-                { filter = { event = 'msg_show', any = { { find = '^[^-]+-query-20[^-]+$' } } }, opts = { skip = true } },
+                { filter = { event = 'msg_show', any = { { find = '[supermaven-nvim]' } } }, opts = { skip = true } },
+                {
+                    filter = { event = 'msg_show', any = { { find = '^[^-]+-query-20[^-]+$' } } },
+                    opts = { skip = true },
+                },
             },
             views = {
                 mini = {
@@ -137,9 +161,11 @@ return {
     {
         'lukas-reineke/indent-blankline.nvim',
         main = 'ibl',
-        opts = { scope = { enabled = false }, exclude = { filetypes = { 'text', 'markdown' } }, indent = {
-            char = '│',
-        } },
+        opts = {
+            scope = { enabled = false },
+            exclude = { filetypes = { 'text', 'markdown', 'yaml' } },
+            indent = { char = '│' },
+        },
         event = 'BufReadPre',
     },
     {
@@ -178,6 +204,7 @@ return {
     --[[ DISABLED PLUGINS ]]
 
     { 'mbbill/undotree', enabled = false },
+    { 'mistweaverco/kulala.nvim', enabled = false, opts = {} },
     { 'ThePrimeagen/git-worktree.nvim', enabled = false, opts = {} },
     {
         'tpope/vim-dadbod',
