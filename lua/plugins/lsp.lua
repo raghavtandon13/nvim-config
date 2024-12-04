@@ -16,7 +16,6 @@ return {
             'hrsh7th/cmp-path',
             'rafamadriz/friendly-snippets',
             'saadparwaiz1/cmp_luasnip',
-            { 'luckasRanarison/tailwind-tools.nvim', opts = {} },
             { 'onsails/lspkind-nvim', opts = { symbol_map = { Color = '󰝤', Supermaven = '' } } },
         },
         config = function()

@@ -1,53 +1,7 @@
 return {
 
     --[[ ENABLED PLUGINS ]]
-
-    { 'dmmulroy/ts-error-translator.nvim', opts = {} },
-    { 'dstein64/vim-startuptime' },
-    { 'echasnovski/mini.misc', version = '*', opts = {} },
-    { 'echasnovski/mini.pairs', version = '*', opts = {} },
-    { 'echasnovski/mini.surround', version = '*', opts = {} },
-    { 'Exafunction/codeium.nvim', enabled = true, opts = {} },
-    { 'folke/trouble.nvim', opts = {} },
-    { 'iamyoki/buffer-reopen.nvim', opts = {} },
-    { 'mg979/vim-visual-multi', branch = 'master', event = 'BufReadPre' },
-    {
-        'michaelrommel/nvim-silicon',
-        lazy = true,
-        cmd = 'Silicon',
-        main = 'nvim-silicon',
-        opts = {
-            line_offset = function(args)
-                return args.line1
-            end,
-            font = 'Berkeley Mono',
-        },
-    },
-    { 'mrjones2014/smart-splits.nvim', opts = {} },
-    { 'MysticalDevil/inlay-hints.nvim', event = 'LspAttach', opts = { autocmd = { enable = false } } },
-    { 'numToStr/Comment.nvim', opts = {}, event = 'BufReadPre' },
-    { 'nvim-tree/nvim-web-devicons', opts = {} },
-    { 'saecki/crates.nvim', event = { 'BufRead Cargo.toml' }, opts = { completion = { cmp = { enabled = true } } } },
-    {
-        'supermaven-inc/supermaven-nvim',
-        config = function()
-            require('supermaven-nvim').setup {}
-        end,
-    },
-    { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'BufReadPost', opts = { max_join_length = 20201120 } },
-    {
-        'arsham/listish.nvim',
-        dependencies = { 'arsham/arshlib.nvim', 'nvim-treesitter/nvim-treesitter-textobjects' },
-        config = { signs = { qflist = '' }, extmarks = { qflist_text = 'Quickfix' } },
-        keys = { '<leader>qq' },
-        ft = { 'qf' },
-    },
-    {
-        'cameron-wags/rainbow_csv.nvim',
-        config = true,
-        ft = { 'csv', 'tsv', 'csv_semicolon', 'csv_whitespace', 'csv_pipe', 'rfc_csv', 'rfc_semicolon' },
-        cmd = { 'RainbowDelim', 'RainbowDelimSimple', 'RainbowDelimQuoted', 'RainbowMultiDelim' },
-    },
+    { 'dmmulroy/ts-error-translator.nvim' },
     {
         'echasnovski/mini.indentscope',
         enabled = true,
@@ -59,6 +13,7 @@ return {
             }
         end,
     },
+    { 'echasnovski/mini.misc', version = '*', opts = {} },
     {
         'echasnovski/mini.move',
         version = '*',
@@ -75,6 +30,8 @@ return {
             },
         },
     },
+    { 'echasnovski/mini.pairs', version = '*', opts = {} },
+    { 'echasnovski/mini.surround', version = '*', opts = {} },
     {
         'folke/flash.nvim',
         event = 'VeryLazy',
@@ -89,6 +46,28 @@ return {
                 desc = 'flash',
             },
         },
+    },
+    { 'folke/trouble.nvim', opts = {} },
+    { 'folke/ts-comments.nvim', opts = {}, enabled = vim.fn.has 'nvim-0.10.0' == 1 },
+    { 'iamyoki/buffer-reopen.nvim', opts = {} },
+    { 'mg979/vim-visual-multi', branch = 'master', event = 'BufReadPre' },
+    { 'mrjones2014/smart-splits.nvim', opts = {} },
+    { 'MysticalDevil/inlay-hints.nvim', event = 'LspAttach', opts = { autocmd = { enable = false } } },
+    { 'nvim-tree/nvim-web-devicons', opts = {} },
+    { 'saecki/crates.nvim', event = { 'BufRead Cargo.toml' }, opts = { completion = { cmp = { enabled = true } } } },
+    { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'BufReadPost', opts = { max_join_length = 20201120 } },
+    {
+        'arsham/listish.nvim',
+        dependencies = { 'arsham/arshlib.nvim', 'nvim-treesitter/nvim-treesitter-textobjects' },
+        config = { signs = { qflist = '' }, extmarks = { qflist_text = 'Quickfix' } },
+        keys = { '<leader>qq' },
+        ft = { 'qf' },
+    },
+    {
+        'cameron-wags/rainbow_csv.nvim',
+        config = true,
+        ft = { 'csv', 'tsv', 'csv_semicolon', 'csv_whitespace', 'csv_pipe', 'rfc_csv', 'rfc_semicolon' },
+        cmd = { 'RainbowDelim', 'RainbowDelimSimple', 'RainbowDelimQuoted', 'RainbowMultiDelim' },
     },
     {
         'folke/noice.nvim',
@@ -122,6 +101,14 @@ return {
         event = 'BufReadPost',
         dependencies = { 'nvim-lua/plenary.nvim' },
         opts = { signs = true, keywords = { NOTE = { icon = ' ', color = 'hint', alt = { 'todo' } } } },
+    },
+    {
+        'hat0uma/csvview.nvim',
+        ft = { 'csv', 'tsv', 'csv_semicolon', 'csv_whitespace', 'csv_pipe', 'rfc_csv', 'rfc_semicolon' },
+        config = function()
+            require('csvview').setup { view = { display_mode = 'border' } }
+            vim.cmd [[ CsvViewEnable ]]
+        end,
     },
     {
         'kosayoda/nvim-lightbulb',
@@ -159,6 +146,11 @@ return {
         },
     },
     {
+        'luckasRanarison/tailwind-tools.nvim',
+        filetype = { 'html', 'javascriptreact', 'typescriptreact' },
+        opts = { server = { override = false } },
+    },
+    {
         'lukas-reineke/indent-blankline.nvim',
         main = 'ibl',
         opts = {
@@ -167,6 +159,18 @@ return {
             indent = { char = '│' },
         },
         event = 'BufReadPre',
+    },
+    {
+        'michaelrommel/nvim-silicon',
+        lazy = true,
+        cmd = 'Silicon',
+        main = 'nvim-silicon',
+        opts = {
+            line_offset = function(args)
+                return args.line1
+            end,
+            font = 'Berkeley Mono',
+        },
     },
     {
         'OXY2DEV/markview.nvim',
@@ -194,6 +198,13 @@ return {
         },
     },
     {
+        'supermaven-inc/supermaven-nvim',
+        event = { 'InsertEnter' },
+        config = function()
+            require('supermaven-nvim').setup {}
+        end,
+    },
+    {
         'tzachar/highlight-undo.nvim',
         opts = {
             undo = { hlgroup = 'HighlightUndo', mode = 'n', lhs = 'u', map = 'undo' },
@@ -205,6 +216,7 @@ return {
 
     { 'mbbill/undotree', enabled = false },
     { 'mistweaverco/kulala.nvim', enabled = false, opts = {} },
+    { 'numToStr/Comment.nvim', enabled = false, opts = {}, event = 'BufReadPre' },
     { 'ThePrimeagen/git-worktree.nvim', enabled = false, opts = {} },
     {
         'tpope/vim-dadbod',

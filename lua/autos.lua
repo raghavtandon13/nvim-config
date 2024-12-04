@@ -39,7 +39,7 @@ vim.api.nvim_create_autocmd('FileType', {
 
 function _G.custom_fold_text()
     local line = vim.fn.getline(vim.v.foldstart)
-    return ' ' .. line .. ' '
+    return '' .. line .. ' '
 end
 vim.opt.foldtext = 'v:lua.custom_fold_text()'
 

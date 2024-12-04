@@ -68,8 +68,7 @@ return {
 
         --[[ KEYMAPS ]]
 
-        vim.keymap.set('n', '<leader>,', ':Telescope buffers theme=ivy<CR>', { desc = 'Search Open Buffers' })
-        -- vim.keymap.set('n', '<leader>,', require('telescope.builtin').buffers, { desc = 'Search Open Buffers' })
+        vim.keymap.set('n', '<leader>,', require('telescope.builtin').buffers, { desc = 'Search Open Buffers' })
         vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = 'Search Recent Files' })
         vim.keymap.set('n', '<leader>gs', require('telescope.builtin').git_status, { desc = 'Search Git Status' })
         vim.keymap.set('n', '<leader>s/', telescope_live_grep_open_files, { desc = 'Grep in Open Files' })
