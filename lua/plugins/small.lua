@@ -1,18 +1,8 @@
 return {
 
     --[[ ENABLED PLUGINS ]]
+
     { 'dmmulroy/ts-error-translator.nvim' },
-    {
-        'echasnovski/mini.indentscope',
-        enabled = true,
-        version = '*',
-        config = function()
-            require('mini.indentscope').setup {
-                symbol = '|',
-                draw = { animation = require('mini.indentscope').gen_animation.none() },
-            }
-        end,
-    },
     { 'echasnovski/mini.misc', version = '*', opts = {} },
     {
         'echasnovski/mini.move',
@@ -36,20 +26,32 @@ return {
         'folke/flash.nvim',
         event = 'VeryLazy',
         opts = {},
-        keys = {
-            {
-                'x',
-                mode = { 'n', 'x', 'o' },
-                function()
-                    require('flash').jump()
-                end,
-                desc = 'flash',
-            },
+        keys = { {
+            'x',
+            mode = { 'n', 'x', 'o' },
+            function()
+                require('flash').jump()
+            end,
+            desc = 'flash',
+        } },
+    },
+    {
+        'folke/snacks.nvim',
+        priority = 1000,
+        lazy = false,
+        opts = {
+            bigfile = { enabled = true },
+            dashboard = { enabled = true },
+            indent = { scope = { enabled = true, animate = { enabled = false } } },
+            notifier = { enabled = true },
+            quickfile = { enabled = true },
+            terminal = { enabled = true },
         },
     },
     { 'folke/trouble.nvim', opts = {} },
     { 'folke/ts-comments.nvim', opts = {}, enabled = vim.fn.has 'nvim-0.10.0' == 1 },
     { 'iamyoki/buffer-reopen.nvim', opts = {} },
+    { 'kevinhwang91/nvim-ufo', dependencies = { 'kevinhwang91/promise-async' } },
     { 'mg979/vim-visual-multi', branch = 'master', event = 'BufReadPre' },
     { 'mrjones2014/smart-splits.nvim', opts = {} },
     { 'MysticalDevil/inlay-hints.nvim', event = 'LspAttach', opts = { autocmd = { enable = false } } },
@@ -82,10 +84,7 @@ return {
                 { filter = { event = 'notify', find = 'There were issues reported' }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = 'fewer lines' } } }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = '[supermaven-nvim]' } } }, opts = { skip = true } },
-                {
-                    filter = { event = 'msg_show', any = { { find = '^[^-]+-query-20[^-]+$' } } },
-                    opts = { skip = true },
-                },
+                { filter = { event = 'msg_show', any = { { find = '^[^-]+-query-20[^-]+$' } } }, opts = { skip = true } },
             },
             views = {
                 mini = {
@@ -151,16 +150,6 @@ return {
         opts = { server = { override = false } },
     },
     {
-        'lukas-reineke/indent-blankline.nvim',
-        main = 'ibl',
-        opts = {
-            scope = { enabled = false },
-            exclude = { filetypes = { 'text', 'markdown', 'yaml' } },
-            indent = { char = '│' },
-        },
-        event = 'BufReadPre',
-    },
-    {
         'michaelrommel/nvim-silicon',
         lazy = true,
         cmd = 'Silicon',
@@ -218,6 +207,28 @@ return {
     { 'mistweaverco/kulala.nvim', enabled = false, opts = {} },
     { 'numToStr/Comment.nvim', enabled = false, opts = {}, event = 'BufReadPre' },
     { 'ThePrimeagen/git-worktree.nvim', enabled = false, opts = {} },
+    {
+        'echasnovski/mini.indentscope',
+        enabled = false,
+        version = '*',
+        config = function()
+            require('mini.indentscope').setup {
+                symbol = '|',
+                draw = { animation = require('mini.indentscope').gen_animation.none() },
+            }
+        end,
+    },
+    {
+        'lukas-reineke/indent-blankline.nvim',
+        enabled = false,
+        main = 'ibl',
+        opts = {
+            scope = { enabled = false },
+            exclude = { filetypes = { 'text', 'markdown', 'yaml' } },
+            indent = { char = '│' },
+        },
+        event = 'BufReadPre',
+    },
     {
         'tpope/vim-dadbod',
         enabled = false,

@@ -9,21 +9,12 @@ vim.keymap.set('n', '<C-w>up', '<C-w>k', { desc = 'Focus Window Up', silent = tr
 vim.keymap.set('n', '<leader>bb', ':bd<CR>', { desc = 'Close Buffer', silent = true })
 vim.keymap.set('n', '<leader>dd', ':DBUIToggle<CR>', { desc = 'Debug UI', silent = true })
 vim.keymap.set('n', '<leader>e', ':Neotree float<CR>', { desc = 'File Explorer', silent = true })
-vim.keymap.set('n', '<leader>th', ':InlayHintsToggle<CR>', { desc = 'Toggle Inline Hints', silent = true })
+vim.keymap.set('n', '<leader>gl', ':lua Snacks.lazygit()<CR>', { desc = 'Open Lazygit', silent = true })
 vim.keymap.set('n', '<leader>mt', ':TailwindSort<CR>', { desc = 'Sort Tailwind Classes', silent = true })
 vim.keymap.set('n', '<leader>n', ':NoiceAll<CR>', { desc = 'Noice: for msgs', silent = true })
-vim.keymap.set(
-    'n',
-    '<leader>tc',
-    ':lua vim.opt.conceallevel = vim.opt.conceallevel:get() == 0 and 2 or 0<CR>',
-    { desc = 'Toggle Code Conceal', silent = true }
-)
-vim.keymap.set(
-    'n',
-    '<Leader>tl',
-    ':lua vim.wo.number = not vim.wo.number<CR>',
-    { noremap = true, silent = true, desc = 'Toggle Number Line' }
-)
+vim.keymap.set('n', '<leader>tc', ':lua vim.opt.conceallevel = vim.opt.conceallevel:get() == 0 and 2 or 0<CR>', { desc = 'Toggle Code Conceal', silent = true })
+vim.keymap.set('n', '<leader>th', ':InlayHintsToggle<CR>', { desc = 'Toggle Inline Hints', silent = true })
+vim.keymap.set('n', '<Leader>tl', ':lua vim.wo.number = not vim.wo.number<CR>', { noremap = true, silent = true, desc = 'Toggle Number Line' })
 vim.keymap.set('n', '<leader>tt', ':Trouble diagnostics toggle<CR>', { desc = 'Toggle Trouble', silent = true })
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message', silent = true })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message', silent = true })
@@ -31,7 +22,10 @@ vim.keymap.set('n', 'c', '"_c', { noremap = true, silent = true })
 vim.keymap.set('n', 'd', '"_d', { noremap = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('t', '<C-t>', '<C-\\><C-n>', { noremap = true, silent = true })
+vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
+vim.keymap.set('t', '<c-t>', ':lua vim.api.nvim_feedkeys("\\<Esc>", "n", true); vim.api.nvim_feedkeys("\\<Esc>", "n", true); Snacks.terminal()<CR>', { noremap = true, silent = true, desc = 'Toggle Terminal' })
+vim.keymap.set({ 'n', 'v', 'i' }, '<c-t>', ':lua Snacks.terminal()<CR>', { noremap = true, silent = true, desc = 'Toggle Terminal' })
 
 -- resizing splits
 vim.keymap.set('n', '<M-;>', require('smart-splits').resize_up, { desc = 'Resize Split Up', silent = true })

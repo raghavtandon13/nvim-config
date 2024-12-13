@@ -19,14 +19,19 @@ return {
         require('telescope').setup {
             defaults = {
                 file_ignore_patterns = { 'node_modules', 'build', 'dist', 'yarn.lock', '.spec.ts', 'venv' },
-                mappings = { i = {
-                    ['<C-u>'] = false,
-                    ['<C-x>'] = require('telescope.actions').select_vertical,
-                    ['<C-d>'] = require('telescope.actions').delete_buffer,
-                    ['<M-q>'] = require('telescope.actions').add_selected_to_qflist,
-                } },
+                mappings = {
+                    i = {
+                        ['<C-u>'] = false,
+                        ['<C-x>'] = require('telescope.actions').select_vertical,
+                        ['<C-d>'] = require('telescope.actions').delete_buffer,
+                        ['<M-q>'] = require('telescope.actions').add_selected_to_qflist,
+                    },
+                },
             },
-            extensions = { ['ui-select'] = { require('telescope.themes').get_dropdown {} } },
+            extensions = {
+                fzf = {},
+                ['ui-select'] = { require('telescope.themes').get_dropdown {} },
+            },
         }
 
         --[[ EXTENSIONS ]]
@@ -54,7 +59,28 @@ return {
         end
 
         -- Search All (D:/)
-        local excluded_dirs = { 'Windows', 'node_modules', 'venv', 'Games', 'TV', '.cache', 'scoop', 'Microsoft', 'nvim-data', 'Packages', 'Temp', 'node-gyp', 'gopls', 'go-build', 'Postman', '.git', 'Rainmeter', '.obsidian', 'obsidian', '$RECYCLE.BIN' }
+        local excluded_dirs = {
+            'Windows',
+            'node_modules',
+            'venv',
+            'Games',
+            'TV',
+            '.cache',
+            'scoop',
+            'Microsoft',
+            'nvim-data',
+            'Packages',
+            'Temp',
+            'node-gyp',
+            'gopls',
+            'go-build',
+            'Postman',
+            '.git',
+            'Rainmeter',
+            '.obsidian',
+            'obsidian',
+            '$RECYCLE.BIN',
+        }
         local exclude_args = {}
         for _, dir in ipairs(excluded_dirs) do
             table.insert(exclude_args, '--exclude=' .. dir)
@@ -77,10 +103,17 @@ return {
         vim.keymap.set('n', '<leader>sg', ':LiveGrepGitRoot<cr>', { desc = 'Grep' })
         vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = 'Search Help' })
         vim.keymap.set('n', '<leader>ss', require('telescope.builtin').builtin, { desc = 'Search Telescope Builtins' })
-        vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = 'Search Word under cursor' })
+        vim.keymap.set(
+            'n',
+            '<leader>sw',
+            require('telescope.builtin').grep_string,
+            { desc = 'Search Word under cursor' }
+        )
 
         vim.keymap.set('n', '<leader>/', function()
-            require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown { winblend = 10, previewer = false })
+            require('telescope.builtin').current_buffer_fuzzy_find(
+                require('telescope.themes').get_dropdown { winblend = 10, previewer = false }
+            )
         end, { desc = 'Grep in current buffer' })
 
         vim.keymap.set('n', '<leader>gf', function()

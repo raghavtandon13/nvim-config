@@ -17,6 +17,11 @@ return {
             'rafamadriz/friendly-snippets',
             'saadparwaiz1/cmp_luasnip',
             { 'onsails/lspkind-nvim', opts = { symbol_map = { Color = '󰝤', Supermaven = '' } } },
+            {
+                'folke/lazydev.nvim',
+                ft = 'lua',
+                opts = { library = { { path = '${3rd}/luv/library', words = { 'vim%.uv' } } } },
+            },
         },
         config = function()
             local cmp = require 'cmp'
@@ -24,7 +29,6 @@ return {
             require('luasnip.loaders.from_vscode').lazy_load()
             require('lspconfig.ui.windows').default_options.border = 'single'
             luasnip.config.setup {}
-
             cmp.setup {
                 snippet = {
                     expand = function(args)
@@ -41,9 +45,7 @@ return {
                 },
                 completion = { completeopt = 'menu,menuone,noinsert' },
                 formatting = {
-                    format = require('lspkind').cmp_format {
-                        before = require('tailwind-tools.cmp').lspkind_format,
-                    },
+                    format = require('lspkind').cmp_format { before = require('tailwind-tools.cmp').lspkind_format },
                 },
                 mapping = cmp.mapping.preset.insert {
                     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -67,6 +69,7 @@ return {
         'williamboman/mason-lspconfig.nvim',
         config = function()
             local servers = {
+                clangd = { filetypes = { 'c', 'cpp', 'objc', 'objcpp' } },
                 html = { filetypes = { 'html', 'jsx', 'tsx' } },
                 lua_ls = {
                     Lua = {
@@ -151,27 +154,27 @@ return {
 
                 --[[ Keymaps ]]
 
-                nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-                nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-                nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-                nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-                nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-                nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-                nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
                 nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
-                nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-                nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-                nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-                nmap(
-                    '<leader>wl',
-                    ':lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>',
-                    '[W]orkspace [L]ist Folders'
-                )
                 nmap(
                     '<leader>ca',
                     ":lua vim.lsp.buf.code_action { context = { only = { 'quickfix', 'refactor', 'source' } } }<CR>",
                     '[C]ode [A]ction'
                 )
+                nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+                nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+                nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
+                nmap(
+                    '<leader>wl',
+                    ':lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>',
+                    '[W]orkspace [L]ist Folders'
+                )
+                nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
+                nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+                nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+                nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+                nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+                nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+                nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
 
                 --[[ Customizations ]]
 
@@ -195,16 +198,17 @@ return {
                     end
                     vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx, config)
                 end
-
                 vim.lsp.handlers['textDocument/publishDiagnostics'] = filter_tsserver_diagnostics
-                vim.lsp.handlers['textDocument/hover'] =
-                    vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded', width = 60, max_height = 50 })
+
+
+                -- "Format" command for LSP formatting
+
                 vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
                     vim.lsp.buf.format()
                 end, { desc = 'Format current buffer with LSP' })
-                vim.diagnostic.config { float = { border = 'rounded' } }
             end
 
+            -- Mason & LSP capabilities
             local mason_lspconfig = require 'mason-lspconfig'
             mason_lspconfig.setup { ensure_installed = vim.tbl_keys(servers) }
             mason_lspconfig.setup_handlers {
@@ -217,6 +221,21 @@ return {
                     }
                 end,
             }
+
+            -- Code Folding Capabilities
+            local foldcapabilities = vim.lsp.protocol.make_client_capabilities()
+            foldcapabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
+            local language_servers = require('lspconfig').util.available_servers()
+            for _, ls in ipairs(language_servers) do
+                require('lspconfig')[ls].setup { capabilities = foldcapabilities }
+            end
+            require('ufo').setup()
+
+	    -- Hover and Diagnostic Looks
+
+	    vim.lsp.handlers['textDocument/hover'] =
+	    vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded', width = 60, max_height = 50 })
+	    vim.diagnostic.config { float = { border = 'rounded' } }
         end,
     },
 }
