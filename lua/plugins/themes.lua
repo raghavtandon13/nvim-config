@@ -11,31 +11,4 @@ return {
             vim.cmd.colorscheme 'gruvbox-material'
         end,
     },
-    {
-        'folke/tokyonight.nvim',
-        enabled = false,
-        lazy = false,
-        priority = 1000,
-        opts = { style = 'night', transparent = true, lualine_bold = true },
-        config = function()
-            require('tokyonight').setup {
-                on_highlights = function(hl, c)
-                    local prompt = ''
-                    hl.TelescopeNormal = { bg = prompt, fg = c.fg_dark }
-                    hl.TelescopeBorder = { bg = prompt }
-                    hl.TelescopePromptBorder = { bg = prompt, fg = prompt }
-                    hl.TelescopePromptTitle = { bg = prompt }
-                end,
-            }
-            vim.cmd.colorscheme 'tokyonight'
-        end,
-    },
-    {
-        'sho-87/kanagawa-paper.nvim',
-        enabled = false,
-        config = function()
-            require('kanagawa-paper').setup { transparent = true, colors = { theme = { ui = { float = { bg = '' } } } } }
-            vim.cmd.colorscheme 'kanagawa-paper'
-        end,
-    },
 }

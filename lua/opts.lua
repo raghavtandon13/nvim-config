@@ -26,7 +26,7 @@ vim.opt.cursorline = true
 vim.opt.fillchars = { eob = ' ' }
 vim.opt.hls = false
 vim.opt.numberwidth = 4
-vim.opt.shell = '"C:\\Program Files\\PowerShell\\7\\pwsh.exe"'
+-- vim.opt.shell = '"C:\\Program Files\\PowerShell\\7\\pwsh.exe"'
 vim.opt.shiftwidth = 4
 vim.opt.splitright = true
 vim.opt.swapfile = false

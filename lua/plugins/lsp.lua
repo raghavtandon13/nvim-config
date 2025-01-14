@@ -1,7 +1,9 @@
+---@diagnostic disable: missing-fields
+
 return {
     {
         'neovim/nvim-lspconfig',
-        event = { 'BufReadPre', 'BufNewFile' },
+        event = { 'BufReadPost', 'BufNewFile' },
         dependencies = {
             { 'williamboman/mason.nvim', opts = { ui = { border = 'single', height = 0.8 } }, config = true },
             { 'williamboman/mason-lspconfig.nvim', opts = {} },
@@ -71,19 +73,7 @@ return {
             local servers = {
                 clangd = { filetypes = { 'c', 'cpp', 'objc', 'objcpp' } },
                 html = { filetypes = { 'html', 'jsx', 'tsx' } },
-                lua_ls = {
-                    Lua = {
-                        hint = { enable = true },
-                        runtime = { version = 'LuaJIT' },
-                        workspace = {
-                            checkThirdParty = false,
-                            library = { vim.env.VIMRUNTIME, '${3rd}/luv/library', '${3rd}/busted/library' },
-                        },
-                        completion = { callSnippet = 'Replace' },
-                        telemetry = { enable = false },
-                        diagnostics = { disable = { 'missing-fields', 'undefined-field' } },
-                    },
-                },
+                lua_ls = {},
                 pyright = {},
                 rust_analyzer = {
                     filetypes = { 'rust' },
@@ -142,7 +132,7 @@ return {
             }
 
             local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+            capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities) -- old nvim-cmp
 
             local on_attach = function(_, bufnr)
                 local nmap = function(keys, func, desc)
@@ -176,31 +166,6 @@ return {
                 nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
                 nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
 
-                --[[ Customizations ]]
-
-                -- Function to Hide TSServer Diagnostics
-                -- https://github.com/microsoft/TypeScript/blob/main/src/compiler/diagnosticMessages.json
-                -- 80001 or 80007 --> "File is a CommonJS module; it may be converted to an ES module."
-
-                local function filter_tsserver_diagnostics(_, result, ctx, config)
-                    require('ts-error-translator').translate_diagnostics(_, result, ctx, config)
-                    if result.diagnostics == nil then
-                        return
-                    end
-                    local idx = 1
-                    while idx <= #result.diagnostics do
-                        local entry = result.diagnostics[idx]
-                        if entry.code == 80001 or entry.code == 80007 then
-                            table.remove(result.diagnostics, idx)
-                        else
-                            idx = idx + 1
-                        end
-                    end
-                    vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx, config)
-                end
-                vim.lsp.handlers['textDocument/publishDiagnostics'] = filter_tsserver_diagnostics
-
-
                 -- "Format" command for LSP formatting
 
                 vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
@@ -210,7 +175,8 @@ return {
 
             -- Mason & LSP capabilities
             local mason_lspconfig = require 'mason-lspconfig'
-            mason_lspconfig.setup { ensure_installed = vim.tbl_keys(servers) }
+            mason_lspconfig.setup { automatic_installation = true, ensure_installed = vim.tbl_keys(servers) }
+
             mason_lspconfig.setup_handlers {
                 function(server_name)
                     require('lspconfig')[server_name].setup {
@@ -223,19 +189,35 @@ return {
             }
 
             -- Code Folding Capabilities
-            local foldcapabilities = vim.lsp.protocol.make_client_capabilities()
-            foldcapabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
-            local language_servers = require('lspconfig').util.available_servers()
-            for _, ls in ipairs(language_servers) do
-                require('lspconfig')[ls].setup { capabilities = foldcapabilities }
-            end
+            capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
             require('ufo').setup()
 
-	    -- Hover and Diagnostic Looks
+            -- Hover and Diagnostic Looks
+            vim.lsp.handlers['textDocument/hover'] =
+                vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded', width = 60, max_height = 50 })
+            vim.diagnostic.config { float = { border = 'rounded' } }
 
-	    vim.lsp.handlers['textDocument/hover'] =
-	    vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded', width = 60, max_height = 50 })
-	    vim.diagnostic.config { float = { border = 'rounded' } }
+            -- Function to Hide TSServer Diagnostics
+            local function filter_tsserver_diagnostics(_, result, ctx, config)
+                require('ts-error-translator').translate_diagnostics(_, result, ctx)
+                if result.diagnostics == nil then
+                    return
+                end
+                local idx = 1
+                while idx <= #result.diagnostics do
+                    local entry = result.diagnostics[idx]
+                    if entry.code == 80001 or entry.code == 80007 then
+                        table.remove(result.diagnostics, idx)
+                    else
+                        idx = idx + 1
+                    end
+                end
+                vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx, config)
+            end
+            vim.lsp.handlers['textDocument/publishDiagnostics'] = filter_tsserver_diagnostics
+
+            -- https://github.com/microsoft/TypeScript/blob/main/src/compiler/diagnosticMessages.json
+            -- 80001 or 80007 --> "File is a CommonJS module; it may be converted to an ES module."
         end,
     },
 }

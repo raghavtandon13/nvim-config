@@ -1,3 +1,5 @@
+---@diagnostic disable: missing-fields
+
 return {
 
     --[[ ENABLED PLUGINS ]]
@@ -26,30 +28,19 @@ return {
         'folke/flash.nvim',
         event = 'VeryLazy',
         opts = {},
-        keys = { {
-            'x',
-            mode = { 'n', 'x', 'o' },
-            function()
-                require('flash').jump()
-            end,
-            desc = 'flash',
-        } },
-    },
-    {
-        'folke/snacks.nvim',
-        priority = 1000,
-        lazy = false,
-        opts = {
-            bigfile = { enabled = true },
-            dashboard = { enabled = true },
-            indent = { scope = { enabled = true, animate = { enabled = false } } },
-            notifier = { enabled = true },
-            quickfile = { enabled = true },
-            terminal = { enabled = true },
+        keys = {
+            {
+                'x',
+                mode = { 'n', 'x', 'o' },
+                function()
+                    require('flash').jump()
+                end,
+                desc = 'flash',
+            },
         },
     },
-    { 'folke/trouble.nvim', opts = {} },
     { 'folke/ts-comments.nvim', opts = {}, enabled = vim.fn.has 'nvim-0.10.0' == 1 },
+    { 'https://gitlab.com/HiPhish/rainbow-delimiters.nvim', config = function() end },
     { 'iamyoki/buffer-reopen.nvim', opts = {} },
     { 'kevinhwang91/nvim-ufo', dependencies = { 'kevinhwang91/promise-async' } },
     { 'mg979/vim-visual-multi', branch = 'master', event = 'BufReadPre' },
@@ -84,7 +75,10 @@ return {
                 { filter = { event = 'notify', find = 'There were issues reported' }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = 'fewer lines' } } }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = '[supermaven-nvim]' } } }, opts = { skip = true } },
-                { filter = { event = 'msg_show', any = { { find = '^[^-]+-query-20[^-]+$' } } }, opts = { skip = true } },
+                {
+                    filter = { event = 'msg_show', any = { { find = '^[^-]+-query-20[^-]+$' } } },
+                    opts = { skip = true },
+                },
             },
             views = {
                 mini = {
@@ -93,6 +87,19 @@ return {
                     position = { row = -2 },
                 },
             },
+        },
+    },
+    {
+        'folke/snacks.nvim',
+        priority = 1000,
+        lazy = false,
+        opts = {
+            bigfile = { enabled = true },
+            dashboard = { enabled = true },
+            indent = { scope = { enabled = true, animate = { enabled = false } } },
+            notifier = { enabled = false },
+            quickfile = { enabled = true },
+            terminal = { enabled = true },
         },
     },
     {
@@ -218,6 +225,7 @@ return {
             }
         end,
     },
+    { 'folke/trouble.nvim', enabled = false, opts = { pinned = true, focus = true } },
     {
         'lukas-reineke/indent-blankline.nvim',
         enabled = false,

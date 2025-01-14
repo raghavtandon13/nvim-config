@@ -70,3 +70,12 @@ vim.keymap.set(
     '<cmd>lua toggle_diagnostics()<CR>',
     { desc = 'Toggle Diagnostics ', noremap = true, silent = true }
 )
+
+-- TypeScript compiler setup for Neovim using npx tsc
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "typescript",
+  callback = function()
+    vim.opt_local.makeprg = "powershell -Command \"npx tsc --noEmit | Out-String\""
+    vim.opt_local.errorformat = "%f %#(%l\\,%c): %m"
+  end,
+})
