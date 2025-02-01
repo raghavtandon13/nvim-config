@@ -61,6 +61,14 @@ function server {
         Set-Location -Path "$HOME\Downloads"
         ssh -i "cred.pem" ubuntu@ec2-3-27-146-211.ap-southeast-2.compute.amazonaws.com
 }
+function server2 {
+        Set-Location -Path "$HOME\Downloads"
+	 ssh -i "cred-2.pem" ec2-user@ec2-13-201-83-62.ap-south-1.compute.amazonaws.com
+}
+function server3 {
+        Set-Location -Path "$HOME\Downloads"
+	ssh -i "cred-3.pem" ec2-user@ec2-13-201-75-238.ap-south-1.compute.amazonaws.com
+}
 
 function killer {
     $processes = @("edge","msedge", "msedgewebview2", "MSPCManager", "nearby_share", "thunderbird","postman")

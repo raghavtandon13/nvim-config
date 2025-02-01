@@ -4,6 +4,9 @@ return {
         event = { 'BufReadPre', 'BufNewFile' },
         config = function()
             require('conform').setup {
+                format_on_save = {
+                    timeout_ms = 500,
+                },
                 notify_on_error = false,
                 formatters_by_ft = {
                     lua = { 'stylua' },

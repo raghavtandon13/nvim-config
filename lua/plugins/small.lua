@@ -4,6 +4,19 @@ return {
 
     --[[ ENABLED PLUGINS ]]
 
+    {
+        'arsham/listish.nvim',
+        dependencies = { 'arsham/arshlib.nvim', 'nvim-treesitter/nvim-treesitter-textobjects' },
+        config = { signs = { qflist = '' }, extmarks = { qflist_text = 'Quickfix' } },
+        keys = { '<leader>qq' },
+        ft = { 'qf' },
+    },
+    {
+        'cameron-wags/rainbow_csv.nvim',
+        config = true,
+        ft = { 'csv', 'tsv', 'csv_semicolon', 'csv_whitespace', 'csv_pipe', 'rfc_csv', 'rfc_semicolon' },
+        cmd = { 'RainbowDelim', 'RainbowDelimSimple', 'RainbowDelimQuoted', 'RainbowMultiDelim' },
+    },
     { 'dmmulroy/ts-error-translator.nvim' },
     { 'echasnovski/mini.misc', version = '*', opts = {} },
     {
@@ -38,29 +51,6 @@ return {
                 desc = 'flash',
             },
         },
-    },
-    { 'folke/ts-comments.nvim', opts = {}, enabled = vim.fn.has 'nvim-0.10.0' == 1 },
-    { 'https://gitlab.com/HiPhish/rainbow-delimiters.nvim', config = function() end },
-    { 'iamyoki/buffer-reopen.nvim', opts = {} },
-    { 'kevinhwang91/nvim-ufo', dependencies = { 'kevinhwang91/promise-async' } },
-    { 'mg979/vim-visual-multi', branch = 'master', event = 'BufReadPre' },
-    { 'mrjones2014/smart-splits.nvim', opts = {} },
-    { 'MysticalDevil/inlay-hints.nvim', event = 'LspAttach', opts = { autocmd = { enable = false } } },
-    { 'nvim-tree/nvim-web-devicons', opts = {} },
-    { 'saecki/crates.nvim', event = { 'BufRead Cargo.toml' }, opts = { completion = { cmp = { enabled = true } } } },
-    { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'BufReadPost', opts = { max_join_length = 20201120 } },
-    {
-        'arsham/listish.nvim',
-        dependencies = { 'arsham/arshlib.nvim', 'nvim-treesitter/nvim-treesitter-textobjects' },
-        config = { signs = { qflist = '' }, extmarks = { qflist_text = 'Quickfix' } },
-        keys = { '<leader>qq' },
-        ft = { 'qf' },
-    },
-    {
-        'cameron-wags/rainbow_csv.nvim',
-        config = true,
-        ft = { 'csv', 'tsv', 'csv_semicolon', 'csv_whitespace', 'csv_pipe', 'rfc_csv', 'rfc_semicolon' },
-        cmd = { 'RainbowDelim', 'RainbowDelimSimple', 'RainbowDelimQuoted', 'RainbowMultiDelim' },
     },
     {
         'folke/noice.nvim',
@@ -108,6 +98,7 @@ return {
         dependencies = { 'nvim-lua/plenary.nvim' },
         opts = { signs = true, keywords = { NOTE = { icon = ' ', color = 'hint', alt = { 'todo' } } } },
     },
+    { 'folke/ts-comments.nvim', opts = {}, enabled = vim.fn.has 'nvim-0.10.0' == 1 },
     {
         'hat0uma/csvview.nvim',
         ft = { 'csv', 'tsv', 'csv_semicolon', 'csv_whitespace', 'csv_pipe', 'rfc_csv', 'rfc_semicolon' },
@@ -116,6 +107,9 @@ return {
             vim.cmd [[ CsvViewEnable ]]
         end,
     },
+    { 'https://gitlab.com/HiPhish/rainbow-delimiters.nvim', config = function() end },
+    { 'iamyoki/buffer-reopen.nvim', opts = {} },
+    { 'kevinhwang91/nvim-ufo', dependencies = { 'kevinhwang91/promise-async' } },
     {
         'kosayoda/nvim-lightbulb',
         config = function()
@@ -156,6 +150,7 @@ return {
         filetype = { 'html', 'javascriptreact', 'typescriptreact' },
         opts = { server = { override = false } },
     },
+    { 'mg979/vim-visual-multi', branch = 'master', event = 'BufReadPre' },
     {
         'michaelrommel/nvim-silicon',
         lazy = true,
@@ -168,8 +163,12 @@ return {
             font = 'Berkeley Mono',
         },
     },
+    { 'mrjones2014/smart-splits.nvim', opts = {} },
+    { 'MysticalDevil/inlay-hints.nvim', event = 'LspAttach', opts = { autocmd = { enable = false } } },
+    { 'nvim-tree/nvim-web-devicons', opts = {} },
     {
         'OXY2DEV/markview.nvim',
+        enabled = false,
         opts = {
             highlight_groups = {
                 { group_name = 'Heading1', value = { fg = '#1e1e2e', bg = '#a6e3a1' } },
@@ -193,6 +192,7 @@ return {
             code_blocks = { style = 'minimal', pad_amount = 3, pad_char = ' ', hl = 'CursorLine' },
         },
     },
+    { 'saecki/crates.nvim', event = { 'BufRead Cargo.toml' }, opts = { completion = { cmp = { enabled = true } } } },
     {
         'supermaven-inc/supermaven-nvim',
         event = { 'InsertEnter' },
@@ -207,13 +207,10 @@ return {
             redo = { hlgroup = 'HighlightRedo', mode = 'n', lhs = '<C-r>', map = 'redo' },
         },
     },
+    { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'BufReadPost', opts = { max_join_length = 20201120 } },
 
     --[[ DISABLED PLUGINS ]]
 
-    { 'mbbill/undotree', enabled = false },
-    { 'mistweaverco/kulala.nvim', enabled = false, opts = {} },
-    { 'numToStr/Comment.nvim', enabled = false, opts = {}, event = 'BufReadPre' },
-    { 'ThePrimeagen/git-worktree.nvim', enabled = false, opts = {} },
     {
         'echasnovski/mini.indentscope',
         enabled = false,
@@ -237,6 +234,10 @@ return {
         },
         event = 'BufReadPre',
     },
+    { 'mbbill/undotree', enabled = false },
+    { 'mistweaverco/kulala.nvim', enabled = false, opts = {} },
+    { 'numToStr/Comment.nvim', enabled = false, opts = {}, event = 'BufReadPre' },
+    { 'ThePrimeagen/git-worktree.nvim', enabled = false, opts = {} },
     {
         'tpope/vim-dadbod',
         enabled = false,
