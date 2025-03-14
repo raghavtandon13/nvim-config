@@ -2,6 +2,14 @@
 
 return {
     {
+        'ibhagwan/fzf-lua',
+        -- optional for icon support
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
+        -- or if using mini.icons/mini.nvim
+        -- dependencies = { "echasnovski/mini.icons" },
+        opts = {},
+    },
+    {
         'neovim/nvim-lspconfig',
         event = { 'BufReadPost', 'BufNewFile' },
         dependencies = {
@@ -11,13 +19,14 @@ return {
     },
     {
         'hrsh7th/nvim-cmp',
-        event = { 'InsertEnter' },
+        event = 'InsertEnter',
         dependencies = {
             'L3MON4D3/LuaSnip',
             'hrsh7th/cmp-nvim-lsp',
             'hrsh7th/cmp-path',
             'rafamadriz/friendly-snippets',
             'saadparwaiz1/cmp_luasnip',
+            'Yu-Leo/cmp-go-pkgs',
             { 'onsails/lspkind-nvim', opts = { symbol_map = { Color = '󰝤', Supermaven = '' } } },
             {
                 'folke/lazydev.nvim',
@@ -46,9 +55,7 @@ return {
                     },
                 },
                 completion = { completeopt = 'menu,menuone,noinsert' },
-                formatting = {
-                    format = require('lspkind').cmp_format { before = require('tailwind-tools.cmp').lspkind_format },
-                },
+                -- formatting = { format = require('lspkind').cmp_format { before = require('tailwind-tools.cmp').lspkind_format } },
                 mapping = cmp.mapping.preset.insert {
                     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
                     ['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -57,6 +64,7 @@ return {
                 },
                 sources = {
                     { name = 'nvim_lsp' },
+                    { name = 'go_pkgs' },
                     { name = 'luasnip' },
                     { name = 'buffer' },
                     { name = 'path' },
@@ -69,6 +77,7 @@ return {
     },
     {
         'williamboman/mason-lspconfig.nvim',
+        event = { 'BufReadPost', 'BufNewFile' },
         config = function()
             local servers = {
                 clangd = { filetypes = { 'c', 'cpp', 'objc', 'objcpp' } },

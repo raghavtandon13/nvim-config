@@ -1,3 +1,5 @@
+---@diagnostic disable: missing-fields
+
 -- [[ Highlight on yank ]]
 
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -72,10 +74,39 @@ vim.keymap.set(
 )
 
 -- TypeScript compiler setup for Neovim using npx tsc
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "typescript",
-  callback = function()
-    vim.opt_local.makeprg = "powershell -Command \"npx tsc --noEmit | Out-String\""
-    vim.opt_local.errorformat = "%f %#(%l\\,%c): %m"
-  end,
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'typescript',
+    callback = function()
+        vim.opt_local.makeprg = 'powershell -Command "npx tsc --noEmit | Out-String"'
+        vim.opt_local.errorformat = '%f %#(%l\\,%c): %m'
+    end,
+})
+
+function ConvertJSON()
+    local start_line, start_col = unpack(vim.fn.getpos "'<", 2, 3)
+    local end_line, end_col = unpack(vim.fn.getpos "'>", 2, 3)
+    local range = string.format('%d,%d', start_line, end_line)
+    vim.cmd(range .. 's/\\v(\\w+):/"\\1":/g') -- Quote keys
+    vim.cmd(range .. 's/\'/"/g') -- Convert single quotes to double quotes
+end
+
+vim.api.nvim_set_keymap('v', '<Space>y', ':lua ConvertJSON()<CR>', { noremap = true, silent = true })
+
+vim.api.nvim_create_user_command('Light', function()
+    require('rose-pine').setup { styles = { transparency = false } }
+    vim.cmd 'colorscheme rose-pine-dawn'
+    vim.cmd 'source ~/.config/nvim/lua/highlights.lua'
+end, {})
+
+vim.api.nvim_create_user_command('Dark', function()
+    require('rose-pine').setup { styles = { transparency = true } }
+    vim.cmd 'colorscheme rose-pine'
+    vim.cmd 'source ~/.config/nvim/lua/highlights.lua'
+end, {})
+
+vim.api.nvim_create_autocmd({ 'LspAttach' }, {
+    pattern = { '*.go' },
+    callback = function(args)
+        require('cmp_go_pkgs').init_items(args)
+    end,
 })

@@ -1,6 +1,3 @@
--- THEME
--- gruv1 =  voilet, gruv2 =  blue, gruv3 =  cyan
-
 local colors = {
     blue = '#80a0ff',
     cyan = '#79dac8',
@@ -13,17 +10,34 @@ local colors = {
     ok2 = '#332f4a',
     grey = '#303030',
     gruv1 = '#7fa678',
-    -- gruv1 = '#a79984', --main
+    gruv2 = '#a9b665',
+    gruv3 = '#ea6962',
+    orange = '#ff9e64',
+    ccc = '#14141a'
+}
+local colors2 = {
+    blue = '#80a0ff',
+    cyan = '#79dac8',
+    black = '#799dd9',
+    white = '#c6c6c6',
+    red = '#ff5189',
+    violet = '#d183e8',
+    ok1 = '#191724',
+    ok = '#00FFFFFF',
+    ok2 = '#332f4a',
+    grey = '#303030',
+    gruv1 = '#313244',
     gruv2 = '#a9b665',
     gruv3 = '#ea6962',
     orange = '#ff9e64',
 }
+
 local bubbles_theme = {
     normal = {
-        a = { fg = colors.black, bg = colors.gruv1 },
+        a = { fg = colors2.black, bg = colors2.gruv1 },
         b = { fg = colors.white, bg = colors.black },
-        c = { fg = colors.white, bg = colors.ok },
-        y = { fg = colors.white, bg = colors.grey },
+        c = { fg = colors.white, bg = colors.ccc },
+        y = { fg = colors.white, bg = colors.black },
     },
     insert = { a = { fg = colors.black, bg = colors.gruv2 } },
     visual = { a = { fg = colors.black, bg = colors.gruv3 } },
@@ -45,8 +59,8 @@ return {
     opts = {
         options = {
             icons_enabled = true,
-            -- theme = 'tokyonight',
             theme = bubbles_theme,
+            -- theme = 'tokyonight', --  TODO: make a catppuccin bubbles theme
             component_separators = '|',
             section_separators = { left = '', right = '' },
             disabled_filetypes = { 'alpha' },

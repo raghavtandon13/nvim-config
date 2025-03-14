@@ -16,7 +16,44 @@ vim.opt.runtimepath:prepend(lazypath)
 
 --[[ Imports ]]
 
-require('lazy').setup({ { import = 'plugins' } }, { ui = { change_detection = { notify = false }, border = 'single' } })
+require('lazy').setup({ { import = 'plugins' } }, {
+    ui = { change_detection = { notify = false }, border = 'single' },
+
+    performance = {
+        rtp = {
+            disabled_plugins = {
+                '2html_plugin',
+                'tohtml',
+                'getscript',
+                'getscriptPlugin',
+                'gzip',
+                'logipat',
+                'netrw',
+                'netrwPlugin',
+                'netrwSettings',
+                'netrwFileHandlers',
+                'matchit',
+                'tar',
+                'tarPlugin',
+                'rrhelper',
+                'spellfile_plugin',
+                'vimball',
+                'vimballPlugin',
+                'zip',
+                'zipPlugin',
+                'tutor',
+                'rplugin',
+                'syntax',
+                'synmenu',
+                'optwin',
+                'compiler',
+                'bugreport',
+                'ftplugin',
+            },
+        },
+    },
+})
 require 'keymaps'
 require 'autos'
 require 'highlights'
+require 'utils'

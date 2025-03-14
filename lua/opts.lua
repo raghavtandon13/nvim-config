@@ -1,5 +1,7 @@
-vim.filetype.add { extension = { ['http'] = 'http' } }
-vim.g.db_ui_use_nvim_notify = 1
+local sysname = vim.uv.os_uname().sysname
+local os = sysname:match 'Windows' and 'Windows' or sysname:match 'Linux' and 'Linux' or sysname -- Windows, Linux, Darwin, NetBSD,...
+local is_windows = os == 'Windows'
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.o.acd = true
@@ -15,7 +17,7 @@ vim.o.laststatus = 3
 vim.o.mouse = 'a'
 vim.o.number = true
 vim.o.smartcase = true
-vim.o.stc = ' %s %l  '
+vim.o.stc = ' %s %l    '
 vim.o.termguicolors = true
 vim.o.timeoutlen = 300
 vim.o.undofile = true
@@ -35,3 +37,13 @@ vim.opt.titlestring = [[%t – %{fnamemodify(getcwd(), ':t')}]]
 vim.opt.undofile = true
 vim.opt.wrap = false
 vim.wo.signcolumn = 'yes'
+
+local global = {
+    os = os,
+    is_windows = is_windows,
+    path_delimiter = is_windows and ';' or ':',
+    path_separator = is_windows and '\\' or '/',
+}
+for name, value in pairs(global) do
+    vim.g[name] = value
+end

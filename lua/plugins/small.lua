@@ -3,7 +3,6 @@
 return {
 
     --[[ ENABLED PLUGINS ]]
-
     {
         'arsham/listish.nvim',
         dependencies = { 'arsham/arshlib.nvim', 'nvim-treesitter/nvim-treesitter-textobjects' },
@@ -17,10 +16,14 @@ return {
         ft = { 'csv', 'tsv', 'csv_semicolon', 'csv_whitespace', 'csv_pipe', 'rfc_csv', 'rfc_semicolon' },
         cmd = { 'RainbowDelim', 'RainbowDelimSimple', 'RainbowDelimQuoted', 'RainbowMultiDelim' },
     },
-    { 'dmmulroy/ts-error-translator.nvim' },
+    {
+        'dmmulroy/ts-error-translator.nvim',
+        filetype = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact', 'tsx', 'jsx' },
+    },
     { 'echasnovski/mini.misc', version = '*', opts = {} },
     {
         'echasnovski/mini.move',
+        event = 'VeryLazy',
         version = '*',
         opts = {
             mappings = {
@@ -35,22 +38,20 @@ return {
             },
         },
     },
-    { 'echasnovski/mini.pairs', version = '*', opts = {} },
-    { 'echasnovski/mini.surround', version = '*', opts = {} },
+    { 'echasnovski/mini.pairs', event = 'VeryLazy', version = '*', opts = {} },
+    { 'echasnovski/mini.surround', event = 'VeryLazy', version = '*', opts = {} },
     {
         'folke/flash.nvim',
         event = 'VeryLazy',
         opts = {},
-        keys = {
-            {
-                'x',
-                mode = { 'n', 'x', 'o' },
-                function()
-                    require('flash').jump()
-                end,
-                desc = 'flash',
-            },
-        },
+        keys = { {
+            'x',
+            mode = { 'n', 'x', 'o' },
+            function()
+                require('flash').jump()
+            end,
+            desc = 'flash',
+        } },
     },
     {
         'folke/noice.nvim',
@@ -65,10 +66,7 @@ return {
                 { filter = { event = 'notify', find = 'There were issues reported' }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = 'fewer lines' } } }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = '[supermaven-nvim]' } } }, opts = { skip = true } },
-                {
-                    filter = { event = 'msg_show', any = { { find = '^[^-]+-query-20[^-]+$' } } },
-                    opts = { skip = true },
-                },
+                { filter = { event = 'msg_show', any = { { find = '^[^-]+-query-20[^-]+$' } } }, opts = { skip = true } },
             },
             views = {
                 mini = {
@@ -94,7 +92,7 @@ return {
     },
     {
         'folke/todo-comments.nvim',
-        event = 'BufReadPost',
+        event = 'VeryLazy',
         dependencies = { 'nvim-lua/plenary.nvim' },
         opts = { signs = true, keywords = { NOTE = { icon = ' ', color = 'hint', alt = { 'todo' } } } },
     },
@@ -147,8 +145,17 @@ return {
     },
     {
         'luckasRanarison/tailwind-tools.nvim',
+        event = 'VeryLazy',
         filetype = { 'html', 'javascriptreact', 'typescriptreact' },
         opts = { server = { override = false } },
+        config = function()
+            local cmp = require 'cmp'
+            cmp.setup {
+                formatting = {
+                    format = require('lspkind').cmp_format { before = require('tailwind-tools.cmp').lspkind_format },
+                },
+            }
+        end,
     },
     { 'mg979/vim-visual-multi', branch = 'master', event = 'BufReadPre' },
     {
@@ -166,48 +173,49 @@ return {
     { 'mrjones2014/smart-splits.nvim', opts = {} },
     { 'MysticalDevil/inlay-hints.nvim', event = 'LspAttach', opts = { autocmd = { enable = false } } },
     { 'nvim-tree/nvim-web-devicons', opts = {} },
+    { 'OXY2DEV/markview.nvim', filetype = { 'markdown', 'markdown_inline', 'Avante' }, opts = {} },
     {
-        'OXY2DEV/markview.nvim',
-        enabled = false,
-        opts = {
-            highlight_groups = {
-                { group_name = 'Heading1', value = { fg = '#1e1e2e', bg = '#a6e3a1' } },
-                { group_name = 'Heading1Corner', value = { fg = '#a6e3a1' } },
-            },
-            headings = {
-                enable = true,
-                shift_width = 0,
-                heading_1 = {
-                    style = 'label',
-                    icon = '󰈙 ',
-                    sign = ' ',
-                    padding_left = ' ',
-                    padding_right = ' ',
-                    corner_right = '',
-                    corner_right_hl = 'Heading1Corner',
-                    hl = 'Heading1',
-                },
-            },
-            inline_codes = { enable = true, hl = 'CursorLine' },
-            code_blocks = { style = 'minimal', pad_amount = 3, pad_char = ' ', hl = 'CursorLine' },
-        },
-    },
-    { 'saecki/crates.nvim', event = { 'BufRead Cargo.toml' }, opts = { completion = { cmp = { enabled = true } } } },
-    {
-        'supermaven-inc/supermaven-nvim',
-        event = { 'InsertEnter' },
+        'rachartier/tiny-inline-diagnostic.nvim',
+        event = 'VeryLazy',
+        priority = 1000,
         config = function()
-            require('supermaven-nvim').setup {}
+            require('tiny-inline-diagnostic').setup {
+                preset = 'powerline',
+                options = { multilines = { enabled = true, always_show = true }, show_all_diags_on_cursorline = true },
+            }
+            vim.diagnostic.config { virtual_text = false }
         end,
     },
+    { 'saecki/crates.nvim', event = { 'BufRead Cargo.toml' }, opts = { completion = { cmp = { enabled = true } } } },
+    { 'supermaven-inc/supermaven-nvim', event = { 'VeryLazy' }, opts = {} },
     {
         'tzachar/highlight-undo.nvim',
+        event = 'VeryLazy',
         opts = {
             undo = { hlgroup = 'HighlightUndo', mode = 'n', lhs = 'u', map = 'undo' },
             redo = { hlgroup = 'HighlightRedo', mode = 'n', lhs = '<C-r>', map = 'redo' },
         },
     },
-    { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'BufReadPost', opts = { max_join_length = 20201120 } },
+    { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'VeryLazy', opts = { max_join_length = 20201120 } },
+    {
+        'yetone/avante.nvim',
+        event = 'VeryLazy',
+        version = false,
+        opts = {
+            provider = 'copilot',
+            file_selector = { provider = 'telescope' },
+            windows = {
+                position = 'smart',
+                wrap = true,
+                width = 50,
+                ask = { enabled = true },
+                sidebar_header = { enabled = false },
+            },
+            behaviour = { enable_token_counting = false },
+            hints = { enabled = false },
+        },
+        dependencies = { 'stevearc/dressing.nvim', 'zbirenbaum/copilot.lua', 'takeshid/avante-status.nvim' },
+    },
 
     --[[ DISABLED PLUGINS ]]
 
