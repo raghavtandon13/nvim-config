@@ -44,7 +44,7 @@ return {
 
         -- Grep in Root
         local function live_grep_git_root()
-            local git_root = require('mini.misc').find_root(0, { '.git', 'Makefile' }, function()
+            local git_root = require('mini.misc').find_root(0, { '.git', 'Makefile', '.root' }, function()
                 return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':h')
             end)
             if git_root then
@@ -131,7 +131,7 @@ return {
         vim.keymap.set('n', '<leader><space>', function()
             require('telescope.builtin').find_files {
                 layout_config = { width = 0.8 },
-                cwd = require('mini.misc').find_root(0, { '.git', 'Makefile' }, function()
+                cwd = require('mini.misc').find_root(0, { '.git', 'Makefile', '.root' }, function()
                     return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':h')
                 end),
             }
