@@ -29,6 +29,12 @@ vim.opt.fillchars = { eob = ' ' }
 vim.opt.hls = false
 vim.opt.numberwidth = 4
 -- vim.opt.shell = '"C:\\Program Files\\PowerShell\\7\\pwsh.exe"'
+
+vim.o.shell = 'pwsh'
+vim.o.shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command'
+vim.o.shellquote = ''
+vim.o.shellxquote = ''
+
 vim.opt.shiftwidth = 4
 vim.opt.splitright = true
 vim.opt.swapfile = false

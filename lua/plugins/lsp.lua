@@ -3,10 +3,7 @@
 return {
     {
         'ibhagwan/fzf-lua',
-        -- optional for icon support
         dependencies = { 'nvim-tree/nvim-web-devicons' },
-        -- or if using mini.icons/mini.nvim
-        -- dependencies = { "echasnovski/mini.icons" },
         opts = {},
     },
     {
@@ -42,9 +39,7 @@ return {
             luasnip.config.setup {}
             cmp.setup {
                 snippet = {
-                    expand = function(args)
-                        luasnip.lsp_expand(args.body)
-                    end,
+                    expand = function(args) luasnip.lsp_expand(args.body) end,
                 },
                 window = {
                     completion = cmp.config.window.bordered {
@@ -62,16 +57,7 @@ return {
                     ['<C-i>'] = cmp.mapping.complete(),
                     ['<CR>'] = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Replace, select = true },
                 },
-                sources = {
-                    { name = 'nvim_lsp' },
-                    { name = 'go_pkgs' },
-                    { name = 'luasnip' },
-                    { name = 'buffer' },
-                    { name = 'path' },
-                    { name = 'codeium' },
-                    { name = 'supermaven' },
-                    { name = 'crates' },
-                },
+                sources = { { name = 'nvim_lsp' } },
             }
         end,
     },
@@ -138,80 +124,24 @@ return {
                         },
                     },
                 },
+                gopls = {},
             }
 
             local capabilities = vim.lsp.protocol.make_client_capabilities()
             capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities) -- old nvim-cmp
 
-            local on_attach = function(_, bufnr)
-                local nmap = function(keys, func, desc)
-                    if desc then
-                        desc = 'LSP: ' .. desc
-                    end
-                    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
-                end
-
-                --[[ Keymaps ]]
-
-                nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
-                nmap(
-                    '<leader>ca',
-                    ":lua vim.lsp.buf.code_action { context = { only = { 'quickfix', 'refactor', 'source' } } }<CR>",
-                    '[C]ode [A]ction'
-                )
-                nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-                nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-                nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-                nmap(
-                    '<leader>wl',
-                    ':lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>',
-                    '[W]orkspace [L]ist Folders'
-                )
-                nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-                nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-                nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-                nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-                nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-                nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-                nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-
-                -- "Format" command for LSP formatting
-
-                vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-                    vim.lsp.buf.format()
-                end, { desc = 'Format current buffer with LSP' })
-            end
-
             -- Mason & LSP capabilities
             local mason_lspconfig = require 'mason-lspconfig'
             mason_lspconfig.setup { automatic_installation = true, ensure_installed = vim.tbl_keys(servers) }
-
-            mason_lspconfig.setup_handlers {
-                function(server_name)
-                    require('lspconfig')[server_name].setup {
-                        capabilities = capabilities,
-                        on_attach = on_attach,
-                        settings = servers[server_name],
-                        filetypes = (servers[server_name] or {}).filetypes,
-                    }
-                end,
-            }
 
             -- Code Folding Capabilities
             capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
             require('ufo').setup()
 
-            -- Hover and Diagnostic Looks
-            vim.lsp.handlers['textDocument/hover'] =
-                vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded', width = 60, max_height = 50 })
-            vim.diagnostic.config { float = { border = 'rounded' } }
-
-            -- Function to Hide TSServer Diagnostics
+            -- -- Function to Hide TSServer Diagnostics
             local function filter_tsserver_diagnostics(_, result, ctx, config)
                 require('ts-error-translator').translate_diagnostics(_, result, ctx)
-                if result.diagnostics == nil then
-                    return
-                end
+                if result.diagnostics == nil then return end
                 local idx = 1
                 while idx <= #result.diagnostics do
                     local entry = result.diagnostics[idx]

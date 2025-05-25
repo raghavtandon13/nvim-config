@@ -1,4 +1,4 @@
-$prompt = ""
+#$prompt = "$env:WEZTERM_UNIX_SOCKET = "$HOME/.local/share/wezterm/gui-sock-$((Get-Process wezterm-gui).Id)""
 function Invoke-Starship-PreCommand {
     $current_location = $executionContext.SessionState.Path.CurrentLocation
     if ($current_location.Provider.Name -eq "FileSystem") {
@@ -9,6 +9,7 @@ function Invoke-Starship-PreCommand {
     $host.ui.Write($prompt)
 }
 Invoke-Expression (&starship init powershell)
+Invoke-Expression (& { (zoxide init powershell | Out-String) })
 # Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
 # Import-Module posh-git
 $env:EDITOR = "nvim"
@@ -16,11 +17,12 @@ $env:EDITOR = "nvim"
 Set-Alias c cls
 Set-Alias cat bat
 Set-Alias lg lazygit
-Set-Alias ls lsd
+Set-Alias ls ls-better
 Set-Alias rm Remove-ItemSafely
 Set-Alias vim nvim
 
-function  f { vim(fzf) }
+function f { vim(fzf) }
+function which { scoop which $args }
 function cdc { set-location "D:\Code" }
 function desk { set-location "C:\Users\ragha\Desktop" }
 function down { set-location "C:\Users\ragha\Downloads" }
@@ -30,6 +32,7 @@ function fs { Invoke-FuzzyScoop }
 function k { Invoke-FuzzyKillProcess } 
 function kk { sudo Invoke-FuzzyKillProcess } 
 function ll { lsd.exe --tree --depth=1 }
+function ls-better { lsd.exe -lAF --blocks date --blocks size --blocks git --blocks name $args }
 function pg($name) { Get-Process | Where-Object { $_.Name -like "*$name*" } }
 function pk($name) { Get-Process $name -ErrorAction SilentlyContinue | Stop-Process }
 function tm { Start-Process "taskmgr.exe" }
@@ -59,7 +62,7 @@ function li {
 
 function server {
         Set-Location -Path "$HOME\Downloads"
-        ssh -i "cred.pem" ubuntu@ec2-3-27-146-211.ap-southeast-2.compute.amazonaws.com
+        ssh -i "cred.pem" ubuntu@ec2-13-236-84-117.ap-southeast-2.compute.amazonaws.com
 }
 function server2 {
         Set-Location -Path "$HOME\Downloads"
@@ -67,7 +70,7 @@ function server2 {
 }
 function server3 {
         Set-Location -Path "$HOME\Downloads"
-	ssh -i "cred-3.pem" ec2-user@ec2-13-201-75-238.ap-south-1.compute.amazonaws.com
+	ssh -i "cred-3.pem" ec2-user@ec2-3-108-59-42.ap-south-1.compute.amazonaws.com
 }
 
 function killer {
@@ -164,7 +167,9 @@ function scoop-Update {
 }
 
 function winget-Update {
+    winget upgrade
     Get-WinGetPackage | ? IsUpdateAvailable | % {winget update $_.Id}
+    Get-WinGetPackage | ? IsUpdateAvailable | % {winget install $_.Id --force}
 }
 
 

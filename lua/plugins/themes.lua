@@ -11,7 +11,7 @@ return {
     },
     {
         'catppuccin/nvim',
-        enabled = true,
+        enabled = false,
         name = 'catppuccin',
         priority = 1000,
         config = function()
@@ -21,14 +21,11 @@ return {
     },
     {
         'folke/tokyonight.nvim',
-        enabled = true,
+        enabled = false,
         name = 'tokyonight',
         priority = 1000,
-        config = function()
-            vim.cmd.colorscheme 'tokyonight'
-        end,
+        config = function() vim.cmd.colorscheme 'tokyonight' end,
     },
-    -- THIS IS THE BEST THEME EVER 
     {
         'sainnhe/gruvbox-material',
         enabled = false,

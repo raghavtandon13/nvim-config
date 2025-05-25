@@ -1,40 +1,19 @@
+---@diagnostic disable: missing-fields
+
 local colors = {
-    blue = '#80a0ff',
-    cyan = '#79dac8',
     black = '#080808',
     white = '#c6c6c6',
     red = '#ff5189',
-    violet = '#d183e8',
-    ok1 = '#191724',
-    ok = '#00FFFFFF',
-    ok2 = '#332f4a',
-    grey = '#303030',
-    gruv1 = '#7fa678',
-    gruv2 = '#a9b665',
-    gruv3 = '#ea6962',
-    orange = '#ff9e64',
-    ccc = '#14141a'
-}
-local colors2 = {
-    blue = '#80a0ff',
-    cyan = '#79dac8',
-    black = '#799dd9',
-    white = '#c6c6c6',
-    red = '#ff5189',
-    violet = '#d183e8',
-    ok1 = '#191724',
-    ok = '#00FFFFFF',
-    ok2 = '#332f4a',
-    grey = '#303030',
+    ccc = '#14141a',
+    black2 = '#799dd9',
     gruv1 = '#313244',
     gruv2 = '#a9b665',
     gruv3 = '#ea6962',
-    orange = '#ff9e64',
 }
 
 local bubbles_theme = {
     normal = {
-        a = { fg = colors2.black, bg = colors2.gruv1 },
+        a = { fg = colors.black2, bg = colors.gruv1 },
         b = { fg = colors.white, bg = colors.black },
         c = { fg = colors.white, bg = colors.ccc },
         y = { fg = colors.white, bg = colors.black },
@@ -48,6 +27,7 @@ local bubbles_theme = {
         c = { fg = colors.white },
     },
 }
+
 local icons = {
     diagnostics = { Error = ' ', Warn = ' ', Hint = ' ', Info = ' ' },
     git = { added = ' ', modified = ' ', removed = ' ' },
@@ -60,7 +40,6 @@ return {
         options = {
             icons_enabled = true,
             theme = bubbles_theme,
-            -- theme = 'tokyonight', --  TODO: make a catppuccin bubbles theme
             component_separators = '|',
             section_separators = { left = '', right = '' },
             disabled_filetypes = { 'alpha' },
@@ -69,6 +48,33 @@ return {
             lualine_a = { { 'mode' } },
             lualine_b = {
                 'branch',
+                {
+                    function()
+                        local spinner = require 'plugins.components.lualine_codecompanion_spinner'
+                        return spinner:update_status() or ''
+                    end,
+                    color = { fg = '#ff9e64' },
+                },
+                {
+                    function()
+                        local spinner = require 'lualine_components.codecompanion_spinner'()
+                        return spinner:update_status()
+                    end,
+                    color = { fg = '#ff9e64' },
+                },
+                {
+                    function()
+                        local r = pcall(require, 'mini.misc')
+                            and require('mini.misc').find_root(
+                                0,
+                                { '.git', 'Makefile', '.root' },
+                                function() return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':h') end
+                            )
+                        return r and vim.fn.fnamemodify(r, ':t') or ''
+                    end,
+                    color = { fg = '#ff9e64', gui = 'italic' },
+                },
+                'selectioncount',
                 {
                     'diagnostics',
                     symbols = {
@@ -99,9 +105,7 @@ return {
                     function()
                         local str = require('noice').api.status.mode.get()
                         local match = str.match(str, 'recording @[A-Za-z]')
-                        if match then
-                            return match
-                        end
+                        if match then return match end
                         return ''
                     end,
                     cond = require('noice').api.status.mode.has,
@@ -109,22 +113,8 @@ return {
                 },
             },
             lualine_c = {},
-            lualine_x = {
-                {
-                    function()
-                        local str = require('noice').api.status.search.get()
-                        local match = 'Search: ' .. str.match(str, '%[%d+/%d+%]')
-                        return match
-                    end,
-                    cond = require('noice').api.status.search.has,
-                    color = { fg = '#ff9e64' },
-                },
-            },
-            lualine_y = {
-                function()
-                    return require('lsp-progress').progress {}
-                end,
-            },
+            lualine_x = { { 'searchcount', color = { fg = '#ff9e64' } } },
+            lualine_y = { function() return require('lsp-progress').progress {} end },
             lualine_z = { { 'buffers', symbols = { modified = ' ●', alternate_file = '', directory = '' } } },
         },
         extensions = { 'neo-tree', 'lazy', 'trouble', 'mason', 'fzf', 'fugitive' },

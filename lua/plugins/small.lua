@@ -3,13 +3,7 @@
 return {
 
     --[[ ENABLED PLUGINS ]]
-    {
-        'arsham/listish.nvim',
-        dependencies = { 'arsham/arshlib.nvim', 'nvim-treesitter/nvim-treesitter-textobjects' },
-        config = { signs = { qflist = '' }, extmarks = { qflist_text = 'Quickfix' } },
-        keys = { '<leader>qq' },
-        ft = { 'qf' },
-    },
+
     {
         'cameron-wags/rainbow_csv.nvim',
         config = true,
@@ -44,14 +38,11 @@ return {
         'folke/flash.nvim',
         event = 'VeryLazy',
         opts = {},
-        keys = { {
-            'x',
-            mode = { 'n', 'x', 'o' },
-            function()
-                require('flash').jump()
-            end,
-            desc = 'flash',
-        } },
+        keys = { { 'x', mode = { 'n', 'x', 'o' }, function() require('flash').jump() end, desc = 'flash' } },
+    },
+    {
+        'smjonas/inc-rename.nvim',
+        config = function() require('inc_rename').setup() end,
     },
     {
         'folke/noice.nvim',
@@ -59,15 +50,27 @@ return {
         dependencies = { 'MunifTanjim/nui.nvim' },
         opts = {
             cmdline = { enabled = true, view = 'cmdline' },
-            lsp = { progress = { enabled = false }, hover = { enabled = false }, signature = { enabled = false } },
             routes = {
                 { filter = { event = 'notify', find = 'No information available' }, opts = { skip = true } },
                 { filter = { event = 'notify', find = 'Config Change Detected' }, opts = { skip = true } },
                 { filter = { event = 'notify', find = 'There were issues reported' }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = 'fewer lines' } } }, opts = { skip = true } },
+                { filter = { event = 'msg_show', any = { { find = 'is deprecated' } } }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = '[supermaven-nvim]' } } }, opts = { skip = true } },
-                { filter = { event = 'msg_show', any = { { find = '^[^-]+-query-20[^-]+$' } } }, opts = { skip = true } },
+                {
+                    filter = { event = 'msg_show', any = { { find = '^[^-]+-query-20[^-]+$' } } },
+                    opts = { skip = true },
+                },
             },
+            lsp = {
+                progress = { enabled = false },
+                override = {
+                    ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+                    ['vim.lsp.util.stylize_markdown'] = true,
+                    ['cmp.entry.get_documentation'] = true,
+                },
+            },
+            presets = { long_message_to_split = true, inc_rename = true, lsp_doc_border = true },
             views = {
                 mini = {
                     border = { style = 'rounded' },
@@ -84,10 +87,34 @@ return {
         opts = {
             bigfile = { enabled = true },
             dashboard = { enabled = true },
-            indent = { scope = { enabled = true, animate = { enabled = false } } },
+            indent = { enabled = true, scope = { enabled = true, animate = { enabled = false } } },
             notifier = { enabled = false },
             quickfile = { enabled = true },
             terminal = { enabled = true },
+            picker = {
+                actions = {
+                    toggle_live_case_sens = function(picker)
+                        picker.opts.args = picker.opts.args or {}
+                        picker.case_sens = picker.case_sens == nil and true or picker.case_sens
+                        if picker.case_sens then
+                            picker.opts.args = { '--case-sensetive' }
+                        else
+                            picker.opts.args = { '--ignore-case' }
+                        end
+                        picker.case_sens = not picker.case_sens
+                        picker:find { refresh = true }
+                    end,
+                },
+                win = {
+                    input = {
+                        keys = {
+                            ['<F1>'] = { 'toggle_live_case_sens', mode = { 'i', 'n' } },
+                            ['<C-x>'] = { 'edit_vsplit', mode = { 'i', 'n' } },
+                            ['<C-d>'] = { 'bufdelete', mode = { 'i', 'n' } },
+                        },
+                    },
+                },
+            },
         },
     },
     {
@@ -96,7 +123,11 @@ return {
         dependencies = { 'nvim-lua/plenary.nvim' },
         opts = { signs = true, keywords = { NOTE = { icon = ' ', color = 'hint', alt = { 'todo' } } } },
     },
-    { 'folke/ts-comments.nvim', opts = {}, enabled = vim.fn.has 'nvim-0.10.0' == 1 },
+    {
+        'folke/ts-comments.nvim',
+        opts = {},
+        enabled = vim.fn.has 'nvim-0.10.0' == 1,
+    },
     {
         'hat0uma/csvview.nvim',
         ft = { 'csv', 'tsv', 'csv_semicolon', 'csv_whitespace', 'csv_pipe', 'rfc_csv', 'rfc_semicolon' },
@@ -107,7 +138,40 @@ return {
     },
     { 'https://gitlab.com/HiPhish/rainbow-delimiters.nvim', config = function() end },
     { 'iamyoki/buffer-reopen.nvim', opts = {} },
-    { 'kevinhwang91/nvim-ufo', dependencies = { 'kevinhwang91/promise-async' } },
+    {
+        'kevinhwang91/nvim-ufo',
+        dependencies = { 'kevinhwang91/promise-async' },
+        config = function()
+            local handler = function(virtText, lnum, endLnum, width, truncate)
+                local newVirtText = {}
+                local suffix = (' 󰁂 %d '):format(endLnum - lnum)
+                local sufWidth = vim.fn.strdisplaywidth(suffix)
+                local targetWidth = width - sufWidth
+                local curWidth = 0
+                for _, chunk in ipairs(virtText) do
+                    local chunkText = chunk[1]
+                    local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+                    if targetWidth > curWidth + chunkWidth then
+                        table.insert(newVirtText, chunk)
+                    else
+                        chunkText = truncate(chunkText, targetWidth - curWidth)
+                        local hlGroup = chunk[2]
+                        table.insert(newVirtText, { chunkText, hlGroup })
+                        chunkWidth = vim.fn.strdisplaywidth(chunkText)
+                        -- str width returned from truncate() may less than 2nd argument, need padding
+                        if curWidth + chunkWidth < targetWidth then
+                            suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
+                        end
+                        break
+                    end
+                    curWidth = curWidth + chunkWidth
+                end
+                table.insert(newVirtText, { suffix, 'MoreMsg' })
+                return newVirtText
+            end
+            require('ufo').setup { fold_virt_text_handler = handler }
+        end,
+    },
     {
         'kosayoda/nvim-lightbulb',
         config = function()
@@ -163,20 +227,19 @@ return {
         lazy = true,
         cmd = 'Silicon',
         main = 'nvim-silicon',
-        opts = {
-            line_offset = function(args)
-                return args.line1
-            end,
-            font = 'Berkeley Mono',
-        },
+        opts = { disable_defaults = true, line_offset = function(args) return args.line1 end, font = 'Berkeley Mono' },
     },
     { 'mrjones2014/smart-splits.nvim', opts = {} },
-    { 'MysticalDevil/inlay-hints.nvim', event = 'LspAttach', opts = { autocmd = { enable = false } } },
+    {
+        'MysticalDevil/inlay-hints.nvim',
+        event = 'LspAttach',
+        opts = { autocmd = { enable = false } },
+    },
     { 'nvim-tree/nvim-web-devicons', opts = {} },
-    { 'OXY2DEV/markview.nvim', filetype = { 'markdown', 'markdown_inline', 'Avante' }, opts = {} },
+    { 'OXY2DEV/markview.nvim', filetype = { 'markdown', 'markdown_inline', 'Avante', 'codecompanion' }, opts = {} },
     {
         'rachartier/tiny-inline-diagnostic.nvim',
-        event = 'VeryLazy',
+        event = 'VimEnter',
         priority = 1000,
         config = function()
             require('tiny-inline-diagnostic').setup {
@@ -186,7 +249,11 @@ return {
             vim.diagnostic.config { virtual_text = false }
         end,
     },
-    { 'saecki/crates.nvim', event = { 'BufRead Cargo.toml' }, opts = { completion = { cmp = { enabled = true } } } },
+    {
+        'saecki/crates.nvim',
+        event = { 'BufRead Cargo.toml' },
+        opts = { completion = { cmp = { enabled = true } } },
+    },
     { 'supermaven-inc/supermaven-nvim', event = { 'VeryLazy' }, opts = {} },
     {
         'tzachar/highlight-undo.nvim',
@@ -196,29 +263,23 @@ return {
             redo = { hlgroup = 'HighlightRedo', mode = 'n', lhs = '<C-r>', map = 'redo' },
         },
     },
-    { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'VeryLazy', opts = { max_join_length = 20201120 } },
     {
-        'yetone/avante.nvim',
+        'Wansmer/treesj',
+        keys = { '<leader>m' },
         event = 'VeryLazy',
-        version = false,
-        opts = {
-            provider = 'copilot',
-            file_selector = { provider = 'telescope' },
-            windows = {
-                position = 'smart',
-                wrap = true,
-                width = 50,
-                ask = { enabled = true },
-                sidebar_header = { enabled = false },
-            },
-            behaviour = { enable_token_counting = false },
-            hints = { enabled = false },
-        },
-        dependencies = { 'stevearc/dressing.nvim', 'zbirenbaum/copilot.lua', 'takeshid/avante-status.nvim' },
+        opts = { max_join_length = 20201120 },
     },
 
     --[[ DISABLED PLUGINS ]]
 
+    {
+        'arsham/listish.nvim',
+        enabled = false,
+        dependencies = { 'arsham/arshlib.nvim', 'nvim-treesitter/nvim-treesitter-textobjects' },
+        config = { signs = { qflist = '' }, extmarks = { qflist_text = 'Quickfix' } },
+        keys = { '<leader>qq' },
+        ft = { 'qf' },
+    },
     {
         'echasnovski/mini.indentscope',
         enabled = false,
@@ -243,12 +304,38 @@ return {
         event = 'BufReadPre',
     },
     { 'mbbill/undotree', enabled = false },
-    { 'mistweaverco/kulala.nvim', enabled = false, opts = {} },
     { 'numToStr/Comment.nvim', enabled = false, opts = {}, event = 'BufReadPre' },
+    {
+        'ramilito/winbar.nvim',
+        enabled = false,
+        event = 'VimEnter',
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
+        opts = { icons = false, buf_modified_symbol = '●', dim_inactive = { enabled = true, highlight = 'WinBarNC' } },
+    },
     { 'ThePrimeagen/git-worktree.nvim', enabled = false, opts = {} },
     {
         'tpope/vim-dadbod',
         enabled = false,
         dependencies = { 'kristijanhusak/vim-dadbod-ui', 'kristijanhusak/vim-dadbod-completion' },
+    },
+    {
+        'yetone/avante.nvim',
+        enabled = false,
+        event = 'VeryLazy',
+        version = false,
+        opts = {
+            provider = 'copilot',
+            file_selector = { provider = 'telescope' },
+            windows = {
+                position = 'smart',
+                wrap = true,
+                width = 50,
+                ask = { enabled = true },
+                sidebar_header = { enabled = false },
+            },
+            behaviour = { enable_token_counting = false },
+            hints = { enabled = false },
+        },
+        dependencies = { 'stevearc/dressing.nvim', 'zbirenbaum/copilot.lua', 'takeshid/avante-status.nvim' },
     },
 }
