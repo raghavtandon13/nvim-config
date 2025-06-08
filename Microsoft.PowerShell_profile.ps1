@@ -1,3 +1,4 @@
+
 #$prompt = "$env:WEZTERM_UNIX_SOCKET = "$HOME/.local/share/wezterm/gui-sock-$((Get-Process wezterm-gui).Id)""
 function Invoke-Starship-PreCommand {
     $current_location = $executionContext.SessionState.Path.CurrentLocation
@@ -10,8 +11,8 @@ function Invoke-Starship-PreCommand {
 }
 Invoke-Expression (&starship init powershell)
 Invoke-Expression (& { (zoxide init powershell | Out-String) })
-# Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
-# Import-Module posh-git
+Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
+Import-Module posh-git
 $env:EDITOR = "nvim"
 
 Set-Alias c cls
@@ -28,22 +29,20 @@ function desk { set-location "C:\Users\ragha\Desktop" }
 function down { set-location "C:\Users\ragha\Downloads" }
 function e { exit }
 function exp { $currentDir = Get-Location; Invoke-Item $currentDir }
-function fs { Invoke-FuzzyScoop } 
-function k { Invoke-FuzzyKillProcess } 
-function kk { sudo Invoke-FuzzyKillProcess } 
+function fs { Invoke-FuzzyScoop }
+function k { Invoke-FuzzyKillProcess }
+function kk { sudo Invoke-FuzzyKillProcess }
 function ll { lsd.exe --tree --depth=1 }
 function ls-better { lsd.exe -lAF --blocks date --blocks size --blocks git --blocks name $args }
-function pg($name) { Get-Process | Where-Object { $_.Name -like "*$name*" } }
-function pk($name) { Get-Process $name -ErrorAction SilentlyContinue | Stop-Process }
-function tm { Start-Process "taskmgr.exe" }
 
-function du { 
+function du {
     param(
         [string]$Location = (Get-Location),
         [string[]]$OptionalParameters = @()
     )
-    dust -R -r -d 1 $OptionalParameters $Location 
+    dust -R -r -d 1 $OptionalParameters $Location
 }
+
 function y {
     $tmp = [System.IO.Path]::GetTempFileName()
     yazi $args --cwd-file="$tmp"
@@ -54,29 +53,21 @@ function y {
     Remove-Item -Path $tmp
 }
 
-function li {
-    param($Location = (Get-Location))
-    param ([string[]]$OptionalParameters = @())
-    lsd -1 --icon never $OptionalParameters 
-}
-
 function server {
-        Set-Location -Path "$HOME\Downloads"
-        ssh -i "cred.pem" ubuntu@ec2-13-236-84-117.ap-southeast-2.compute.amazonaws.com
+    Set-Location -Path "$HOME\Downloads"
+    ssh -i "cred.pem" ubuntu@ec2-13-236-84-117.ap-southeast-2.compute.amazonaws.com
 }
 function server2 {
-        Set-Location -Path "$HOME\Downloads"
-	 ssh -i "cred-2.pem" ec2-user@ec2-13-201-83-62.ap-south-1.compute.amazonaws.com
+    Set-Location -Path "$HOME\Downloads"
+    ssh -i "cred-2.pem" ec2-user@ec2-13-201-83-62.ap-south-1.compute.amazonaws.com
 }
 function server3 {
-        Set-Location -Path "$HOME\Downloads"
-	ssh -i "cred-3.pem" ec2-user@ec2-3-108-59-42.ap-south-1.compute.amazonaws.com
+    Set-Location -Path "$HOME\Downloads"
+    ssh -i "cred-3.pem" ec2-user@ec2-3-108-59-42.ap-south-1.compute.amazonaws.com
 }
-
-function killer {
-    $processes = @("edge","msedge", "msedgewebview2", "MSPCManager", "nearby_share", "thunderbird","postman")
-        $errors = @()
-        foreach ($proc in $processes) { Get-Process $proc -ErrorAction SilentlyContinue | Stop-Process }
+function serverls {
+    Set-Location -Path "$HOME\Downloads"
+    ssh -i "ls-main.pem" ec2-user@ec2-13-233-136-167.ap-south-1.compute.amazonaws.com
 }
 
 function free {
@@ -88,25 +79,23 @@ function free {
 
 function size {
     param(
-            [string]$Path,
-            [string]$Unit = "KB"
-         )
-        $sizeInBytes = (Get-ChildItem -Path $Path -Recurse | Measure-Object -Property Length -Sum).Sum
-        switch ($Unit.ToUpper()) {
-            "KB" { $size = $sizeInBytes / 1KB }
-            "MB" { $size = $sizeInBytes / 1MB }
-            "GB" { $size = $sizeInBytes / 1GB }
-            Default { $size = $sizeInBytes / 1KB }
-        }
+        [string]$Path,
+        [string]$Unit = "KB"
+    )
+    $sizeInBytes = (Get-ChildItem -Path $Path -Recurse | Measure-Object -Property Length -Sum).Sum
+    switch ($Unit.ToUpper()) {
+        "KB" { $size = $sizeInBytes / 1KB }
+        "MB" { $size = $sizeInBytes / 1MB }
+        "GB" { $size = $sizeInBytes / 1GB }
+        Default { $size = $sizeInBytes / 1KB }
+    }
     return "$size $unit"
 }
-
 
 function edge_clear {
     $FolderPath = "~\AppData\Local\Microsoft\Edge\User Data\Default\Service Worker\CacheStorage"
     Get-ChildItem -Path $FolderPath -Recurse | Remove-Item -Force -Recurse
 }
-
 
 function v {
     param([string]$startPath = "D:/")
@@ -122,9 +111,9 @@ function v {
             $choice = "none","search","explore", "vim", "open", "cat" | fzf --height=10% --layout=reverse --prompt "Choose an app: "
             Set-Location ($rest -replace '\\[^\\]+$','' )
             switch ($choice) {
-		"none" {}
-		"search" { Invoke-PsFzfRipgrep a }
-		"explore" { explorer.exe . }
+                "none" {}
+                "search" { Invoke-PsFzfRipgrep a }
+                "explore" { explorer.exe . }
                 "vim" { vim $rest }
                 "open" { Invoke-Item $rest }
                 "cat" { bat $rest }
@@ -147,18 +136,6 @@ function n {
     nvim .
 }
 
-function Phone-Reboot {
-    param ([string]$DeviceNumber)
-    $adbCommand = "adb connect 192.168.1.62:$DeviceNumber"
-    $adbOutput = Invoke-Expression $adbCommand
-    if ($adbOutput -match "connected to 192.168.1.62:$DeviceNumber") {
-        adb reboot
-        Write-Host "Device rebooted successfully."
-    } else {
-        Write-Host "Connection failed."
-    }
-}
-
 function scoop-Update {
     scoop update
     echo(scoop status)
@@ -171,52 +148,4 @@ function winget-Update {
     Get-WinGetPackage | ? IsUpdateAvailable | % {winget update $_.Id}
     Get-WinGetPackage | ? IsUpdateAvailable | % {winget install $_.Id --force}
 }
-
-
-function Get-FileSizeInfo {
-    param(
-        [Parameter(Mandatory=$true)]
-        [string]$filter  # Makes the filter argument mandatory
-    )
-
-    $spinner = @('\', '|', '/', '-')
-    $spinnerIndex = 0
-
-    # Show the loading spinner in a background job
-    $spinnerJob = Start-Job -ScriptBlock {
-        while ($true) {
-            $global:spinnerIndex++
-            $global:spinnerIndex %= 4
-            Write-Host -NoNewline "$($global:spinner[$global:spinnerIndex]) Loading... "
-            Start-Sleep -Milliseconds 200
-            Write-Host -NoNewline "`r"
-        }
-    }
-
-    try {
-        # Main logic for fetching file size information
-        Get-ChildItem -Recurse -Filter $filter -ErrorAction SilentlyContinue | Select-Object FullName, @{Name="Size"; Expression={
-            if ($_.PSIsContainer) {
-                $size = (Get-ChildItem $_.FullName -Recurse | Measure-Object -Property Length -Sum).Sum
-            } else {
-                $size = $_.Length
-            }
-            $size
-        }}, @{Name="ReadableSize"; Expression={
-            if ($_.PSIsContainer) {
-                $size = (Get-ChildItem $_.FullName -Recurse | Measure-Object -Property Length -Sum).Sum
-            } else {
-                $size = $_.Length
-            }
-            if ($size -gt 1GB) { "{0:N2} GB" -f ($size / 1GB) }
-            elseif ($size -gt 1MB) { "{0:N2} MB" -f ($size / 1MB) }
-            elseif ($size -gt 1KB) { "{0:N2} KB" -f ($size / 1KB) }
-            else { "$size Bytes" }
-        }} | Sort-Object Size -Descending | Select-Object FullName, ReadableSize
-    } finally {
-        # Stop the spinner once done
-        Stop-Job -Job $spinnerJob
-    }
-}
-
 
