@@ -1,3 +1,6 @@
+# Prompt looks like this:
+# 🌵 D:\Home\AppData\Local\nvim  main
+# ➜
 function prompt {
     $p = $executionContext.SessionState.Path.CurrentLocation
     $osc7 = ""
