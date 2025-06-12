@@ -38,8 +38,10 @@ vim.o.shellxquote = ''
 vim.opt.shiftwidth = 4
 vim.opt.splitright = true
 vim.opt.swapfile = false
+
 vim.opt.title = true
-vim.opt.titlestring = [[%t – %{fnamemodify(getcwd(), ':t')}]]
+-- vim.opt.titlestring = [[%t – %{fnamemodify(getcwd(), ':t')}]]
+
 vim.opt.undofile = true
 vim.opt.wrap = false
 vim.wo.signcolumn = 'yes'

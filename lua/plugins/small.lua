@@ -305,37 +305,5 @@ return {
     },
     { 'mbbill/undotree', enabled = false },
     { 'numToStr/Comment.nvim', enabled = false, opts = {}, event = 'BufReadPre' },
-    {
-        'ramilito/winbar.nvim',
-        enabled = false,
-        event = 'VimEnter',
-        dependencies = { 'nvim-tree/nvim-web-devicons' },
-        opts = { icons = false, buf_modified_symbol = '●', dim_inactive = { enabled = true, highlight = 'WinBarNC' } },
-    },
-    { 'ThePrimeagen/git-worktree.nvim', enabled = false, opts = {} },
-    {
-        'tpope/vim-dadbod',
-        enabled = false,
-        dependencies = { 'kristijanhusak/vim-dadbod-ui', 'kristijanhusak/vim-dadbod-completion' },
-    },
-    {
-        'yetone/avante.nvim',
-        enabled = false,
-        event = 'VeryLazy',
-        version = false,
-        opts = {
-            provider = 'copilot',
-            file_selector = { provider = 'telescope' },
-            windows = {
-                position = 'smart',
-                wrap = true,
-                width = 50,
-                ask = { enabled = true },
-                sidebar_header = { enabled = false },
-            },
-            behaviour = { enable_token_counting = false },
-            hints = { enabled = false },
-        },
-        dependencies = { 'stevearc/dressing.nvim', 'zbirenbaum/copilot.lua', 'takeshid/avante-status.nvim' },
-    },
+    { 'ThePrimeagen/git-worktree.nvim',  opts = {} },
 }

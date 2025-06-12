@@ -1,7 +1,10 @@
 return {
-    'olimorris/codecompanion.nvim',
+    'raghavtandon13/codecompanion.nvim',
+    enabled = true,
     opts = {
+        strategies = { chat = { slash_commands = { ['file'] = { opts = { provider = 'snacks' } } } } },
         display = {
+            action_palette = { provider = 'snacks' },
             diff = { provider = 'mini_diff' },
             chat = {
                 intro_message = 'CodeCompanion | Press ? for options',

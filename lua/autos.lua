@@ -125,3 +125,17 @@ vim.api.nvim_create_autocmd({ 'LspAttach' }, {
 -- [[ console.log marco ]]
 local esc = vim.api.nvim_replace_termcodes('<Esc>', true, true, true)
 vim.fn.setreg('l', "yoconsole.log('" .. esc .. 'pa:' .. esc .. 'la, ' .. esc .. 'pl')
+
+vim.api.nvim_create_autocmd('BufEnter', {
+    callback = function()
+        local mini_misc_ok, mini_misc = pcall(require, 'mini.misc')
+        local r = mini_misc_ok
+            and mini_misc.find_root(
+                0,
+                { '.git', 'Makefile', '.root' },
+                function() return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':h') end
+            )
+        local rr = r and vim.fn.fnamemodify(r, ':t') or 'nvim'
+        vim.opt.titlestring = rr
+    end,
+})

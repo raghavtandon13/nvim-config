@@ -1,20 +1,32 @@
-
-#$prompt = "$env:WEZTERM_UNIX_SOCKET = "$HOME/.local/share/wezterm/gui-sock-$((Get-Process wezterm-gui).Id)""
-function Invoke-Starship-PreCommand {
-    $current_location = $executionContext.SessionState.Path.CurrentLocation
-    if ($current_location.Provider.Name -eq "FileSystem") {
+function prompt {
+    $p = $executionContext.SessionState.Path.CurrentLocation
+    $osc7 = ""
+    if ($p.Provider.Name -eq "FileSystem") {
         $ansi_escape = [char]27
-        $provider_path = $current_location.ProviderPath -replace "\\", "/"
-        $prompt = "$ansi_escape]7;file://${env:COMPUTERNAME}/${provider_path}$ansi_escape\"
+        $provider_path = $p.ProviderPath -Replace "\\", "/"
+        $osc7 = "$ansi_escape]7;file://${env:COMPUTERNAME}/${provider_path}${ansi_escape}\" 
     }
-    $host.ui.Write($prompt)
-}
-Invoke-Expression (&starship init powershell)
-Invoke-Expression (& { (zoxide init powershell | Out-String) })
-Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
-Import-Module posh-git
-$env:EDITOR = "nvim"
 
+    $reset = "`e[0m"
+    $dim = "`e[38;5;245m"           # Dim gray for path
+    $lavender = "`e[38;2;203;166;247m"  # Hex #cba6f7
+
+    # Git branch
+    $branch = ""
+    try {
+        $gitDir = git rev-parse --git-dir 2>$null
+        if ($LASTEXITCODE -eq 0) {
+            $branchName = git symbolic-ref --short HEAD 2>$null
+            if ($branchName) {
+                $branch = " $lavender $branchName$reset"
+            }
+        }
+    } catch {}
+
+    return "🌵 $osc7$p$reset$branch`n➜ "
+}
+
+$env:EDITOR = "nvim"
 Set-Alias c cls
 Set-Alias cat bat
 Set-Alias lg lazygit
@@ -148,4 +160,3 @@ function winget-Update {
     Get-WinGetPackage | ? IsUpdateAvailable | % {winget update $_.Id}
     Get-WinGetPackage | ? IsUpdateAvailable | % {winget install $_.Id --force}
 }
-
