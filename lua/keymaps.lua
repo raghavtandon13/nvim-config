@@ -103,15 +103,22 @@ vim.keymap.set('n', '<M-;>', require('smart-splits').resize_up, { desc = 'Resize
 vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
 vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
 
----- also add these to categories
+---------------------------------
 vim.keymap.set(
     'n',
     '<leader>te',
     '<cmd>lua toggle_diagnostics()<CR>',
     { desc = 'Toggle Diagnostics ', noremap = true, silent = true }
 )
-vim.api.nvim_set_keymap('v', '<Space>y', ':lua ConvertJSON()<CR>', {
-    desc = 'Convert JS to JSON',
-    noremap = true,
-    silent = true,
-})
+vim.keymap.set(
+    'v',
+    '<Space>y',
+    ':lua ConvertJSON()<CR>',
+    { desc = 'Convert JS to JSON', noremap = true, silent = true }
+)
+vim.keymap.set(
+    'n',
+    'ga',
+    ':lua MiniDiff.toggle_overlay()<CR>',
+    { desc = 'Toggle Diff Overlay (Apply All)', noremap = true, silent = true }
+)

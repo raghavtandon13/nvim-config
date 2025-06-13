@@ -42,7 +42,7 @@ return {
     },
     {
         'smjonas/inc-rename.nvim',
-        config = function() require('inc_rename').setup() end,
+        config = function() require('inc_rename').setup {} end,
     },
     {
         'folke/noice.nvim',
@@ -305,5 +305,5 @@ return {
     },
     { 'mbbill/undotree', enabled = false },
     { 'numToStr/Comment.nvim', enabled = false, opts = {}, event = 'BufReadPre' },
-    { 'ThePrimeagen/git-worktree.nvim',  opts = {} },
+    { 'ThePrimeagen/git-worktree.nvim', opts = {} },
 }

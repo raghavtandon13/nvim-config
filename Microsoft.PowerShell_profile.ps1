@@ -30,6 +30,7 @@ function prompt {
 }
 
 $env:EDITOR = "nvim"
+$env:BAT_PAGING = "never"
 Set-Alias c cls
 Set-Alias cat bat
 Set-Alias lg lazygit
