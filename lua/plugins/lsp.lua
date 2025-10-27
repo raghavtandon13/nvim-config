@@ -57,7 +57,7 @@ return {
                     ['<C-i>'] = cmp.mapping.complete(),
                     ['<CR>'] = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Replace, select = true },
                 },
-                sources = { { name = 'nvim_lsp' } },
+                sources = { { name = 'nvim_lsp' }, { name = 'luasnip' } },
             }
         end,
     },
@@ -135,8 +135,8 @@ return {
             mason_lspconfig.setup { automatic_installation = true, ensure_installed = vim.tbl_keys(servers) }
 
             -- Code Folding Capabilities
-            capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
-            require('ufo').setup()
+            -- capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
+            -- require('ufo').setup()
 
             -- -- Function to Hide TSServer Diagnostics
             local function filter_tsserver_diagnostics(_, result, ctx, config)

@@ -1,8 +1,18 @@
 ---@diagnostic disable: missing-fields
 
 return {
+
+    {
+        'rebelot/kanagawa.nvim',
+        enabled = false,
+        config = function()
+            require('kanagawa').setup { transparent = true, theme = 'dragon' }
+            vim.cmd 'colorscheme kanagawa'
+        end,
+    },
     {
         'rose-pine/neovim',
+        enabled = true,
         name = 'rose-pine',
         config = function()
             require('rose-pine').setup { styles = { transparency = true } }

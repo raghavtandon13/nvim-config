@@ -16,7 +16,7 @@ body {
     overflow: hidden;
     font-size: 13px;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background: var(--ctp-base);
+    /* background: var(--ctp-base); */
     color: var(--ctp-text);
 }
 
@@ -68,7 +68,7 @@ i {
 #root {
     border-bottom: 1px solid rgb(255 255 255 / 5%);
     /* background: #16161e; */
-    background: #14141a;
+    background: #141414;
 }
 
 .app {
@@ -214,4 +214,3 @@ i {
 .weather {
     color: white;
 }
-

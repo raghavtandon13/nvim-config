@@ -17,7 +17,7 @@ vim.o.laststatus = 3
 vim.o.mouse = 'a'
 vim.o.number = true
 vim.o.smartcase = true
-vim.o.stc = ' %s %l    '
+vim.o.stc = ' %s %l   '
 vim.o.termguicolors = true
 vim.o.timeoutlen = 300
 vim.o.undofile = true
@@ -45,6 +45,13 @@ vim.opt.title = true
 vim.opt.undofile = true
 vim.opt.wrap = false
 vim.wo.signcolumn = 'yes'
+
+vim.o.foldenable = true
+-- vim.o.foldlevel = 99
+vim.o.foldmethod = 'expr'
+vim.o.foldexpr = 'v:lua.vim.lsp.foldexpr()'
+vim.opt.foldcolumn = '0'
+-- vim.opt.fillchars:append { fold = '-' }
 
 local global = {
     os = os,

@@ -1,4 +1,4 @@
-vim.api.nvim_set_hl(0, "Comment", { fg = "#585166", italic = true})
+-- vim.api.nvim_set_hl(0, "Comment", { fg = "#585166", italic = true})
 vim.api.nvim_set_hl(0, '@ibl.scope.char.1', { fg = '' })
 vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = '#ffffff' })
 vim.api.nvim_set_hl(0, 'DiagnosticVirtualTextError', { fg = '#ea6962' })

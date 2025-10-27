@@ -21,14 +21,14 @@ general:
 
 gaps:
     # Gap between adjacent windows.
-    inner_gap: "8px"
+    inner_gap: "0px"
 
     # Gap between windows and the screen edge.
     outer_gap:
-        top: "8px"
-        right: "8px"
-        bottom: "8px"
-        left: "8px"
+        top: "0px"
+        right: "0px"
+        bottom: "0px"
+        left: "0px"
 
 window_effects:
     focused_window:
@@ -37,7 +37,7 @@ window_effects:
             style: "square"
         border:
             enabled: true
-            color: "#6d6d6d"
+            color: "#2c2f33"
 
     other_windows:
         corner_style:
@@ -45,7 +45,7 @@ window_effects:
             style: "square"
         border:
             enabled: true
-            color: "#211f1d"
+            color: "#1e1e1e"
 
 window_behavior:
     # New windows are created in this state whenever possible.
@@ -212,9 +212,15 @@ keybindings:
     - commands: ["shell-exec msedge"]
       bindings: ["alt+b"]
 
-    - commands: ["shell-exec explorer"]
+    # - commands: ["shell-exec explorer"]
+    - commands: ["shell-exec C://Users//ragha//AppData//Local//Voidstar//FilePilot//FPilot.exe"]
       bindings: ["alt+e"]
 
+    - commands: ["shell-exec C://Users//ragha//scoop//apps//obsidian//current//Obsidian.exe"]
+      bindings: ["alt+n"]
+
+      # this one here
+    # - commands: ["shell-exec C://Users//ragha//Desktop//WhatsApp.lnk"]
     - commands: ["shell-exec whatsapp:"]
       bindings: ["alt+w"]
 

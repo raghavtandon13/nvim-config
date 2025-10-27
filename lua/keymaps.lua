@@ -18,6 +18,7 @@ vim.keymap.set('n', '<C-w>up', '<C-w>k', { desc = 'Focus Window Up', silent = tr
 vim.keymap.set('n', '<c-left>', ':bNext<CR>', { desc = 'Next Buffer', silent = true })
 vim.keymap.set('n', '<c-right>', ':bnext<CR>', { desc = 'Previous Buffer', silent = true })
 vim.keymap.set('n', '<leader>bb', ':bd<CR>', { desc = 'Close Buffer', silent = true })
+vim.keymap.set('n', '<leader>ba', ':CloseOtherBuffers<CR>', { desc = 'Close Buffer', silent = true })
 vim.keymap.set('n', '<leader>bh', require('smart-splits').swap_buf_left, { desc = 'Swap Buffer Left', silent = true })
 vim.keymap.set('n', '<leader>bj', require('smart-splits').swap_buf_down, { desc = 'Swap Buffer Down', silent = true })
 vim.keymap.set('n', '<leader>bk', require('smart-splits').swap_buf_up, { desc = 'Swap Buffer Up', silent = true })
@@ -35,11 +36,11 @@ vim.keymap.set(
     { desc = '[C]ode [A]ction' }
 )
 vim.keymap.set('n', '<leader>rn', ':IncRename ', { desc = '[R]e[n]ame' })
-vim.keymap.set('n', '<leader>D', require('telescope.builtin').lsp_type_definitions, { desc = 'Type [D]efinition' })
-vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, { desc = '[G]oto [D]efinition' })
+vim.keymap.set('n', '<leader>D', ':lua Snacks.picker.lsp_type_definitions()<CR>', { desc = 'Type [D]efinition' })
+vim.keymap.set('n', 'gd', ':lua Snacks.picker.lsp_definitions()<CR>', { desc = '[G]oto [D]efinition' })
 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { desc = '[G]oto [D]eclaration' })
-vim.keymap.set('n', 'gI', require('telescope.builtin').lsp_implementations, { desc = '[G]oto [I]mplementation' })
-vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { desc = '[G]oto [R]eferences' })
+vim.keymap.set('n', 'gI', ':lua Snacks.picker.lsp_implementations()<CR>', { desc = '[G]oto [I]mplementation' })
+vim.keymap.set('n', 'gr', ':lua Snacks.picker.lsp_references()<CR>', { desc = '[G]oto [R]eferences' })
 
 -- Diagnostics
 vim.keymap.set(

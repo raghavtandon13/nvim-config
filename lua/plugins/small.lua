@@ -3,7 +3,11 @@
 return {
 
     --[[ ENABLED PLUGINS ]]
-
+    {
+        'lervag/vimtex',
+        lazy = false,
+        -- init = function() vim.g.vimtex_view_method = 'zathura' end,
+    },
     {
         'cameron-wags/rainbow_csv.nvim',
         config = true,
@@ -39,10 +43,6 @@ return {
         event = 'VeryLazy',
         opts = {},
         keys = { { 'x', mode = { 'n', 'x', 'o' }, function() require('flash').jump() end, desc = 'flash' } },
-    },
-    {
-        'smjonas/inc-rename.nvim',
-        config = function() require('inc_rename').setup {} end,
     },
     {
         'folke/noice.nvim',
@@ -87,10 +87,11 @@ return {
         opts = {
             bigfile = { enabled = true },
             dashboard = { enabled = true },
-            indent = { enabled = true, scope = { enabled = true, animate = { enabled = false } } },
-            notifier = { enabled = false },
+            input = { enabled = true },
+            indent = { enabled = true, scope = { enabled = false } },
+            notifier = { enabled = true },
             quickfile = { enabled = true },
-            terminal = { enabled = true },
+            terminal = { enabled = false },
             picker = {
                 actions = {
                     toggle_live_case_sens = function(picker)
@@ -123,11 +124,7 @@ return {
         dependencies = { 'nvim-lua/plenary.nvim' },
         opts = { signs = true, keywords = { NOTE = { icon = ' ', color = 'hint', alt = { 'todo' } } } },
     },
-    {
-        'folke/ts-comments.nvim',
-        opts = {},
-        enabled = vim.fn.has 'nvim-0.10.0' == 1,
-    },
+    { 'folke/ts-comments.nvim', opts = {}, enabled = vim.fn.has 'nvim-0.10.0' == 1 },
     {
         'hat0uma/csvview.nvim',
         ft = { 'csv', 'tsv', 'csv_semicolon', 'csv_whitespace', 'csv_pipe', 'rfc_csv', 'rfc_semicolon' },
@@ -140,6 +137,7 @@ return {
     { 'iamyoki/buffer-reopen.nvim', opts = {} },
     {
         'kevinhwang91/nvim-ufo',
+        enabled = true,
         dependencies = { 'kevinhwang91/promise-async' },
         config = function()
             local handler = function(virtText, lnum, endLnum, width, truncate)
@@ -158,7 +156,6 @@ return {
                         local hlGroup = chunk[2]
                         table.insert(newVirtText, { chunkText, hlGroup })
                         chunkWidth = vim.fn.strdisplaywidth(chunkText)
-                        -- str width returned from truncate() may less than 2nd argument, need padding
                         if curWidth + chunkWidth < targetWidth then
                             suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
                         end
@@ -230,31 +227,107 @@ return {
         opts = { disable_defaults = true, line_offset = function(args) return args.line1 end, font = 'Berkeley Mono' },
     },
     { 'mrjones2014/smart-splits.nvim', opts = {} },
-    {
-        'MysticalDevil/inlay-hints.nvim',
-        event = 'LspAttach',
-        opts = { autocmd = { enable = false } },
-    },
+    { 'MysticalDevil/inlay-hints.nvim', event = 'LspAttach', opts = { autocmd = { enable = false } } },
     { 'nvim-tree/nvim-web-devicons', opts = {} },
-    { 'OXY2DEV/markview.nvim', filetype = { 'markdown', 'markdown_inline', 'Avante', 'codecompanion' }, opts = {} },
+    {
+        'OXY2DEV/markview.nvim',
+        filetype = { 'markdown', 'markdown_inline', 'Avante', 'codecompanion' },
+        config = function()
+            local glow = {
+                enable = true,
+                shift_width = 0,
+                heading_1 = {
+                    sign = '',
+                    sign_hl = 'MarkviewHeading1Sign',
+                    padding_left = ' ',
+                    padding_right = ' ',
+                    icon = '# ',
+                    hl = 'MarkviewHeading1',
+                },
+                heading_2 = {
+                    style = 'label',
+                    sign = '',
+                    sign_hl = 'MarkviewHeading2Sign',
+                    padding_left = ' ',
+                    padding_right = ' ',
+                    icon = '## ',
+                    hl = 'MarkviewHeading2',
+                },
+                heading_3 = {
+                    style = 'label',
+                    padding_left = ' ',
+                    padding_right = ' ',
+                    icon = '### ',
+                    hl = 'MarkviewHeading3',
+                },
+                heading_4 = {
+                    style = 'label',
+                    padding_left = ' ',
+                    padding_right = ' ',
+                    icon = '#### ',
+                    hl = 'MarkviewHeading4',
+                },
+                heading_5 = {
+                    style = 'label',
+                    padding_left = ' ',
+                    padding_right = ' ',
+                    icon = '##### ',
+                    hl = 'MarkviewHeading5',
+                },
+                heading_6 = {
+                    style = 'label',
+                    padding_left = ' ',
+                    padding_right = ' ',
+                    icon = '###### ',
+                    hl = 'MarkviewHeading6',
+                },
+            }
+            local hr = {
+                thin = {
+                    enable = true,
+                    parts = {
+                        {
+                            type = 'repeating',
+                            repeat_amount = function() return vim.o.columns end,
+                            text = '─',
+                            hl = 'Comment',
+                        },
+                    },
+                },
+            }
+            require('markview').setup {
+                experimental = { check_rtp = false, check_rtp_message = false },
+                markdown = { code_blocks = { sign = false }, horizontal_rules = hr.thin, headings = glow },
+            }
+        end,
+    },
     {
         'rachartier/tiny-inline-diagnostic.nvim',
         event = 'VimEnter',
         priority = 1000,
         config = function()
             require('tiny-inline-diagnostic').setup {
-                preset = 'powerline',
+                preset = 'modern',
+                transparent_bg = false, -- Set the background of the diagnostic to transparent
+                transparent_cursorline = true,
                 options = { multilines = { enabled = true, always_show = true }, show_all_diags_on_cursorline = true },
             }
             vim.diagnostic.config { virtual_text = false }
         end,
     },
-    {
-        'saecki/crates.nvim',
-        event = { 'BufRead Cargo.toml' },
-        opts = { completion = { cmp = { enabled = true } } },
-    },
+    { 'saecki/crates.nvim', event = { 'BufRead Cargo.toml' }, opts = { completion = { cmp = { enabled = true } } } },
+    { 'smjonas/inc-rename.nvim', config = function() require('inc_rename').setup {} end },
     { 'supermaven-inc/supermaven-nvim', event = { 'VeryLazy' }, opts = {} },
+    {
+        'TimUntersberger/neogit',
+        cmd = 'Neogit',
+        dependencies = { 'sindrets/diffview.nvim' },
+        opts = {
+            kind = 'vsplit',
+            signs = { section = { '', '' }, item = { '', '' }, hunk = { '', '' } },
+            integrations = { snacks = true },
+        },
+    },
     {
         'tzachar/highlight-undo.nvim',
         event = 'VeryLazy',
@@ -263,12 +336,7 @@ return {
             redo = { hlgroup = 'HighlightRedo', mode = 'n', lhs = '<C-r>', map = 'redo' },
         },
     },
-    {
-        'Wansmer/treesj',
-        keys = { '<leader>m' },
-        event = 'VeryLazy',
-        opts = { max_join_length = 20201120 },
-    },
+    { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'VeryLazy', opts = { max_join_length = 20201120 } },
 
     --[[ DISABLED PLUGINS ]]
 
