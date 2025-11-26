@@ -8,7 +8,7 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
-        event = { 'BufReadPost', 'BufNewFile' },
+        event = 'VeryLazy',
         dependencies = {
             { 'williamboman/mason.nvim', opts = { ui = { border = 'single', height = 0.8 } }, config = true },
             { 'williamboman/mason-lspconfig.nvim', opts = {} },
@@ -63,13 +63,12 @@ return {
     },
     {
         'williamboman/mason-lspconfig.nvim',
-        event = { 'BufReadPost', 'BufNewFile' },
+        event = 'VeryLazy',
         config = function()
             local servers = {
-                clangd = { filetypes = { 'c', 'cpp', 'objc', 'objcpp' } },
-                html = { filetypes = { 'html', 'jsx', 'tsx' } },
                 lua_ls = {},
                 pyright = {},
+		gopls = {},
                 rust_analyzer = {
                     filetypes = { 'rust' },
                     settings = {
@@ -77,25 +76,16 @@ return {
                             lens = { enable = true },
                             cargo = { allFeatures = true },
                             inlayHints = {
-                                bindingModeHints = { enable = false },
                                 chainingHints = { enable = true },
                                 closingBraceHints = { enable = true, minLines = 25 },
-                                closureReturnTypeHints = { enable = 'never' },
-                                lifetimeElisionHints = { enable = 'never', useParameterNames = false },
                                 maxLength = 25,
                                 parameterHints = { enable = true },
-                                reborrowHints = { enable = 'never' },
                                 renderColons = true,
-                                typeHints = {
-                                    enable = true,
-                                    hideClosureInitialization = false,
-                                    hideNamedConstructor = false,
-                                },
+                                typeHints = { enable = true },
                             },
                         },
                     },
                 },
-                tailwindcss = {},
                 ts_ls = {
                     settings = {
                         typescript = {
@@ -124,8 +114,12 @@ return {
                         },
                     },
                 },
-                gopls = {},
             }
+            -- Disable diagnostics for unused filetypes
+            vim.api.nvim_create_autocmd('FileType', {
+                pattern = { 'help', 'man', 'gitcommit', 'markdown', 'text' },
+                callback = function() vim.diagnostic.disable(0) end,
+            })
 
             local capabilities = vim.lsp.protocol.make_client_capabilities()
             capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities) -- old nvim-cmp
@@ -138,10 +132,10 @@ return {
             -- capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
             -- require('ufo').setup()
 
-            -- -- Function to Hide TSServer Diagnostics
+            -- -- Function to Hide TSServer Diagnostics -- something wrong here
             local function filter_tsserver_diagnostics(_, result, ctx, config)
-                require('ts-error-translator').translate_diagnostics(_, result, ctx)
-                if result.diagnostics == nil then return end
+                -- require('ts-error-translator').translate_diagnostics(_, result, ctx)
+                -- if result.diagnostics == nil then return end
                 local idx = 1
                 while idx <= #result.diagnostics do
                     local entry = result.diagnostics[idx]

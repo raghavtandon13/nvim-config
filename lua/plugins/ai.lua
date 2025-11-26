@@ -1,6 +1,6 @@
 return {
     'raghavtandon13/codecompanion.nvim',
-    enabled = true,
+    event = 'VeryLazy',
     opts = {
         strategies = { chat = { slash_commands = { ['file'] = { opts = { provider = 'snacks' } } } } },
         display = {

@@ -20,6 +20,9 @@ vim.o.smartcase = true
 vim.o.stc = ' %s %l   '
 vim.o.termguicolors = true
 vim.o.timeoutlen = 300
+vim.opt.lazyredraw = true
+vim.opt.ttimeoutlen = 10
+vim.opt.shortmess:append('I')
 vim.o.undofile = true
 vim.o.updatetime = 250
 vim.opt.backup = false

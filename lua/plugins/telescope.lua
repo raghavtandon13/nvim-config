@@ -88,18 +88,71 @@ return {
 
         --[[ KEYMAPS ]]
 
-        vim.keymap.set('n', '<leader>,', ':lua Snacks.picker.buffers()<CR>', { desc = 'Search Open Buffers', silent = true })
-        vim.keymap.set('n', '<leader>?', ':lua Snacks.picker.recent()<CR>', { desc = 'Search Recent Files', silent = true })
-        vim.keymap.set('n', '<leader>gs', ':lua Snacks.picker.git_status()<CR>', { desc = 'Search Git Status', silent = true }) --  TODO: change keybind
-        vim.keymap.set('n', '<leader>s/', ':lua Snacks.picker.grep_buffers()<CR>', { desc = 'Grep in Open Files', silent = true })
+        vim.keymap.set(
+            'n',
+            '<leader>,',
+            ':lua Snacks.picker.buffers()<CR>',
+            { desc = 'Search Open Buffers', silent = true }
+        )
+        vim.keymap.set(
+            'n',
+            '<leader>?',
+            ':lua Snacks.picker.recent()<CR>',
+            { desc = 'Search Recent Files', silent = true }
+        )
+        vim.keymap.set(
+            'n',
+            '<leader>gs',
+            ':lua Snacks.picker.git_status()<CR>',
+            { desc = 'Search Git Status', silent = true }
+        ) --  TODO: change keybind
+        vim.keymap.set(
+            'n',
+            '<leader>s/',
+            ':lua Snacks.picker.grep_buffers()<CR>',
+            { desc = 'Grep in Open Files', silent = true }
+        )
         vim.keymap.set('n', '<leader>sa', ':FZF<cr>', { desc = 'Search All Files (D)', silent = true })
-        vim.keymap.set('n', '<leader>sd', ':lua Snacks.picker.diagnostics()<CR>', { desc = 'Search Diagnostics', silent = true })
+        vim.keymap.set(
+            'n',
+            '<leader>sd',
+            ':lua Snacks.picker.diagnostics()<CR>',
+            { desc = 'Search Diagnostics', silent = true }
+        )
         vim.keymap.set('n', '<leader>sh', ':lua Snacks.picker.help()<CR>', { desc = 'Search Help', silent = true })
         vim.keymap.set('n', '<leader>sw', ':lua Snacks.picker.grep_word()<CR>', { desc = 'Grep Word', silent = true })
-        vim.keymap.set('n', '<leader>ss', ':lua Snacks.picker.pickers()<CR>', { desc = 'Search Pickers', silent = true })
-        vim.keymap.set('n', '<leader>so', ":lua Snacks.picker.files({cwd = 'D:/Notes'})<CR>", { desc = 'Search Notes', silent = true })
+        vim.keymap.set(
+            'n',
+            '<leader>ss',
+            ':lua Snacks.picker.pickers()<CR>',
+            { desc = 'Search Pickers', silent = true }
+        )
+        vim.keymap.set(
+            'n',
+            '<leader>so',
+            ":lua Snacks.picker.files({cwd = 'D:/Notes'})<CR>",
+            { desc = 'Search Notes', silent = true }
+        )
         vim.keymap.set('n', '<leader>sg', grep_project, { desc = 'Grep', silent = true })
         vim.keymap.set('n', '<leader><space>', search_files_project, { desc = 'Search Files', silent = true })
-        vim.keymap.set('n', '<leader>sn', ":lua Snacks.picker.files({cwd = vim.fn.stdpath('config')})<CR>", { desc = 'Search Neovim Config', silent = true })
+        vim.keymap.set(
+            'n',
+            '<leader>sn',
+            ":lua Snacks.picker.files({cwd = vim.fn.stdpath('config')})<CR>",
+            { desc = 'Search Neovim Config', silent = true }
+        )
+        vim.keymap.set('n', '<leader>dy', function()
+            local line = vim.api.nvim_win_get_cursor(0)[1] - 1
+            local diags = vim.diagnostic.get(0, { lnum = line })
+
+            if #diags == 0 then
+                vim.notify('No diagnostics on this line', vim.log.levels.WARN)
+                return
+            end
+
+            local msg = diags[1].message
+            vim.fn.setreg('+', msg) -- copy to system clipboard
+            vim.notify('Copied diagnostic message.')
+        end)
     end,
 }

@@ -26,7 +26,8 @@ vim.keymap.set('n', '<leader>bl', require('smart-splits').swap_buf_right, { desc
 
 -- File Management
 vim.keymap.set('n', '<C-s>', ':w<CR>', { desc = 'Save', silent = true })
-vim.keymap.set('n', '<leader>e', ':Neotree float<CR>', { desc = 'File Explorer', silent = true })
+vim.keymap.set('n', '<leader>e', ':lua require("oil").open_float(".")<CR>', { desc = 'File Explorer', silent = true })
+-- vim.keymap.set('n', '<leader>e', ':Neotree float<CR>', { desc = 'File Explorer', silent = true })
 
 -- LSP and Code Actions
 vim.keymap.set(

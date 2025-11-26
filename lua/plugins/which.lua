@@ -1,9 +1,14 @@
 return {
     {
         'folke/which-key.nvim',
-        event = 'VeryLazy',
+        keys = { '<leader>' },
         config = function()
-            require('which-key').setup { preset = 'helix',expand = 1, win = { border = 'single' }, icons = { mappings = false } }
+            require('which-key').setup {
+                preset = 'helix',
+                expand = 1,
+                win = { border = 'single' },
+                icons = { mappings = false },
+            }
             require('which-key').add {
                 { '<leader>c', group = '[C]ode' },
                 { '<leader>c_', hidden = true },
@@ -34,9 +39,7 @@ return {
         keys = {
             {
                 '<leader>?',
-                function()
-                    require('which-key').show { global = false }
-                end,
+                function() require('which-key').show { global = false } end,
                 desc = 'Buffer Local Keymaps (which-key)',
             },
         },

@@ -224,7 +224,7 @@ keybindings:
     - commands: ["shell-exec whatsapp:"]
       bindings: ["alt+w"]
 
-    - commands: ["shell-exec wscript.exe D:/Code/Invoke-PowerShell.vbs D:/Code/start-wezterm.ps1"]
+    - commands: ["shell-exec wezterm-gui.exe start -- nvim"]
       bindings: ["alt+v"]
     # - commands: ["shell-exec D:/Code/start-wezterm.bat"]
     #   bindings: ["alt+v"]

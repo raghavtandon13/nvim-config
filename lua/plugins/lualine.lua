@@ -4,9 +4,8 @@ local colors = {
     black = '#080808',
     white = '#c6c6c6',
     red = '#ff5189',
-    -- ccc = '#14141a',
-    -- ccc = '#0f1015', --old
-    ccc = '#222125', --new
+    ccc = '#161819',
+    -- ccc = '#222125', --new
     black2 = '#799dd9',
     gruv1 = '#313244',
     gruv2 = '#a9b665',
@@ -17,7 +16,7 @@ local bubbles_theme = {
     normal = {
         a = { fg = colors.black2, bg = colors.gruv1 },
         b = { fg = colors.white, bg = colors.black },
-        c = { fg = colors.white, bg = colors.ccc },
+        c = { fg = colors.white },
         y = { fg = colors.white, bg = colors.black },
     },
     insert = { a = { fg = colors.black, bg = colors.gruv2 } },
@@ -38,6 +37,7 @@ local icons = {
 -- SETUP
 return {
     'nvim-lualine/lualine.nvim',
+    event = 'VeryLazy',
     opts = {
         options = {
             icons_enabled = true,

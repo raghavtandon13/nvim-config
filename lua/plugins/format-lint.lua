@@ -1,7 +1,7 @@
 return {
     {
         'stevearc/conform.nvim',
-        event = { 'BufReadPre', 'BufNewFile' },
+        event = 'VeryLazy',
         config = function()
             require('conform').setup {
                 notify_on_error = false,
@@ -36,7 +36,7 @@ return {
     {
         'mfussenegger/nvim-lint',
         enabled = false,
-        event = { 'BufReadPre', 'BufNewFile' },
+        event = 'VeryLazy',
         config = function()
             require('lint').linters_by_ft = {
                 markdown = { 'vale' },

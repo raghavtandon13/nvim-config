@@ -1,3 +1,4 @@
+# ssh -i "serverkr.pem" ec2-user@ec2-3-110-127-223.ap-south-1.compute.amazonaws.com
 Invoke-Expression (&starship init powershell)
 function Invoke-Starship-PreCommand {
     $current_location = $executionContext.SessionState.Path.CurrentLocation
@@ -130,7 +131,7 @@ function v {
         } else {
             $extension = [System.IO.Path]::GetExtension($joinedSubRes).ToLower()
             $nonTextExtensions = @(".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".mp4", ".avi", ".mkv", ".mov", ".wmv", ".mp3", ".wav", ".flac", ".ogg")
-            Set-Location ($joinedSubRes.Substring(1) -replace '\\[^\\]+$','')
+Set-Location ($joinedSubRes.Substring(1) -replace '\\[^\\]+$','')
             if ($nonTextExtensions -contains $extension) {
                 Invoke-Item $joinedSubRes.Substring(1)
             } else {
@@ -143,6 +144,11 @@ function v {
 function n {
     Set-Location "D:/Notes"
     nvim .
+}
+
+function get-dlls {
+	param ( [string]$app)
+	objdump -p $app | rg -i "DLL Name" | sort -u | rg -i "DLL Name"
 }
 
 function t {

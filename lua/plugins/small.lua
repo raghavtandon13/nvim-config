@@ -4,9 +4,17 @@ return {
 
     --[[ ENABLED PLUGINS ]]
     {
-        'lervag/vimtex',
+        'esmuellert/vscode-diff.nvim',
+        dependencies = { 'MunifTanjim/nui.nvim' },
+    },
+    {
+        'stevearc/oil.nvim',
+        opts = {
+            keymaps = { ['q'] = { 'actions.close', mode = 'n' } },
+            float = { padding = 2, max_width = 0.4, max_height = 0.8, border = 'rounded' },
+        },
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
         lazy = false,
-        -- init = function() vim.g.vimtex_view_method = 'zathura' end,
     },
     {
         'cameron-wags/rainbow_csv.nvim',
@@ -15,8 +23,13 @@ return {
         cmd = { 'RainbowDelim', 'RainbowDelimSimple', 'RainbowDelimQuoted', 'RainbowMultiDelim' },
     },
     {
+        'micahkepe/todo.nvim',
+        cmd = 'Todo',
+        opts = { border = 'rounded', todo_file = 'D:/Notes/TODO.md', todo_title = 'TODOs' },
+    },
+    {
         'dmmulroy/ts-error-translator.nvim',
-        filetype = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact', 'tsx', 'jsx' },
+        ft = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact', 'tsx', 'jsx' },
     },
     { 'echasnovski/mini.misc', version = '*', opts = {} },
     {
@@ -47,6 +60,7 @@ return {
     {
         'folke/noice.nvim',
         event = 'VeryLazy',
+        -- cond = function() return vim.bo.filetype ~= 'rust' end,
         dependencies = { 'MunifTanjim/nui.nvim' },
         opts = {
             cmdline = { enabled = true, view = 'cmdline' },
@@ -54,6 +68,7 @@ return {
                 { filter = { event = 'notify', find = 'No information available' }, opts = { skip = true } },
                 { filter = { event = 'notify', find = 'Config Change Detected' }, opts = { skip = true } },
                 { filter = { event = 'notify', find = 'There were issues reported' }, opts = { skip = true } },
+                { filter = { event = 'notify', find = 'Client stylua quit' }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = 'fewer lines' } } }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = 'is deprecated' } } }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = '[supermaven-nvim]' } } }, opts = { skip = true } },
@@ -83,16 +98,92 @@ return {
     {
         'folke/snacks.nvim',
         priority = 1000,
-        lazy = false,
+        event = 'VeryLazy',
         opts = {
             bigfile = { enabled = true },
-            dashboard = { enabled = true },
             input = { enabled = true },
             indent = { enabled = true, scope = { enabled = false } },
-            notifier = { enabled = true },
+            notifier = { enabled = false },
             quickfile = { enabled = true },
             terminal = { enabled = false },
+            dashboard = {
+                preset = {
+                    keys = {
+                        { icon = ' ', key = 't', desc = 'TODOs', action = ':Todo' },
+                        {
+                            icon = ' ',
+                            key = 'f',
+                            desc = 'Find File',
+                            action = ":lua Snacks.dashboard.pick('files')",
+                        },
+                        { icon = ' ', key = 'n', desc = 'New File', action = ':ene | startinsert' },
+                        {
+                            icon = ' ',
+                            key = 'g',
+                            desc = 'Find Text',
+                            action = ":lua Snacks.dashboard.pick('live_grep')",
+                        },
+                        {
+                            icon = ' ',
+                            key = 'r',
+                            desc = 'Recent Files',
+                            action = ":lua Snacks.dashboard.pick('oldfiles')",
+                        },
+                        {
+                            icon = ' ',
+                            key = 'c',
+                            desc = 'Config',
+                            action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
+                        },
+                        { icon = ' ', key = 's', desc = 'Restore Session', section = 'session' },
+                        {
+                            icon = '󰒲 ',
+                            key = 'L',
+                            desc = 'Lazy',
+                            action = ':Lazy',
+                            enabled = package.loaded.lazy ~= nil,
+                        },
+                        { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
+                    },
+                },
+                sections = {
+                    {
+                        section = 'terminal',
+                        cmd = 'chafa C:\\Users\\ragha\\OneDrive\\Pictures\\Wallpapers-master\\retro.jpg --format symbols --symbols vhalf --size 60x17 --stretch; sleep .1',
+                        height = 17,
+                        padding = 1,
+                    },
+                    {
+                        pane = 2,
+                        { section = 'header', gap = 0, padding = 2 },
+                        { section = 'keys', gap = 0, padding = 1 },
+                        { section = 'startup' },
+                    },
+                },
+            },
             picker = {
+                layout = 'custom', -- just remove this for simple shit
+                layouts = {
+                    custom = {
+                        preview = 'main',
+                        layout = {
+                            box = 'vertical',
+                            backdrop = false,
+                            width = 0,
+                            height = 0.4,
+                            position = 'bottom',
+                            border = 'none',
+                            title = ' {title} {live} {flags}',
+                            title_pos = 'left',
+                            { win = 'input', height = 1, border = 'bottom' },
+                            {
+                                box = 'horizontal',
+                                { win = 'list', border = 'none' },
+                                { win = 'preview', title = '{preview}', width = 0.6, border = 'left' },
+                            },
+                        },
+                    },
+                },
                 actions = {
                     toggle_live_case_sens = function(picker)
                         picker.opts.args = picker.opts.args or {}
@@ -121,6 +212,7 @@ return {
     {
         'folke/todo-comments.nvim',
         event = 'VeryLazy',
+        ft = { 'markdown', 'lua', 'typescript', 'javascript' },
         dependencies = { 'nvim-lua/plenary.nvim' },
         opts = { signs = true, keywords = { NOTE = { icon = ' ', color = 'hint', alt = { 'todo' } } } },
     },
@@ -137,7 +229,7 @@ return {
     { 'iamyoki/buffer-reopen.nvim', opts = {} },
     {
         'kevinhwang91/nvim-ufo',
-        enabled = true,
+        event = 'BufRead',
         dependencies = { 'kevinhwang91/promise-async' },
         config = function()
             local handler = function(virtText, lnum, endLnum, width, truncate)
@@ -179,8 +271,10 @@ return {
             }
         end,
     },
+    { 'lervag/vimtex', ft = { 'tex' } },
     {
         'linrongbin16/lsp-progress.nvim',
+        event = 'LspAttach',
         opts = {
             spinner = {
                 '●∙∙',
@@ -206,8 +300,7 @@ return {
     },
     {
         'luckasRanarison/tailwind-tools.nvim',
-        event = 'VeryLazy',
-        filetype = { 'html', 'javascriptreact', 'typescriptreact' },
+        ft = { 'html', 'javascriptreact', 'typescriptreact' },
         opts = { server = { override = false } },
         config = function()
             local cmp = require 'cmp'
@@ -218,7 +311,7 @@ return {
             }
         end,
     },
-    { 'mg979/vim-visual-multi', branch = 'master', event = 'BufReadPre' },
+    { 'mg979/vim-visual-multi', branch = 'master', event = 'VeryLazy' },
     {
         'michaelrommel/nvim-silicon',
         lazy = true,
@@ -308,16 +401,21 @@ return {
         config = function()
             require('tiny-inline-diagnostic').setup {
                 preset = 'modern',
-                transparent_bg = false, -- Set the background of the diagnostic to transparent
+                transparent_bg = false,
                 transparent_cursorline = true,
-                options = { multilines = { enabled = true, always_show = true }, show_all_diags_on_cursorline = true },
+                options = {
+                    overflow = { mode = 'wrap', padding = 10 },
+                    break_line = { enabled = true, after = 30 },
+                    multilines = { enabled = true, always_show = true },
+                    show_all_diags_on_cursorline = true,
+                },
             }
             vim.diagnostic.config { virtual_text = false }
         end,
     },
     { 'saecki/crates.nvim', event = { 'BufRead Cargo.toml' }, opts = { completion = { cmp = { enabled = true } } } },
     { 'smjonas/inc-rename.nvim', config = function() require('inc_rename').setup {} end },
-    { 'supermaven-inc/supermaven-nvim', event = { 'VeryLazy' }, opts = {} },
+    { 'supermaven-inc/supermaven-nvim', event = 'InsertEnter', opts = {} },
     {
         'TimUntersberger/neogit',
         cmd = 'Neogit',
@@ -336,7 +434,7 @@ return {
             redo = { hlgroup = 'HighlightRedo', mode = 'n', lhs = '<C-r>', map = 'redo' },
         },
     },
-    { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'VeryLazy', opts = { max_join_length = 20201120 } },
+    { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'BufRead', opts = { max_join_length = 20201120 } },
 
     --[[ DISABLED PLUGINS ]]
 
@@ -373,5 +471,5 @@ return {
     },
     { 'mbbill/undotree', enabled = false },
     { 'numToStr/Comment.nvim', enabled = false, opts = {}, event = 'BufReadPre' },
-    { 'ThePrimeagen/git-worktree.nvim', opts = {} },
+    { 'ThePrimeagen/git-worktree.nvim', event = 'VeryLazy', opts = {} },
 }

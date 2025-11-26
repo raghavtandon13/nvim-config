@@ -5,7 +5,7 @@ local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = t
 vim.api.nvim_create_autocmd('TextYankPost', {
     callback = function() vim.highlight.on_yank() end,
     group = highlight_group,
-    pattern = '*',
+    pattern = { '*.lua', '*.md', '*.ts', '*.js', '*.py', '*.go', '*.rs', '*.cpp', '*.c' },
 })
 
 vim.api.nvim_create_autocmd('FileType', {
@@ -27,11 +27,10 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- [[ Disable Noice LSP Progress if ft = rust ]]
 vim.api.nvim_create_autocmd('BufEnter', {
+    pattern = { '*.rs' },
     callback = function()
-        local ft = vim.bo.filetype
-        local enable = (ft == 'rust') -- only enable for rust
         local ok, noice = pcall(require, 'noice')
-        if ok then noice.setup { lsp = { progress = { enabled = enable } } } end
+        if ok then noice.setup { lsp = { progress = { enabled = true } } } end
     end,
 })
 

@@ -1,7 +1,8 @@
 return {
+    enabled = false,
     'nvim-neo-tree/neo-tree.nvim',
     dependencies = { 'saifulapm/neotree-file-nesting-config' },
-    enabled = true,
+    event = 'VeryLazy',
     opts = {
         hide_root_node = true,
         retain_hidden_root_indent = true,
