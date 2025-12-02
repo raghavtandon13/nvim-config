@@ -110,7 +110,7 @@ function edge_clear {
 function v {
     param([string]$startPath = "D:/")
     Set-Location $startPath
-    $excludedDirs = "Windows", "node_modules", "venv", "Games", "TV", ".cache", ".bun", "scoop", "Microsoft", "nvim-data", "Packages", "Temp", "node-gyp", "gopls", "go-build", "Postman", ".git", "Rainmeter", ".obsidian", "obsidian", "$RECYCLE.BIN", "go", "powerlevel10k", ".expo", ".logseq", ".local", "ZenProfile", "zig", "WindowsPowerShell", "PowerShell", ".zsh", "Mongodb Compass"
+    $excludedDirs = '$RECYCLE.BIN', '.bun', '.cache', '.expo', '.git', '.local', '.logseq', '.obsidian', '.pm2', '.prettierd', '.zsh', 'CrashDumps', 'Games', 'go', 'go-build', 'gopls', 'Microsoft', 'Mongodb Compass', 'node-gyp', 'node_modules', 'NoSQLBooster', 'nvim-data', 'obsidian', 'Packages', 'Postman', 'powerlevel10k', 'PowerShell', 'Rainmeter', 'raycast-x', 'scoop', 'Softdeluxe', 'target', 'Temp', 'tlrc', 'TV', 'uv', 'venv', 'wezterm', 'Windows', 'WindowsPowerShell', 'ZenProfile', 'zig'
     $excludeArgs = $excludedDirs | ForEach-Object { '--exclude', $_ }
     $result = fd . $startPath $excludeArgs -L -H | fzf --expect="alt-z"
     if ($result) {

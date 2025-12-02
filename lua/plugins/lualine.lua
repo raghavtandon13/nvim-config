@@ -16,7 +16,7 @@ local bubbles_theme = {
     normal = {
         a = { fg = colors.black2, bg = colors.gruv1 },
         b = { fg = colors.white, bg = colors.black },
-        c = { fg = colors.white },
+        c = { fg = colors.white, bg = nil },
         y = { fg = colors.white, bg = colors.black },
     },
     insert = { a = { fg = colors.black, bg = colors.gruv2 } },
@@ -28,6 +28,8 @@ local bubbles_theme = {
         c = { fg = colors.white },
     },
 }
+
+if vim.g.neovide then bubbles_theme.normal.c.bg = '#191724' end
 
 local icons = {
     diagnostics = { Error = ' ', Warn = ' ', Hint = ' ', Info = ' ' },

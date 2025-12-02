@@ -67,8 +67,9 @@ return {
         config = function()
             local servers = {
                 lua_ls = {},
-                pyright = {},
-		gopls = {},
+                -- pyright = {},
+                gopls = {},
+                ty = {},
                 rust_analyzer = {
                     filetypes = { 'rust' },
                     settings = {
@@ -118,7 +119,10 @@ return {
             -- Disable diagnostics for unused filetypes
             vim.api.nvim_create_autocmd('FileType', {
                 pattern = { 'help', 'man', 'gitcommit', 'markdown', 'text' },
-                callback = function() vim.diagnostic.disable(0) end,
+                callback = function()
+                    -- vim.diagnostic.disable(0)
+                    vim.diagnostic.enable(false)
+                end,
             })
 
             local capabilities = vim.lsp.protocol.make_client_capabilities()

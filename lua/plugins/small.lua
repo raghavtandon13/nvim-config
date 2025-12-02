@@ -4,28 +4,10 @@ return {
 
     --[[ ENABLED PLUGINS ]]
     {
-        'esmuellert/vscode-diff.nvim',
-        dependencies = { 'MunifTanjim/nui.nvim' },
-    },
-    {
-        'stevearc/oil.nvim',
-        opts = {
-            keymaps = { ['q'] = { 'actions.close', mode = 'n' } },
-            float = { padding = 2, max_width = 0.4, max_height = 0.8, border = 'rounded' },
-        },
-        dependencies = { 'nvim-tree/nvim-web-devicons' },
-        lazy = false,
-    },
-    {
         'cameron-wags/rainbow_csv.nvim',
         config = true,
         ft = { 'csv', 'tsv', 'csv_semicolon', 'csv_whitespace', 'csv_pipe', 'rfc_csv', 'rfc_semicolon' },
         cmd = { 'RainbowDelim', 'RainbowDelimSimple', 'RainbowDelimQuoted', 'RainbowMultiDelim' },
-    },
-    {
-        'micahkepe/todo.nvim',
-        cmd = 'Todo',
-        opts = { border = 'rounded', todo_file = 'D:/Notes/TODO.md', todo_title = 'TODOs' },
     },
     {
         'dmmulroy/ts-error-translator.nvim',
@@ -51,6 +33,7 @@ return {
     },
     { 'echasnovski/mini.pairs', event = 'VeryLazy', version = '*', opts = {} },
     { 'echasnovski/mini.surround', event = 'VeryLazy', version = '*', opts = {} },
+    { 'esmuellert/vscode-diff.nvim', cmd = { 'CodeDiff' }, dependencies = { 'MunifTanjim/nui.nvim' } },
     {
         'folke/flash.nvim',
         event = 'VeryLazy',
@@ -60,7 +43,6 @@ return {
     {
         'folke/noice.nvim',
         event = 'VeryLazy',
-        -- cond = function() return vim.bo.filetype ~= 'rust' end,
         dependencies = { 'MunifTanjim/nui.nvim' },
         opts = {
             cmdline = { enabled = true, view = 'cmdline' },
@@ -146,23 +128,10 @@ return {
                         { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
                     },
                 },
-                sections = {
-                    {
-                        section = 'terminal',
-                        cmd = 'chafa C:\\Users\\ragha\\OneDrive\\Pictures\\Wallpapers-master\\retro.jpg --format symbols --symbols vhalf --size 60x17 --stretch; sleep .1',
-                        height = 17,
-                        padding = 1,
-                    },
-                    {
-                        pane = 2,
-                        { section = 'header', gap = 0, padding = 2 },
-                        { section = 'keys', gap = 0, padding = 1 },
-                        { section = 'startup' },
-                    },
-                },
+                sections = { { pane = 1, { section = 'header', gap = 0, padding = 1 }, { section = 'keys', gap = 0 } } },
             },
             picker = {
-                layout = 'custom', -- just remove this for simple shit
+                layout = 'custom',
                 layouts = {
                     custom = {
                         preview = 'main',
@@ -313,6 +282,11 @@ return {
     },
     { 'mg979/vim-visual-multi', branch = 'master', event = 'VeryLazy' },
     {
+        'micahkepe/todo.nvim',
+        cmd = 'Todo',
+        opts = { border = 'rounded', todo_file = 'D:/Notes/TODO.md', todo_title = 'TODOs' },
+    },
+    {
         'michaelrommel/nvim-silicon',
         lazy = true,
         cmd = 'Silicon',
@@ -413,8 +387,25 @@ return {
             vim.diagnostic.config { virtual_text = false }
         end,
     },
-    { 'saecki/crates.nvim', event = { 'BufRead Cargo.toml' }, opts = { completion = { cmp = { enabled = true } } } },
+    {
+        'saecki/crates.nvim',
+        tag = 'stable',
+        event = { 'BufRead Cargo.toml' },
+        config = function()
+            require('crates').setup {}
+            vim.keymap.set('n', '<leader>cr', ':Crates show_popup<CR>', { desc = 'Rust Crates Popup' })
+        end,
+    },
     { 'smjonas/inc-rename.nvim', config = function() require('inc_rename').setup {} end },
+    {
+        'stevearc/oil.nvim',
+        opts = {
+            keymaps = { ['q'] = { 'actions.close', mode = 'n' } },
+            float = { padding = 2, max_width = 0.4, max_height = 0.8, border = 'rounded' },
+        },
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
+        lazy = false,
+    },
     { 'supermaven-inc/supermaven-nvim', event = 'InsertEnter', opts = {} },
     {
         'TimUntersberger/neogit',
@@ -471,5 +462,5 @@ return {
     },
     { 'mbbill/undotree', enabled = false },
     { 'numToStr/Comment.nvim', enabled = false, opts = {}, event = 'BufReadPre' },
-    { 'ThePrimeagen/git-worktree.nvim', event = 'VeryLazy', opts = {} },
+    { 'ThePrimeagen/git-worktree.nvim', enabled = false, event = 'VeryLazy', opts = {} },
 }

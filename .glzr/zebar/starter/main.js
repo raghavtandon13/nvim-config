@@ -59,6 +59,21 @@ function App() {
         return weatherIcons[weatherOutput.status] || null;
     }
 
+    function getBetterName(focusedContainer) {
+        const processName = focusedContainer?.processName?.toLowerCase();
+        const key = processName === "applicationframehost" ? focusedContainer?.title.toLowerCase() : processName;
+        const map = {
+            "microsoft store": "STORE",
+            "wezterm-gui": "WEZTERM",
+            fpilot: "EXPLORER",
+            msedge: "EDGE",
+            msedgewebview2: "EDGE DEVTOOLS",
+            pgadmin4: "PG ADMIN",
+            mongodbcompass: "COMPASS",
+        };
+        return map[key] || key.toUpperCase();
+    }
+
     return (
         <div className="app">
             <div className="left">
@@ -74,6 +89,9 @@ function App() {
                                 {workspace.displayName ?? workspace.name}
                             </button>
                         ))}
+                        {output.glazewm?.focusedContainer?.processName && (
+                            <button className={"workspace focused displayed"}>{getBetterName(output.glazewm?.focusedContainer)}</button>
+                        )}
                     </div>
                 )}
             </div>

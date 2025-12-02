@@ -226,8 +226,12 @@ keybindings:
 
     - commands: ["shell-exec wezterm-gui.exe start -- nvim"]
       bindings: ["alt+v"]
-    # - commands: ["shell-exec D:/Code/start-wezterm.bat"]
-    #   bindings: ["alt+v"]
+
+    # - commands: ["shell-exec neovide.exe --frame none"]
+    #   bindings: ["alt+shift+v"]
+
+    - commands: ["shell-exec msedge https://chatgpt.com"]
+      bindings: ["alt+c"]
 
     # Focus the next/previous workspace defined in `workspaces` config.
     - commands: ["focus --next-active-workspace"]
