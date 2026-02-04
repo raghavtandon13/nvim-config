@@ -3,13 +3,13 @@ return {
         'folke/which-key.nvim',
         keys = { '<leader>' },
         config = function()
-            require('which-key').setup {
+            require('which-key').setup({
                 preset = 'helix',
                 expand = 1,
                 win = { border = 'single' },
                 icons = { mappings = false },
-            }
-            require('which-key').add {
+            })
+            require('which-key').add({
                 { '<leader>c', group = '[C]ode' },
                 { '<leader>c_', hidden = true },
                 { '<leader>g', group = '[G]it' },
@@ -30,18 +30,11 @@ return {
                 { '<leader>d_', hidden = true },
                 { '<leader>q', group = '[Q]uickfix List' },
                 { '<leader>q_', hidden = true },
-            }
-            require('which-key').add {
+            })
+            require('which-key').add({
                 { '<leader>', group = 'VISUAL <leader>', mode = 'v' },
                 { '<leader>g', desc = '[G]it', mode = 'v' },
-            }
+            })
         end,
-        -- keys = {
-        --     {
-        --         '<leader>?',
-        --         function() require('which-key').show { global = false } end,
-        --         desc = 'Buffer Local Keymaps (which-key)',
-        --     },
-        -- },
     },
 }

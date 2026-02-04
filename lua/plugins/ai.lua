@@ -1,3 +1,4 @@
+-- CodeCompanion with my changes
 return {
     'raghavtandon13/codecompanion.nvim',
     event = 'VeryLazy',

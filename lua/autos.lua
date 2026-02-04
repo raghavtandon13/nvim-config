@@ -8,17 +8,19 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     pattern = { '*.lua', '*.md', '*.ts', '*.js', '*.py', '*.go', '*.rs', '*.cpp', '*.c' },
 })
 
+-- [[ Disable numberline in CodeCompanion buffers ]]
 vim.api.nvim_create_autocmd('FileType', {
     pattern = { 'codecompanion' },
     callback = function() vim.opt_local.number = false end,
 })
 
+-- [[ Set formatprg to jq for json files ]]
 vim.api.nvim_create_autocmd('FileType', {
     pattern = { 'json' },
     callback = function() vim.api.nvim_set_option_value('formatprg', 'jq', { scope = 'local' }) end,
 })
 
--- -- [[ Disable CursorLine if ft = markdown ]]
+-- [[ Disable CursorLine if ft = markdown ]]
 vim.api.nvim_create_autocmd('FileType', {
     desc = 'Disable cursorline for markdown',
     pattern = { 'markdown' },
@@ -30,23 +32,9 @@ vim.api.nvim_create_autocmd('BufEnter', {
     pattern = { '*.rs' },
     callback = function()
         local ok, noice = pcall(require, 'noice')
-        if ok then noice.setup { lsp = { progress = { enabled = true } } } end
+        if ok then noice.setup({ lsp = { progress = { enabled = true } } }) end
     end,
 })
-
--- -- [[ Disable Snacks Indent if ft = terraform ]]
--- vim.api.nvim_create_autocmd('FileType', {
---     desc = 'Disable indentscope for certain filetypes',
---     pattern = { 'terraform', 'text', 'markdown', 'yaml' },
---     callback = function() vim.cmd [[lua Snacks.indent.disable()]] end,
--- })
-
--- -- [[ Disable indentscope if ft = python ]] -- OLD
--- vim.api.nvim_create_autocmd('FileType', {
---     desc = 'Disable indentscope for certain filetypes',
---     pattern = { 'python', 'text', 'markdown', 'yaml' },
---     callback = function() vim.b.miniindentscope_disable = true end,
--- })
 
 -- [[ Auto Highlight on Search ]]
 vim.on_key(function(char)
@@ -54,7 +42,7 @@ vim.on_key(function(char)
         local new_hlsearch = vim.tbl_contains({ '<CR>', 'n', 'N', '*', '#', '?', '/' }, vim.fn.keytrans(char))
         if vim.opt.hlsearch:get() ~= new_hlsearch then vim.opt.hlsearch = new_hlsearch end
     end
-end, vim.api.nvim_create_namespace 'auto_hlsearch')
+end, vim.api.nvim_create_namespace('auto_hlsearch'))
 
 --[[ LSP Progress in LuaLine ]]
 vim.api.nvim_create_augroup('lualine_augroup', { clear = true })
@@ -64,29 +52,7 @@ vim.api.nvim_create_autocmd('User', {
     callback = require('lualine').refresh,
 })
 
---[[ Vertical Split default in :new  ]]
-vim.api.nvim_create_user_command('New', 'vnew', {})
-vim.cmd [[cnoreabbrev new New]]
-vim.api.nvim_create_user_command('Hnew', 'new', {})
-vim.cmd [[cnoreabbrev hnew Hnew]]
-
---[[ Opens Split Term and Runs Commands ]]
-vim.api.nvim_create_user_command('Run', function(opts)
-    local args = table.concat(opts.fargs, ' ')
-    vim.cmd('vsplit | term ' .. args)
-end, { nargs = '+' })
-
---[[ Toggle Inline Diagnostics ]]
-local diagnostics_active = true
-function _G.toggle_diagnostics()
-    diagnostics_active = not diagnostics_active
-    vim.diagnostic.config {
-        virtual_text = diagnostics_active,
-    }
-    print('Diagnostics ' .. (diagnostics_active and 'enabled' or 'disabled'))
-end
-
--- TypeScript compiler setup for Neovim using npx tsc
+-- [[ TypeScript compiler setup for Neovim using npx tsc ]]
 vim.api.nvim_create_autocmd('FileType', {
     pattern = 'typescript',
     callback = function()
@@ -95,36 +61,17 @@ vim.api.nvim_create_autocmd('FileType', {
     end,
 })
 
-function ConvertJSON()
-    local start_line, start_col = unpack(vim.fn.getpos "'<", 2, 3)
-    local end_line, end_col = unpack(vim.fn.getpos "'>", 2, 3)
-    local range = string.format('%d,%d', start_line, end_line)
-    vim.cmd(range .. 's/\\v(\\w+):/"\\1":/g') -- Quote keys
-    vim.cmd(range .. 's/\'/"/g') -- Convert single quotes to double quotes
-end
-
-vim.api.nvim_create_user_command('Light', function()
-    require('rose-pine').setup { styles = { transparency = false } }
-    vim.cmd 'colorscheme rose-pine-dawn'
-    vim.cmd 'source ~/.config/nvim/lua/highlights.lua'
-end, {})
-
-vim.api.nvim_create_user_command('Dark', function()
-    require('rose-pine').setup { styles = { transparency = true } }
-    vim.cmd 'colorscheme rose-pine'
-    vim.cmd 'source ~/.config/nvim/lua/highlights.lua'
-end, {})
-
+-- [[ Enable completion for go files ]]
 vim.api.nvim_create_autocmd({ 'LspAttach' }, {
     pattern = { '*.go' },
     callback = function(args) require('cmp_go_pkgs').init_items(args) end,
 })
 
--- [[ MACROS ]]
 -- [[ console.log marco ]]
 local esc = vim.api.nvim_replace_termcodes('<Esc>', true, true, true)
 vim.fn.setreg('l', "yoconsole.log('" .. esc .. 'pa:' .. esc .. 'la, ' .. esc .. 'pl')
 
+-- [[ Set titlestring to root directory ]]
 vim.api.nvim_create_autocmd('BufEnter', {
     callback = function()
         local mini_misc_ok, mini_misc = pcall(require, 'mini.misc')
@@ -139,10 +86,24 @@ vim.api.nvim_create_autocmd('BufEnter', {
     end,
 })
 
-vim.api.nvim_create_user_command('CloseOtherBuffers', function()
-    local bufs = vim.api.nvim_list_bufs()
-    local current_buf = vim.api.nvim_get_current_buf()
-    for _, i in ipairs(bufs) do
-        if i ~= current_buf then vim.api.nvim_buf_delete(i, {}) end
-    end
-end, { desc = 'Close all buffers except the current one' })
+-- [[ Disable diagnostics for unused filetypes ]]
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = { 'help', 'man', 'gitcommit', 'markdown', 'text' },
+    callback = function() vim.diagnostic.enable(false) end,
+})
+
+--  TODO: [[ Disable gitsigns for files with ##noNvimGit ]]
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+    callback = function(args)
+        local bufnr = args.buf
+        local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 5, false)
+        for _, line in ipairs(lines) do
+            if line:match('##noNvimGit') then
+                -- Disable gitsigns for this buffer
+                vim.b.gitsigns_disable = true
+                vim.b.no_lualine_git = true
+                return
+            end
+        end
+    end,
+})

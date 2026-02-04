@@ -1,4 +1,3 @@
-# ssh -i "serverkr.pem" ec2-user@ec2-3-110-127-223.ap-south-1.compute.amazonaws.com
 Invoke-Expression (&starship init powershell)
 function Invoke-Starship-PreCommand {
     $current_location = $executionContext.SessionState.Path.CurrentLocation
@@ -11,7 +10,6 @@ function Invoke-Starship-PreCommand {
     $color = "`e[38;2;57;53;82m"
     $reset = "`e[0m"
     $line = $color  + ('-' * $width) + $reset
-    # $host.ui.Write("$line")
     $host.ui.Write($prompt)
 }
 
@@ -47,6 +45,27 @@ function kk { sudo Invoke-FuzzyKillProcess }
 function ll { lsd.exe --tree --depth=1 }
 function ls-better { lsd.exe -lAF --blocks date --blocks size  --blocks name $args }
 
+
+function silicon-make {
+    param(
+        [Parameter(Mandatory)]
+        [string]$File,
+        [string]$Output = ("img-{0}.png" -f (Get-Date -Format "yyyyMMdd-HHmmss"))
+    )
+
+    silicon $File `
+        --output $Output `
+        --no-window-controls `
+        --no-round-corner `
+        --no-line-number `
+        --line-pad 10 `
+	--theme OneHalfDark `
+        --background '#161616' `
+        --pad-horiz 0 `
+        --pad-vert 0
+}
+
+
 function du {
     param(
         [string]$Location = (Get-Location),
@@ -65,20 +84,20 @@ function y {
     Remove-Item -Path $tmp
 }
 
-function server    { ssh -i "$HOME\Downloads\pems\cred.pem"    ubuntu@ec2-13-236-84-117.ap-southeast-2.compute.amazonaws.com }
-function server2   { ssh -i "$HOME\Downloads\pems\cred-2.pem"  ec2-user@ec2-13-201-83-62.ap-south-1.compute.amazonaws.com    }
-function server3   { ssh -i "$HOME\Downloads\pems\cred-3.pem"  ec2-user@ec2-3-108-59-42.ap-south-1.compute.amazonaws.com     }
-function server4   { ssh -i "$HOME\Downloads\pems\credok.pem"  ec2-user@ec2-3-110-189-254.ap-south-1.compute.amazonaws.com   }
-function serverls  { ssh -i "$HOME\Downloads\pems\ls-main.pem" ec2-user@ec2-13-235-160-238.ap-south-1.compute.amazonaws.com  }
-function serverls2 { ssh -i "$HOME\Downloads\pems\ls2.pem"     ec2-user@ec2-3-111-171-226.ap-south-1.compute.amazonaws.com   }
-function serverls3 { ssh -i "$HOME\Downloads\pems\ls3.pem"     ec2-user@ec2-13-232-172-227.ap-south-1.compute.amazonaws.com  }
-function serverkr  { ssh -i "$HOME\Downloads\serverkr.pem"     ec2-user@ec2-3-110-127-223.ap-south-1.compute.amazonaws.com   }
+function server    { ssh -i "$HOME\Downloads\pems\cred.pem"         ubuntu@ec2-13-236-84-117.ap-southeast-2.compute.amazonaws.com }
+function server2   { ssh -i "$HOME\Downloads\pems\cred-2.pem"       ec2-user@ec2-13-201-83-62.ap-south-1.compute.amazonaws.com    }
+function server3   { ssh -i "$HOME\Downloads\pems\cred-3.pem"       ec2-user@ec2-3-108-59-42.ap-south-1.compute.amazonaws.com     }
+function server4   { ssh -i "$HOME\Downloads\pems\credok.pem"       ec2-user@ec2-3-110-189-254.ap-south-1.compute.amazonaws.com   }
+function serverls  { ssh -i "$HOME\Downloads\pems\ls-main.pem"      ec2-user@ec2-13-235-160-238.ap-south-1.compute.amazonaws.com  }
+function serverls2 { ssh -i "$HOME\Downloads\pems\ls2.pem"          ec2-user@ec2-3-111-171-226.ap-south-1.compute.amazonaws.com   }
+function serverls3 { ssh -i "$HOME\Downloads\pems\ls3.pem"          ec2-user@ec2-13-232-103-34.ap-south-1.compute.amazonaws.com   }
+function serverkr  { ssh -i "$HOME\Downloads\pems2old\serverkr.pem" ec2-user@ec2-3-110-127-223.ap-south-1.compute.amazonaws.com   }
+function servern   { ssh -i "$HOME\Downloads\servergl.pem"          ec2-user@ec2-13-204-137-195.ap-south-1.compute.amazonaws.com  }
 
-function cmdb { mongosh mongodb+srv://ceo:vMPUgENpiVmZdgH8@cluster0.2vjepfe.mongodb.net/ }
-function lsdb { mongosh mongodb+srv://ceo:f1k9NMINo34YqiIJ@cluster0.a8lhcc0.mongodb.net/ }
-function krdb { mongosh mongodb+srv://kreditroute:IRi5wCjCB7kW4Jjt@cluster0.izicgow.mongodb.net/ }
-
-
+function cmdb  { mongosh mongodb+srv://ceo:vMPUgENpiVmZdgH8@cluster0.2vjepfe.mongodb.net/ }
+function cm2db { mongosh mongodb+srv://credmantra:FEhwZKVejGNg5YSN@cluster0.cy1cupo.mongodb.net/ }
+function lsdb  { mongosh mongodb+srv://ceo:f1k9NMINo34YqiIJ@cluster0.a8lhcc0.mongodb.net/ }
+function krdb  { mongosh mongodb+srv://kreditroute:IRi5wCjCB7kW4Jjt@cluster0.izicgow.mongodb.net/ }
 
 function free {
     $totalMem = (Get-CimInstance -ClassName Win32_ComputerSystem).TotalPhysicalMemory
@@ -110,9 +129,11 @@ function edge_clear {
 function v {
     param([string]$startPath = "D:/")
     Set-Location $startPath
-    $excludedDirs = '$RECYCLE.BIN', '.bun', '.cache', '.expo', '.git', '.local', '.logseq', '.obsidian', '.pm2', '.prettierd', '.zsh', 'CrashDumps', 'Games', 'go', 'go-build', 'gopls', 'Microsoft', 'Mongodb Compass', 'node-gyp', 'node_modules', 'NoSQLBooster', 'nvim-data', 'obsidian', 'Packages', 'Postman', 'powerlevel10k', 'PowerShell', 'Rainmeter', 'raycast-x', 'scoop', 'Softdeluxe', 'target', 'Temp', 'tlrc', 'TV', 'uv', 'venv', 'wezterm', 'Windows', 'WindowsPowerShell', 'ZenProfile', 'zig'
+    $excludedDirs = '$RECYCLE.BIN', '.bun', '.cache', '.expo', '.git', '.local', '.logseq', '.obsidian', '.pm2', '.prettierd', '.zsh', 'CrashDumps', 'Games', 'go', 'go-build', 'gopls', 'Microsoft', 'Mongodb Compass', 'node-gyp', 'node_modules', 'NoSQLBooster', 'nvim-data', 'obsidian', 'Packages', 'Postman', 'powerlevel10k', 'PowerShell', 'Rainmeter', 'raycast-x', 'scoop', 'Softdeluxe', 'target', 'Temp', 'tlrc', 'TV', 'uv', 'venv', 'wezterm', 'Windows', 'WindowsPowerShell', 'ZenProfile', 'zig' , 'Edge Extension' ,'dll'
+    $excludedFileTypes = '.dll', '.exe', '.mp4', '.mkv', '.mov', '.avi', '.mp3', '.wav', '.flac', '.zip', '.rar', '.7z', '.png', '.jpg', '.jpeg', '.gif', '.bmp', '.iso'
     $excludeArgs = $excludedDirs | ForEach-Object { '--exclude', $_ }
-    $result = fd . $startPath $excludeArgs -L -H | fzf --expect="alt-z"
+    $excludeFileArgs = $excludedFileTypes | ForEach-Object { '--exclude', "*$_" }
+    $result = fd . $startPath $excludeArgs $excludeFileArgs  -L -H | fzf --expect="alt-z"
     if ($result) {
         $joinedSubRes = ($result | ForEach-Object { $_.ToString() }) -join " "
         $rest = $joinedSubRes.Substring(6)

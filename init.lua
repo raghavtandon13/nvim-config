@@ -13,17 +13,11 @@ if not vim.loop.fs_stat(lazypath) then
     }
 end
 vim.opt.runtimepath:prepend(lazypath)
-vim.o.guifont = 'JetBrainsMono Nerd Font:h11'
-vim.g.neovide_title_background_color =
-    string.format('%x', vim.api.nvim_get_hl(0, { id = vim.api.nvim_get_hl_id_by_name 'Normal' }).bg)
-vim.o.linespace = 12
-vim.g.neovide_padding_top = 40
 
 --[[ Imports ]]
 
 require('lazy').setup({ { import = 'plugins' } }, {
     ui = { change_detection = { notify = false }, border = 'single' },
-
     performance = {
         rtp = {
             disabled_plugins = {

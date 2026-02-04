@@ -27,7 +27,7 @@ vim.keymap.set('n', '<leader>bl', require('smart-splits').swap_buf_right, { desc
 -- File Management
 vim.keymap.set('n', '<C-s>', ':w<CR>', { desc = 'Save', silent = true })
 vim.keymap.set('n', '<leader>e', ':lua require("oil").open_float(".")<CR>', { desc = 'File Explorer', silent = true })
--- vim.keymap.set('n', '<leader>e', ':Neotree float<CR>', { desc = 'File Explorer', silent = true })
+vim.keymap.set('n', '<leader>t', ':Todo<CR>', { desc = 'TODOs', silent = true })
 
 -- LSP and Code Actions
 vim.keymap.set(
@@ -124,3 +124,163 @@ vim.keymap.set(
     ':lua MiniDiff.toggle_overlay()<CR>',
     { desc = 'Toggle Diff Overlay (Apply All)', noremap = true, silent = true }
 )
+
+--[[ Vertical Split default in :new  ]]
+vim.api.nvim_create_user_command('New', 'vnew', {})
+vim.cmd([[cnoreabbrev new New]])
+vim.api.nvim_create_user_command('Hnew', 'new', {})
+vim.cmd([[cnoreabbrev hnew Hnew]])
+
+--[[ Opens Split Term and Runs Commands ]]
+vim.api.nvim_create_user_command('Run', function(opts)
+    local args = table.concat(opts.fargs, ' ')
+    vim.cmd('vsplit | term ' .. args)
+end, { nargs = '+' })
+
+--[[ Toggle Inline Diagnostics ]]
+local diagnostics_active = true
+function _G.toggle_diagnostics()
+    diagnostics_active = not diagnostics_active
+    vim.diagnostic.config({ virtual_text = diagnostics_active })
+    print('Diagnostics ' .. (diagnostics_active and 'enabled' or 'disabled'))
+end
+
+vim.api.nvim_create_user_command('CloseOtherBuffers', function()
+    local bufs = vim.api.nvim_list_bufs()
+    local current_buf = vim.api.nvim_get_current_buf()
+    for _, i in ipairs(bufs) do
+        if i ~= current_buf then vim.api.nvim_buf_delete(i, {}) end
+    end
+end, { desc = 'Close all buffers except the current one' })
+
+function ConvertJSON()
+    local start_line, start_col = unpack(vim.fn.getpos("'<"), 2, 3)
+    local end_line, end_col = unpack(vim.fn.getpos("'>"), 2, 3)
+    local range = string.format('%d,%d', start_line, end_line)
+    vim.cmd(range .. 's/\\v(\\w+):/"\\1":/g') -- Quote keys
+    vim.cmd(range .. 's/\'/"/g') -- Convert single quotes to double quotes
+end
+
+--[[ HELPERS ]]
+
+local function search_d_drive()
+    require('snacks.picker').files({
+        cwd = 'D:/',
+        hidden = true,
+        ignored = true,
+        follow = true,
+        exclude = {
+            '$RECYCLE.BIN',
+            '.bun',
+            '.cache',
+            '.expo',
+            '.git',
+            '.local',
+            '.logseq',
+            '.obsidian',
+            '.pm2',
+            '.prettierd',
+            '.zsh',
+            'CrashDumps',
+            'Games',
+            'go',
+            'go-build',
+            'gopls',
+            'Microsoft',
+            'Mongodb Compass',
+            'node-gyp',
+            'node_modules',
+            'NoSQLBooster',
+            'nvim-data',
+            'obsidian',
+            'Packages',
+            'Postman',
+            'powerlevel10k',
+            'PowerShell',
+            'Rainmeter',
+            'raycast-x',
+            'scoop',
+            'Softdeluxe',
+            'target',
+            'Temp',
+            'tlrc',
+            'TV',
+            'uv',
+            'venv',
+            'wezterm',
+            'Windows',
+            'WindowsPowerShell',
+            'ZenProfile',
+            'zig',
+            'Edge Extension',
+        },
+    })
+end
+vim.api.nvim_create_user_command('FZF', search_d_drive, {})
+
+local find_root = function()
+    return require('mini.misc').find_root(
+        0,
+        { '.git', 'Makefile', '.root' },
+        function() return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':h') end
+    )
+end
+
+local grep_project = function()
+    local root = find_root()
+    Snacks.picker.grep({ cwd = root })
+end
+
+local search_files_project = function()
+    local root = find_root()
+    Snacks.picker.files({ cwd = root })
+end
+
+-- Snacks Pickers
+
+vim.keymap.set('n', '<leader>,', ':lua Snacks.picker.buffers()<CR>', { desc = 'Search Open Buffers', silent = true })
+vim.keymap.set('n', '<leader>?', ':lua Snacks.picker.recent()<CR>', { desc = 'Search Recent Files', silent = true })
+vim.keymap.set('n', '<leader>gs', ':lua Snacks.picker.git_status()<CR>', { desc = 'Search Git Status', silent = true }) --  TODO: change keybind
+vim.keymap.set(
+    'n',
+    '<leader>s/',
+    ':lua Snacks.picker.grep_buffers()<CR>',
+    { desc = 'Grep in Open Files', silent = true }
+)
+vim.keymap.set('n', '<leader>sa', ':FZF<cr>', { desc = 'Search All Files (D)', silent = true })
+vim.keymap.set(
+    'n',
+    '<leader>sd',
+    ':lua Snacks.picker.diagnostics()<CR>',
+    { desc = 'Search Diagnostics', silent = true }
+)
+vim.keymap.set('n', '<leader>sh', ':lua Snacks.picker.help()<CR>', { desc = 'Search Help', silent = true })
+vim.keymap.set('n', '<leader>sw', ':lua Snacks.picker.grep_word()<CR>', { desc = 'Grep Word', silent = true })
+vim.keymap.set('n', '<leader>ss', ':lua Snacks.picker.pickers()<CR>', { desc = 'Search Pickers', silent = true })
+vim.keymap.set(
+    'n',
+    '<leader>so',
+    ":lua Snacks.picker.files({cwd = 'D:/Notes'})<CR>",
+    { desc = 'Search Notes', silent = true }
+)
+vim.keymap.set('n', '<leader>sg', grep_project, { desc = 'Grep', silent = true })
+vim.keymap.set('n', '<leader><space>', search_files_project, { desc = 'Search Files', silent = true })
+vim.keymap.set(
+    'n',
+    '<leader>sn',
+    ":lua Snacks.picker.files({cwd = vim.fn.stdpath('config')})<CR>",
+    { desc = 'Search Neovim Config', silent = true }
+)
+vim.keymap.set('n', '<leader>dy', function()
+    local line = vim.api.nvim_win_get_cursor(0)[1] - 1
+    local diags = vim.diagnostic.get(0, { lnum = line })
+
+    if #diags == 0 then
+        vim.notify('No diagnostics on this line', vim.log.levels.WARN)
+        return
+    end
+
+    local msg = diags[1].message
+    vim.fn.setreg('+', msg) -- copy to system clipboard
+    vim.notify('Copied diagnostic message.')
+end)

@@ -10,8 +10,18 @@ return {
         cmd = { 'RainbowDelim', 'RainbowDelimSimple', 'RainbowDelimQuoted', 'RainbowMultiDelim' },
     },
     {
-        'dmmulroy/ts-error-translator.nvim',
-        ft = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact', 'tsx', 'jsx' },
+        'catgoose/nvim-colorizer.lua',
+        event = 'BufReadPre',
+        opts = {
+            filetypes = { '*', cmp_docs = { always_update = true } },
+            user_default_options = {
+                names = true,
+                tailwind = 'both',
+                tailwind_opts = { update_names = true },
+                mode = 'virtualtext',
+                virtualtext_inline = 'before',
+            },
+        },
     },
     { 'echasnovski/mini.misc', version = '*', opts = {} },
     {
@@ -54,10 +64,7 @@ return {
                 { filter = { event = 'msg_show', any = { { find = 'fewer lines' } } }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = 'is deprecated' } } }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = '[supermaven-nvim]' } } }, opts = { skip = true } },
-                {
-                    filter = { event = 'msg_show', any = { { find = '^[^-]+-query-20[^-]+$' } } },
-                    opts = { skip = true },
-                },
+                { filter = { event = 'msg_show', any = { { find = '^[^-]+-query-20[^-]+$' } } }, opts = { skip = true } },
             },
             lsp = {
                 progress = { enabled = false },
@@ -92,12 +99,7 @@ return {
                 preset = {
                     keys = {
                         { icon = ' ', key = 't', desc = 'TODOs', action = ':Todo' },
-                        {
-                            icon = ' ',
-                            key = 'f',
-                            desc = 'Find File',
-                            action = ":lua Snacks.dashboard.pick('files')",
-                        },
+                        { icon = ' ', key = 'f', desc = 'Find File', action = ":lua Snacks.dashboard.pick('files')" },
                         { icon = ' ', key = 'n', desc = 'New File', action = ':ene | startinsert' },
                         {
                             icon = ' ',
@@ -163,7 +165,7 @@ return {
                             picker.opts.args = { '--ignore-case' }
                         end
                         picker.case_sens = not picker.case_sens
-                        picker:find { refresh = true }
+                        picker:find({ refresh = true })
                     end,
                 },
                 win = {
@@ -185,13 +187,13 @@ return {
         dependencies = { 'nvim-lua/plenary.nvim' },
         opts = { signs = true, keywords = { NOTE = { icon = ' ', color = 'hint', alt = { 'todo' } } } },
     },
-    { 'folke/ts-comments.nvim', opts = {}, enabled = vim.fn.has 'nvim-0.10.0' == 1 },
+    { 'folke/ts-comments.nvim', opts = {}, enabled = vim.fn.has('nvim-0.10.0') == 1 },
     {
         'hat0uma/csvview.nvim',
         ft = { 'csv', 'tsv', 'csv_semicolon', 'csv_whitespace', 'csv_pipe', 'rfc_csv', 'rfc_semicolon' },
         config = function()
-            require('csvview').setup { view = { display_mode = 'border' } }
-            vim.cmd [[ CsvViewEnable ]]
+            require('csvview').setup({ view = { display_mode = 'border' } })
+            vim.cmd([[ CsvViewEnable ]])
         end,
     },
     { 'https://gitlab.com/HiPhish/rainbow-delimiters.nvim', config = function() end },
@@ -227,20 +229,19 @@ return {
                 table.insert(newVirtText, { suffix, 'MoreMsg' })
                 return newVirtText
             end
-            require('ufo').setup { fold_virt_text_handler = handler }
+            require('ufo').setup({ fold_virt_text_handler = handler })
         end,
     },
     {
         'kosayoda/nvim-lightbulb',
         config = function()
-            require('nvim-lightbulb').setup {
+            require('nvim-lightbulb').setup({
                 sign = { enabled = false },
                 status_text = { enabled = true, text = '󱐋', text_unavailable = '' },
                 autocmd = { enabled = true },
-            }
+            })
         end,
     },
-    { 'lervag/vimtex', ft = { 'tex' } },
     {
         'linrongbin16/lsp-progress.nvim',
         event = 'LspAttach',
@@ -267,19 +268,6 @@ return {
             end,
         },
     },
-    {
-        'luckasRanarison/tailwind-tools.nvim',
-        ft = { 'html', 'javascriptreact', 'typescriptreact' },
-        opts = { server = { override = false } },
-        config = function()
-            local cmp = require 'cmp'
-            cmp.setup {
-                formatting = {
-                    format = require('lspkind').cmp_format { before = require('tailwind-tools.cmp').lspkind_format },
-                },
-            }
-        end,
-    },
     { 'mg979/vim-visual-multi', branch = 'master', event = 'VeryLazy' },
     {
         'micahkepe/todo.nvim',
@@ -294,7 +282,6 @@ return {
         opts = { disable_defaults = true, line_offset = function(args) return args.line1 end, font = 'Berkeley Mono' },
     },
     { 'mrjones2014/smart-splits.nvim', opts = {} },
-    { 'MysticalDevil/inlay-hints.nvim', event = 'LspAttach', opts = { autocmd = { enable = false } } },
     { 'nvim-tree/nvim-web-devicons', opts = {} },
     {
         'OXY2DEV/markview.nvim',
@@ -362,10 +349,10 @@ return {
                     },
                 },
             }
-            require('markview').setup {
+            require('markview').setup({
                 experimental = { check_rtp = false, check_rtp_message = false },
                 markdown = { code_blocks = { sign = false }, horizontal_rules = hr.thin, headings = glow },
-            }
+            })
         end,
     },
     {
@@ -373,7 +360,7 @@ return {
         event = 'VimEnter',
         priority = 1000,
         config = function()
-            require('tiny-inline-diagnostic').setup {
+            require('tiny-inline-diagnostic').setup({
                 preset = 'modern',
                 transparent_bg = false,
                 transparent_cursorline = true,
@@ -382,9 +369,10 @@ return {
                     break_line = { enabled = true, after = 30 },
                     multilines = { enabled = true, always_show = true },
                     show_all_diags_on_cursorline = true,
+                    show_source = { enabled = true },
                 },
-            }
-            vim.diagnostic.config { virtual_text = false }
+            })
+            vim.diagnostic.config({ virtual_text = false })
         end,
     },
     {
@@ -392,11 +380,11 @@ return {
         tag = 'stable',
         event = { 'BufRead Cargo.toml' },
         config = function()
-            require('crates').setup {}
+            require('crates').setup({})
             vim.keymap.set('n', '<leader>cr', ':Crates show_popup<CR>', { desc = 'Rust Crates Popup' })
         end,
     },
-    { 'smjonas/inc-rename.nvim', config = function() require('inc_rename').setup {} end },
+    { 'smjonas/inc-rename.nvim', config = function() require('inc_rename').setup({}) end },
     {
         'stevearc/oil.nvim',
         opts = {
@@ -428,7 +416,6 @@ return {
     { 'Wansmer/treesj', keys = { '<leader>m' }, event = 'BufRead', opts = { max_join_length = 20201120 } },
 
     --[[ DISABLED PLUGINS ]]
-
     {
         'arsham/listish.nvim',
         enabled = false,
@@ -442,10 +429,10 @@ return {
         enabled = false,
         version = '*',
         config = function()
-            require('mini.indentscope').setup {
+            require('mini.indentscope').setup({
                 symbol = '|',
                 draw = { animation = require('mini.indentscope').gen_animation.none() },
-            }
+            })
         end,
     },
     { 'folke/trouble.nvim', enabled = false, opts = { pinned = true, focus = true } },
@@ -461,6 +448,7 @@ return {
         event = 'BufReadPre',
     },
     { 'mbbill/undotree', enabled = false },
+    { 'MysticalDevil/inlay-hints.nvim', enabled = false, event = 'LspAttach', opts = { autocmd = { enable = false } } },
     { 'numToStr/Comment.nvim', enabled = false, opts = {}, event = 'BufReadPre' },
     { 'ThePrimeagen/git-worktree.nvim', enabled = false, event = 'VeryLazy', opts = {} },
 }

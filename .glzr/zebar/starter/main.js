@@ -70,6 +70,7 @@ function App() {
             msedgewebview2: "EDGE DEVTOOLS",
             pgadmin4: "PG ADMIN",
             mongodbcompass: "COMPASS",
+	    "spark desktop": "SPARK",
         };
         return map[key] || key.toUpperCase();
     }

@@ -34,6 +34,7 @@ window_effects:
     focused_window:
         corner_style:
             enabled: true
+            # 'square', 'rounded', 'small_rounded'.
             style: "square"
         border:
             enabled: true
@@ -230,7 +231,8 @@ keybindings:
     # - commands: ["shell-exec neovide.exe --frame none"]
     #   bindings: ["alt+shift+v"]
 
-    - commands: ["shell-exec msedge https://chatgpt.com"]
+    # - commands: ["shell-exec helium"]
+    - commands: ["shell-exec C://Users//ragha//Desktop//Helium.lnk"]
       bindings: ["alt+c"]
 
     # Focus the next/previous workspace defined in `workspaces` config.

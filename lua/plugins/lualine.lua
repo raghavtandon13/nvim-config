@@ -1,11 +1,14 @@
 ---@diagnostic disable: missing-fields
 
+-- NORMAL   main |'⠼'| my-repo | 3x12 |  3 |  10 | 󱐋 | recording @a    [1/6]  [lua_ls] ∙●∙   ai.lua   lualine.lua ●
+--  ↑       ↑       ↑        ↑       ↑    ↑        ↑   ↑          ↑          ↑        ↑                ↑                    ↑
+-- MODE  GIT BR  AI/SPIN  PROJECT  SELECT DIAGS DIFF CODEACTIONS MARCO    SEARCH RES   LSP CLIENT   ACTIVE BUFFERS UNSAVED BUFFER
+
 local colors = {
     black = '#080808',
     white = '#c6c6c6',
     red = '#ff5189',
     ccc = '#161819',
-    -- ccc = '#222125', --new
     black2 = '#799dd9',
     gruv1 = '#313244',
     gruv2 = '#a9b665',
@@ -19,17 +22,21 @@ local bubbles_theme = {
         c = { fg = colors.white, bg = nil },
         y = { fg = colors.white, bg = colors.black },
     },
-    insert = { a = { fg = colors.black, bg = colors.gruv2 } },
-    visual = { a = { fg = colors.black, bg = colors.gruv3 } },
-    replace = { a = { fg = colors.black, bg = colors.red } },
+    insert = {
+        a = { fg = colors.black, bg = colors.gruv2 },
+    },
+    visual = {
+        a = { fg = colors.black, bg = colors.gruv3 },
+    },
+    replace = {
+        a = { fg = colors.black, bg = colors.red },
+    },
     inactive = {
         a = { fg = colors.white, bg = colors.black },
         b = { fg = colors.white, bg = colors.black },
         c = { fg = colors.white },
     },
 }
-
-if vim.g.neovide then bubbles_theme.normal.c.bg = '#191724' end
 
 local icons = {
     diagnostics = { Error = ' ', Warn = ' ', Hint = ' ', Info = ' ' },
@@ -54,14 +61,14 @@ return {
                 'branch',
                 {
                     function()
-                        local spinner = require 'plugins.components.lualine_codecompanion_spinner'
+                        local spinner = require('plugins.components.lualine_codecompanion_spinner')
                         return spinner:update_status() or ''
                     end,
                     color = { fg = '#ff9e64' },
                 },
                 {
                     function()
-                        local spinner = require 'lualine_components.codecompanion_spinner'()
+                        local spinner = require('lualine_components.codecompanion_spinner')()
                         return spinner:update_status()
                     end,
                     color = { fg = '#ff9e64' },
@@ -118,7 +125,7 @@ return {
             },
             lualine_c = {},
             lualine_x = { { 'searchcount', color = { fg = '#ff9e64' } } },
-            lualine_y = { function() return require('lsp-progress').progress {} end },
+            lualine_y = { function() return require('lsp-progress').progress({}) end },
             lualine_z = { { 'buffers', symbols = { modified = ' ●', alternate_file = '', directory = '' } } },
         },
         extensions = { 'neo-tree', 'lazy', 'trouble', 'mason', 'fzf', 'fugitive' },
