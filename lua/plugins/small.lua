@@ -64,7 +64,10 @@ return {
                 { filter = { event = 'msg_show', any = { { find = 'fewer lines' } } }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = 'is deprecated' } } }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = '[supermaven-nvim]' } } }, opts = { skip = true } },
-                { filter = { event = 'msg_show', any = { { find = '^[^-]+-query-20[^-]+$' } } }, opts = { skip = true } },
+                {
+                    filter = { event = 'msg_show', any = { { find = '^[^-]+-query-20[^-]+$' } } },
+                    opts = { skip = true },
+                },
             },
             lsp = {
                 progress = { enabled = false },
@@ -99,7 +102,12 @@ return {
                 preset = {
                     keys = {
                         { icon = ' ', key = 't', desc = 'TODOs', action = ':Todo' },
-                        { icon = ' ', key = 'f', desc = 'Find File', action = ":lua Snacks.dashboard.pick('files')" },
+                        {
+                            icon = ' ',
+                            key = 'f',
+                            desc = 'Find File',
+                            action = ":lua Snacks.dashboard.pick('files')",
+                        },
                         { icon = ' ', key = 'n', desc = 'New File', action = ':ene | startinsert' },
                         {
                             icon = ' ',
@@ -287,55 +295,27 @@ return {
         'OXY2DEV/markview.nvim',
         filetype = { 'markdown', 'markdown_inline', 'Avante', 'codecompanion' },
         config = function()
+            local function heading(level)
+                return {
+                    style = 'label',
+                    sign = '',
+                    sign_hl = 'MarkviewHeading' .. level .. 'Sign',
+                    padding_left = ' ',
+                    padding_right = ' ',
+                    icon = string.rep('#', level) .. ' ',
+                    hl = 'MarkviewHeading' .. level,
+                }
+            end
+
             local glow = {
                 enable = true,
                 shift_width = 0,
-                heading_1 = {
-                    sign = '',
-                    sign_hl = 'MarkviewHeading1Sign',
-                    padding_left = ' ',
-                    padding_right = ' ',
-                    icon = '# ',
-                    hl = 'MarkviewHeading1',
-                },
-                heading_2 = {
-                    style = 'label',
-                    sign = '',
-                    sign_hl = 'MarkviewHeading2Sign',
-                    padding_left = ' ',
-                    padding_right = ' ',
-                    icon = '## ',
-                    hl = 'MarkviewHeading2',
-                },
-                heading_3 = {
-                    style = 'label',
-                    padding_left = ' ',
-                    padding_right = ' ',
-                    icon = '### ',
-                    hl = 'MarkviewHeading3',
-                },
-                heading_4 = {
-                    style = 'label',
-                    padding_left = ' ',
-                    padding_right = ' ',
-                    icon = '#### ',
-                    hl = 'MarkviewHeading4',
-                },
-                heading_5 = {
-                    style = 'label',
-                    padding_left = ' ',
-                    padding_right = ' ',
-                    icon = '##### ',
-                    hl = 'MarkviewHeading5',
-                },
-                heading_6 = {
-                    style = 'label',
-                    padding_left = ' ',
-                    padding_right = ' ',
-                    icon = '###### ',
-                    hl = 'MarkviewHeading6',
-                },
             }
+
+            for i = 1, 6 do
+                glow['heading_' .. i] = heading(i)
+            end
+
             local hr = {
                 thin = {
                     enable = true,
@@ -349,9 +329,17 @@ return {
                     },
                 },
             }
+
             require('markview').setup({
-                experimental = { check_rtp = false, check_rtp_message = false },
-                markdown = { code_blocks = { sign = false }, horizontal_rules = hr.thin, headings = glow },
+                experimental = {
+                    check_rtp = false,
+                    check_rtp_message = false,
+                },
+                markdown = {
+                    code_blocks = { sign = false },
+                    horizontal_rules = hr.thin,
+                    headings = glow,
+                },
             })
         end,
     },
@@ -403,6 +391,7 @@ return {
             kind = 'vsplit',
             signs = { section = { '', '' }, item = { '', '' }, hunk = { '', '' } },
             integrations = { snacks = true },
+            mappings = { commit_editor = { ['<c-p>'] = 'PrevMessage', ['<c-n>'] = 'NextMessage' } },
         },
     },
     {
