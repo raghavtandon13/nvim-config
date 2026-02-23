@@ -87,21 +87,6 @@ Set-Alias vim nvim
 #     Remove-Item -Path $tmp
 # }
 #
-# function server    { ssh -i "$HOME\Downloads\pems\cred.pem"         ubuntu@ec2-13-236-84-117.ap-southeast-2.compute.amazonaws.com }
-# function server2   { ssh -i "$HOME\Downloads\pems\cred-2.pem"       ec2-user@ec2-13-201-83-62.ap-south-1.compute.amazonaws.com    }
-# function server3   { ssh -i "$HOME\Downloads\pems\cred-3.pem"       ec2-user@ec2-3-108-59-42.ap-south-1.compute.amazonaws.com     }
-# function server4   { ssh -i "$HOME\Downloads\pems\credok.pem"       ec2-user@ec2-3-110-189-254.ap-south-1.compute.amazonaws.com   }
-# function serverls  { ssh -i "$HOME\Downloads\pems\ls-main.pem"      ec2-user@ec2-13-235-160-238.ap-south-1.compute.amazonaws.com  }
-# function serverls2 { ssh -i "$HOME\Downloads\pems\ls2.pem"          ec2-user@ec2-3-111-171-226.ap-south-1.compute.amazonaws.com   }
-# function serverls3 { ssh -i "$HOME\Downloads\pems\ls3.pem"          ec2-user@ec2-13-232-103-34.ap-south-1.compute.amazonaws.com   }
-# function serverkr  { ssh -i "$HOME\Downloads\pems2old\serverkr.pem" ec2-user@ec2-3-110-127-223.ap-south-1.compute.amazonaws.com   }
-# function servern   { ssh -i "$HOME\Downloads\servergl.pem"          ec2-user@ec2-13-204-137-195.ap-south-1.compute.amazonaws.com  }
-#
-# function cmdb  { mongosh mongodb+srv://ceo:vMPUgENpiVmZdgH8@cluster0.2vjepfe.mongodb.net/ }
-# function cm2db { mongosh mongodb+srv://credmantra:FEhwZKVejGNg5YSN@cluster0.cy1cupo.mongodb.net/ }
-# function lsdb  { mongosh mongodb+srv://ceo:WcjyRreBKvOKBKKO@cluster0.a8lhcc0.mongodb.net/ }
-# function krdb  { mongosh mongodb+srv://kreditroute:IRi5wCjCB7kW4Jjt@cluster0.izicgow.mongodb.net/ }
-#
 # function free {
 #     $totalMem = (Get-CimInstance -ClassName Win32_ComputerSystem).TotalPhysicalMemory
 #     $freeMem = (Get-CimInstance -ClassName Win32_OperatingSystem).FreePhysicalMemory * 1KB
