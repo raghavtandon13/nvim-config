@@ -9,6 +9,11 @@ return {
             topdelete = { text = '‾' },
             changedelete = { text = '~' },
         },
+        preview_config = {
+            style = 'minimal',
+            relative = 'cursor',
+            border = 'rounded',
+        },
         on_attach = function(bufnr)
             local gs = package.loaded.gitsigns
             local function map(mode, l, r, opts)
@@ -17,10 +22,10 @@ return {
                 vim.keymap.set(mode, l, r, opts)
             end
 
-            map('n', '<leader>gD', function() gs.diffthis '~' end, { desc = 'git diff against last commit' })
+            map('n', '<leader>gD', function() gs.diffthis('~') end, { desc = 'git diff against last commit' })
             map('n', '<leader>gR', gs.reset_buffer, { desc = 'git Reset buffer' })
             map('n', '<leader>gS', gs.stage_buffer, { desc = 'git Stage buffer' })
-            map('n', '<leader>gb', function() gs.blame_line { full = false } end, { desc = 'git blame line' })
+            map('n', '<leader>gb', function() gs.blame_line({ full = false }) end, { desc = 'git blame line' })
             map('n', '<leader>gd', gs.diffthis, { desc = 'git diff against index' })
             map('n', '<leader>gp', gs.preview_hunk, { desc = 'preview git hunk' })
             map('n', '<leader>gr', gs.reset_hunk, { desc = 'git reset hunk' })
@@ -31,13 +36,13 @@ return {
             map(
                 'v',
                 '<leader>gr',
-                function() gs.reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end,
+                function() gs.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end,
                 { desc = 'reset git hunk' }
             )
             map(
                 'v',
                 '<leader>gs',
-                function() gs.stage_hunk { vim.fn.line '.', vim.fn.line 'v' } end,
+                function() gs.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end,
                 { desc = 'stage git hunk' }
             )
             map({ 'n', 'v' }, '[c', function()

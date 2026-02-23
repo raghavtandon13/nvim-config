@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from "https://esm.sh/react@18?dev";
+/** biome-ignore-all lint/a11y/noStaticElementInteractions: ok */
+/** biome-ignore-all lint/a11y/useKeyWithClickEvents: ok */
+
+import React, { useEffect, useState } from "https://esm.sh/react@18?dev";
+import confetti from "https://esm.sh/canvas-confetti@1.6.0";
 import { createRoot } from "https://esm.sh/react-dom@18/client?dev";
 import * as zebar from "https://esm.sh/zebar@2";
 
@@ -14,6 +18,62 @@ const providers = zebar.createProviderGroup({
 
 createRoot(document.getElementById("root")).render(<App />);
 
+// function Pomodoro() {
+//     const WORK = 25 * 60;
+//     const BREAK = 5 * 60;
+//
+//     const [seconds, setSeconds] = React.useState(WORK);
+//     const [running, setRunning] = React.useState(false);
+//     const [isBreak, setIsBreak] = React.useState(false);
+//
+//     React.useEffect(() => {
+//         if (!running) return;
+//
+//         const timer = setInterval(() => {
+//             setSeconds((prev) => {
+//                 if (prev === 0) {
+//                     const nextMode = !isBreak;
+//                     setIsBreak(nextMode);
+//                     return nextMode ? BREAK : WORK;
+//                 }
+//                 return prev - 1;
+//             });
+//         }, 1000);
+//
+//         return () => clearInterval(timer);
+//     }, [running, isBreak]);
+//
+//     const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
+//     const ss = String(seconds % 60).padStart(2, "0");
+//
+//     return (
+//         <span
+//             className="pomodoro"
+//             onClick={() => setRunning(!running)}
+//             onContextMenu={(e) => {
+//                 e.preventDefault();
+//                 setRunning(false);
+//                 setIsBreak(false);
+//                 setSeconds(WORK);
+//             }}
+//             onDoubleClick={() => {
+//                 setIsBreak(!isBreak);
+//                 setSeconds(isBreak ? WORK : BREAK);
+//             }}
+//             style={{
+//                 marginLeft: "14px",
+//                 cursor: "pointer",
+//                 color: isBreak ? "#7CFC00" : "#FF6B6B",
+//                 textShadow: "0 0 4px rgba(255,255,255,0.5)",
+//                 margin: "0px 8px",
+//             }}
+//             title="Click start/pause • Right-click reset • Double-click skip"
+//         >
+//             🍅 {mm}:{ss}
+//         </span>
+//     );
+// }
+
 function App() {
     const [output, setOutput] = useState(providers.outputMap);
     useEffect(() => providers.onOutput(() => setOutput(providers.outputMap)), []);
@@ -23,10 +83,14 @@ function App() {
             case "ethernet":
                 return <i className="nf nf-md-ethernet_cable"></i>;
             case "wifi":
-                if (networkOutput.defaultGateway?.signalStrength >= 80) return <i className="nf nf-md-wifi_strength_4"></i>;
-                else if (networkOutput.defaultGateway?.signalStrength >= 65) return <i className="nf nf-md-wifi_strength_3"></i>;
-                else if (networkOutput.defaultGateway?.signalStrength >= 40) return <i className="nf nf-md-wifi_strength_2"></i>;
-                else if (networkOutput.defaultGateway?.signalStrength >= 25) return <i className="nf nf-md-wifi_strength_1"></i>;
+                if (networkOutput.defaultGateway?.signalStrength >= 80)
+                    return <i className="nf nf-md-wifi_strength_4"></i>;
+                else if (networkOutput.defaultGateway?.signalStrength >= 65)
+                    return <i className="nf nf-md-wifi_strength_3"></i>;
+                else if (networkOutput.defaultGateway?.signalStrength >= 40)
+                    return <i className="nf nf-md-wifi_strength_2"></i>;
+                else if (networkOutput.defaultGateway?.signalStrength >= 25)
+                    return <i className="nf nf-md-wifi_strength_1"></i>;
                 else return <i className="nf nf-md-wifi_strength_outline"></i>;
             default:
                 return <i className="nf nf-md-wifi_strength_off_outline"></i>;
@@ -61,16 +125,17 @@ function App() {
 
     function getBetterName(focusedContainer) {
         const processName = focusedContainer?.processName?.toLowerCase();
-        const key = processName === "applicationframehost" ? focusedContainer?.title.toLowerCase() : processName;
+        const key = processName === "applicationframehost" ? focusedContainer?.title.toLowerCase() : processName.toUpperCase();
         const map = {
-            "microsoft store": "STORE",
-            "wezterm-gui": "WEZTERM",
-            fpilot: "EXPLORER",
-            msedge: "EDGE",
-            msedgewebview2: "EDGE DEVTOOLS",
-            pgadmin4: "PG ADMIN",
-            mongodbcompass: "COMPASS",
-	    "spark desktop": "SPARK",
+            "MICROSOFT STORE": "STORE",
+            "WEZTERM-GUI": "WEZTERM",
+            FPILOT: "exploRER",
+            MSEDGE: "edge",
+            MSEDGEWEBVIEW2: "EDGE DEVTOOLS",
+            PGADMIN4: "pg ADMIN",
+            MONGODBCOMPASS: "COMPASS",
+            WINDOWSTERMINAL: "TERMINAL",
+            "SPARK DESKTOP": "SPARK",
         };
         return map[key] || key.toUpperCase();
     }
@@ -83,6 +148,7 @@ function App() {
                     <div className="workspaces">
                         {output.glazewm.currentWorkspaces.map((workspace) => (
                             <button
+                                type="button"
                                 className={`workspace ${workspace.hasFocus && "focused"} ${workspace.isDisplayed && "displayed"}`}
                                 onClick={() => output.glazewm.runCommand(`focus --workspace ${workspace.name}`)}
                                 key={workspace.name}
@@ -91,7 +157,9 @@ function App() {
                             </button>
                         ))}
                         {output.glazewm?.focusedContainer?.processName && (
-                            <button className={"workspace focused displayed"}>{getBetterName(output.glazewm?.focusedContainer)}</button>
+                            <button type="button" className={"workspace focused displayed"}>
+                                {getBetterName(output.glazewm?.focusedContainer)}
+                            </button>
                         )}
                     </div>
                 )}
@@ -105,13 +173,24 @@ function App() {
                     return (
                         <>
                             {beforeTime.toUpperCase()}{" "}
-                            <span style={{ marginLeft: "10px", textShadow: "0 0 3px rgba(255, 255, 255, 0.7)", color: "pink" }}>{time}</span>
+                            <span
+                                style={{
+                                    marginLeft: "10px",
+                                    textShadow: "0 0 3px rgba(255, 255, 255, 0.7)",
+                                    color: "pink",
+                                }}
+                            >
+                                {time}
+                            </span>
                         </>
                     );
                 })()}
-                <span style={{ marginLeft: "10px" }}>{output.weather && getWeatherIcon(output.weather)}</span>
+                <span onClick={() => confetti()} style={{ marginLeft: "10px", cursor: "pointer" }}>
+                    {output.weather && getWeatherIcon(output.weather)}
+                </span>
             </div>
             <div className="right">
+                {/* <Pomodoro /> */}
                 {output.network && (
                     <div className="network">
                         {getNetworkIcon(output.network)}
@@ -129,14 +208,18 @@ function App() {
                     <div className="cpu">
                         <i className="nf nf-oct-cpu"></i>
                         {/* Change the text color if the CPU usage is high. */}
-                        <span className={output.cpu.usage > 85 ? "high-usage" : ""}>{Math.round(output.cpu.usage)}%</span>
+                        <span className={output.cpu.usage > 85 ? "high-usage" : ""}>
+                            {Math.round(output.cpu.usage)}%
+                        </span>
                     </div>
                 )}
 
                 {output.battery && (
                     <div className="battery">
                         {/* Show icon for whether battery is charging. */}
-                        {output.battery.isCharging && <i className="nf nf-md-power_plug charging-icon" style={{ color: "yellow" }}></i>}
+                        {output.battery.isCharging && (
+                            <i className="nf nf-md-power_plug charging-icon" style={{ color: "yellow" }}></i>
+                        )}
                         {getBatteryIcon(output.battery)}
                         {Math.round(output.battery.chargePercent)}%
                     </div>

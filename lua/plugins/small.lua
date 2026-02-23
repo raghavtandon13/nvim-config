@@ -61,6 +61,7 @@ return {
                 { filter = { event = 'notify', find = 'Config Change Detected' }, opts = { skip = true } },
                 { filter = { event = 'notify', find = 'There were issues reported' }, opts = { skip = true } },
                 { filter = { event = 'notify', find = 'Client stylua quit' }, opts = { skip = true } },
+                { filter = { event = 'notify', find = 'Client biome quit' }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = 'fewer lines' } } }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = 'is deprecated' } } }, opts = { skip = true } },
                 { filter = { event = 'msg_show', any = { { find = '[supermaven-nvim]' } } }, opts = { skip = true } },

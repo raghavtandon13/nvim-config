@@ -8,8 +8,10 @@ local language_servers = {
     pyright = {},
     rust_analyzer = {},
     tailwindcss = {},
-    ts_ls = {},
+    -- ts_ls = {},
+    tsgo = {},
     ty = {},
+    postgres_lsp = {},
     biome = {
         cmd = { 'biome', 'lsp-proxy' },
         filetypes = {
@@ -42,11 +44,8 @@ return {
         'hrsh7th/nvim-cmp',
         event = 'InsertEnter',
         dependencies = {
-            'L3MON4D3/LuaSnip',
             'hrsh7th/cmp-nvim-lsp',
             'hrsh7th/cmp-path',
-            'rafamadriz/friendly-snippets',
-            'saadparwaiz1/cmp_luasnip',
             { 'onsails/lspkind-nvim', opts = { symbol_map = { Color = '󰝤', Supermaven = '' } } },
             {
                 'folke/lazydev.nvim',
@@ -57,12 +56,8 @@ return {
 
         config = function()
             local cmp = require('cmp')
-            local luasnip = require('luasnip')
-            require('luasnip.loaders.from_vscode').lazy_load()
             require('lspconfig.ui.windows').default_options.border = 'single'
-            luasnip.config.setup({})
             cmp.setup({
-                snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
                 window = { completion = { border = 'rounded' }, documentation = { border = 'rounded' } },
                 completion = { completeopt = 'menu,menuone,noinsert' },
                 mapping = cmp.mapping.preset.insert({

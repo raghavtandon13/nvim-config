@@ -1,17 +1,14 @@
 -- CodeCompanion with my changes
 return {
-    'raghavtandon13/codecompanion.nvim',
+    'olimorris/codecompanion.nvim',
+    -- 'raghavtandon13/codecompanion.nvim',
     event = 'VeryLazy',
     opts = {
         strategies = { chat = { slash_commands = { ['file'] = { opts = { provider = 'snacks' } } } } },
         display = {
             action_palette = { provider = 'snacks' },
             diff = { provider = 'mini_diff' },
-            chat = {
-                intro_message = 'CodeCompanion | Press ? for options',
-                show_header_separator = true,
-                show_token_count = false,
-            },
+            chat = { show_header_separator = true, show_token_count = false },
         },
     },
     dependencies = {

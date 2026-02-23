@@ -24,6 +24,9 @@ return {
                     typescript = { 'biome' },
                     typescriptreact = { 'biome' },
                     yaml = { 'prettierd' },
+                    sh = { 'shfmt' },
+                    bashrc = { 'shfmt' },
+                    sql = { 'pg_format' },
                 },
             })
             vim.keymap.set(
@@ -52,7 +55,12 @@ return {
                 javascriptreact = { 'eslint_d' },
                 typescriptreact = { 'eslint_d' },
             }
-            vim.keymap.set('n', '<leader>cl', function() require('lint').try_lint() end, { desc = 'Code Lint', silent = true })
+            vim.keymap.set(
+                'n',
+                '<leader>cl',
+                function() require('lint').try_lint() end,
+                { desc = 'Code Lint', silent = true }
+            )
         end,
     },
 }

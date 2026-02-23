@@ -214,3 +214,9 @@ i {
 .weather {
     color: white;
 }
+
+.pomodoro:hover {
+    border-radius: 4px;
+    background: #ffffff10;
+    padding: 2px;
+}
